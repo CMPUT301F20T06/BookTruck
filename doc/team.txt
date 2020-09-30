@@ -1,2 +1,1 @@
-ccid: chuqing
-github: GraceFu
+chuqing GraceFu
