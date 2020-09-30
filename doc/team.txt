@@ -1,2 +1,5 @@
 ccid: chuqing
 github: GraceFu
+// with their CCID and GitHub username separated by a space.
+CCID GitHubUserName
+qsong Kay7777
