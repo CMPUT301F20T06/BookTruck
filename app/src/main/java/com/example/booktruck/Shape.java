@@ -3,7 +3,8 @@ package com.example.booktruck;
 public abstract class Shape {
     private int x;
     private int y;
-
+    prvate String color "red"
+        
     public int getX() {
         return x;
     }
