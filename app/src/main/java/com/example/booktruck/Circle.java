@@ -1,10 +1,10 @@
 package com.example.booktruck;
 
-public abstract class Shape {
+public class Circle extends Shape {
     private int x;
     private int y;
-    private String color = "red"
-        
+    private String color = "purple";
+
     public int getX() {
         return x;
     }
