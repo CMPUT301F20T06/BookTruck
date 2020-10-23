@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BookTruck</string>
+    <string name="setting">setting</string>
 </resources>
