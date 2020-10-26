@@ -2,24 +2,12 @@ package com.example.booktruck;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.view.View;
-
-public class MainActivity extends AppCompatActivity {
-
-    public void navigate (Class desitination_class) {
-        Intent gotoDesitination = new Intent(this,
-                desitination_class);
-        startActivity(gotoDesitination);
-    }
-=======
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +24,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
->>>>>>> master
+    // super class for go to next page button 
+    public void navigate (Class desitination_class) {
+        Intent gotoDesitination = new Intent(this,
+                desitination_class);
+        startActivity(gotoDesitination);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +39,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-<<<<<<< HEAD
-    public void OnBorrow(View view) {
-        navigate(BorrowManu.class);
-    }
-=======
     @Override
     public void onStart() {
         super.onStart();
@@ -83,5 +72,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
->>>>>>> master
+    //create a button to go to next page
+    public void OnBorrow(View view) { 
+        navigate(BorrowManu.class);
+    }
+
 }
