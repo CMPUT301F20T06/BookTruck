@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    // add actions in the app bar
+    // add actions icon in the app bar
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
