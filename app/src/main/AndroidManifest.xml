@@ -16,10 +16,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity android:name=".BorrowManu"
+            android:label="Goto Borrow Manu"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".ViewBook"
+            android:label="Goto View Book"
+            android:theme="@style/AppTheme"/>
+
+        <activity android:name=".RecieveBook"
+            android:label="Goto View Book"
+            android:theme="@style/AppTheme"/>
+
     </application>
 
 </manifest>

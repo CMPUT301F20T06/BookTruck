@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">BookTruck</string>
+
+    <string name="hand_over_books">Hand Over Books</string>
+    <string name="view_books">View Books</string>
+    <string name="recieve">Recieve</string>
+    <string name="back">back</string>
+    <string name="borrow">Borrow</string>
+    <string name="enter">Enter</string>
+    <string name="scan">Scan</string>
+    <string name="enter_isbn_code_here">Enter ISBN Code Here</string>
+
     <string name="setting">setting</string>
+
 </resources>

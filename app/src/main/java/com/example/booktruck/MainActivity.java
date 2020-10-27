@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
+    }
+
+    // super class for go to next page button 
+    public void navigate (Class desitination_class) {
+        Intent gotoDesitination = new Intent(this,
+                desitination_class);
+        startActivity(gotoDesitination);
     }
 
     @Override
@@ -62,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    //create a button to go to next page
+    public void OnBorrow(View view) { 
+        navigate(BorrowManu.class);
     }
 
 }
