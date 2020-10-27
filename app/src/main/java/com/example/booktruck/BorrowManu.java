@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
-public class BorrowManu extends Activity {
+public class BorrowManu extends Activity implements View.OnClickListener{
+
+    private Button ViewButton, RecieveButton, HandOverButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -15,33 +18,36 @@ public class BorrowManu extends Activity {
 
         setContentView(R.layout.borrow_layout);
 
-    }
+        ViewButton = (Button) findViewById(R.id.view_book_button);
+        ViewButton.setOnClickListener(this);
 
-    public void onOpenViewBook(View view) {
+        RecieveButton = (Button) findViewById(R.id.recieve_book_button);
+        RecieveButton.setOnClickListener(this);
 
-        Intent gotoViewBook = new Intent(this,
-                ViewBook.class);
+        HandOverButton = (Button) findViewById(R.id.handover_book_button);
+        HandOverButton.setOnClickListener(this);
 
-        startActivity(gotoViewBook);
-
-    }
-
-    public void onOpenRecieve(View view) {
-
-        Intent gotoRecieve = new Intent(this,
-                RecieveBook.class);
-
-        startActivity(gotoRecieve);
 
     }
 
-    public void onOpenHandOver(View view) {
-
-        Intent gotoHnadOver = new Intent(this,
-                ViewBook.class);
-
-        startActivity(gotoHnadOver);
-
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.view_book_button:
+                //code here
+                Intent gotoView = new Intent(this, ViewBook.class);
+                startActivity(gotoView);
+                break;
+            case R.id.recieve_book_button:
+                //code here
+                Intent gotoRecieve = new Intent(this, RecieveBook.class);
+                startActivity(gotoRecieve);
+                break;
+            case R.id.handover_book_button:
+                //code here
+                break;
+            default:
+                break;
+        }
     }
-
 }
