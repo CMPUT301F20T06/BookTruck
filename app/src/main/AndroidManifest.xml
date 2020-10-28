@@ -9,31 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".SearchResult"></activity>
+        <activity android:name=".SearchPage" />
+        <activity android:name=".RequestManu" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".SignUpActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
-
-        <activity android:name=".BorrowManu"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".BorrowManu"
             android:label="Goto Borrow Manu"
-            android:theme="@style/AppTheme"/>
-
-        <activity android:name=".ViewBook"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ViewBook"
             android:label="Goto View Book"
-            android:theme="@style/AppTheme"/>
-
-        <activity android:name=".RecieveBook"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".RecieveBook"
             android:label="Goto View Book"
-            android:theme="@style/AppTheme"/>
-
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
