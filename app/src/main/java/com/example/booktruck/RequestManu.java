@@ -29,7 +29,7 @@ public class RequestManu extends AppCompatActivity {
         String []books = {"book1          State", "book2          State", "book3          State", "book4          State", "book5          State"};
         dataList1 = new ArrayList<>();
         dataList1.addAll(Arrays.asList(books));
-        bookAdapter = new ArrayAdapter<>(this, R.layout.content, dataList1);
+        bookAdapter = new ArrayAdapter<>(this, R.layout.fake_list_content, dataList1);
         bookList.setAdapter(bookAdapter);
 
         btn1 = (Button) findViewById(R.id.find_book);

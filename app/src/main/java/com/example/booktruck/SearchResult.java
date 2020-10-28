@@ -24,7 +24,7 @@ public class SearchResult extends AppCompatActivity {
         String []notifies = {"Match book 1", "Match book 2", "Match book 3", "Match book 4", "Match book 5"};
         dataList1 = new ArrayList<>();
         dataList1.addAll(Arrays.asList(notifies));
-        matchAdapter = new ArrayAdapter<>(this, R.layout.content, dataList1);
+        matchAdapter = new ArrayAdapter<>(this, R.layout.fake_list_content, dataList1);
         matchList.setAdapter(matchAdapter);
 
     }
