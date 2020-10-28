@@ -77,4 +77,8 @@ public class MainActivity extends AppCompatActivity {
         navigate(BorrowManu.class);
     }
 
+
+    // create request button on main page (Xutong Li)
+    public void OnRequest(View view) {navigate(RequestManu.class);}
+
 }
