@@ -1,2 +1,4 @@
-Test
-2020.10.16 test: trying push master - 2
+
+# Work Flow
+## 2020.10.22
+Clean unnecessary files
