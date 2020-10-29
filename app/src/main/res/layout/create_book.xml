@@ -7,22 +7,22 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/BookName"
+        android:id="@+id/bookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textLongMessage"
-        android:text="Input book's Name" />
+        android:hint="Input book's Name" />
 
     <EditText
-        android:id="@+id/AuthorName"
+        android:id="@+id/authorName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Input Author's Name"/>
+        android:hint="Input Author's Name"/>
 
     <EditText
         android:id="@+id/ISBN_number"
@@ -31,14 +31,22 @@
         android:layout_weight="1"
         android:ems="10"
         android:inputType="number"
-        android:text="Input ISBN Number"/>
+        android:hint="Input ISBN Number"/>
 
     <EditText
-        android:id="@+id/Description"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:text="Input Book's Description"/>
+        android:hint="Input Book's Description"/>
+    <Button
+        android:id="@+id/createBook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Create the Book"
+        android:onClick="onCreateBook"
+        tools:ignore="HardcodedText"/>
 </LinearLayout>

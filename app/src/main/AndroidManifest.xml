@@ -15,7 +15,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,8 +34,11 @@
             android:label="Goto View Book"
             android:theme="@style/AppTheme" />
 
-        <activity android:name=".MyBookList"/>
-        <activity android:name=".CreateBook" />
+        <activity android:name=".MyBookList"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".CreateBook"
+            android:parentActivityName=".MyBookList" />
     </application>
 
 </manifest>

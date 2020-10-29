@@ -70,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                        // These are a method which gets executed when the task is succeeded
+                                            // These are a method which gets executed when the task is succeeded
                                             Log.d("SaveUser", "Data has been added successfully!");
                                             NavUtils.navigateUpFromSameTask(SignUpActivity.this);
                                         }
@@ -195,4 +195,3 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 }
-
