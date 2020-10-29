@@ -39,5 +39,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:onClick="OnReturn"
+        android:onClick="onReturn"
         android:text="@string/returning" />
