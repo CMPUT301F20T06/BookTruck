@@ -3,12 +3,19 @@
 
     <string name="hand_over_books">Hand Over Books</string>
     <string name="view_books">View Books</string>
-    <string name="recieve">Recieve</string>
+    <string name="receive">Receive</string>
     <string name="back">back</string>
     <string name="borrow">Borrow</string>
     <string name="enter">Enter</string>
     <string name="scan">Scan</string>
     <string name="enter_isbn_code_here">Enter ISBN Code Here</string>
+    <string name="user_name">User Name</string>
+    <string name="user_email">test@ualberta.ca</string>
+    <string name="user_phone_number">888–888–8888</string>
+    <string name="user_info">Additional Info...</string>
+    <string name="returning">Return</string>
+    <string name="return_book">Return Book</string>
+    <string name="confirm_returning">Confirm Returning</string>
 
     <string name="setting">setting</string>
 

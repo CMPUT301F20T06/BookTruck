@@ -9,9 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchResult"></activity>
+        <activity android:name=".SearchResult" />
         <activity android:name=".SearchPage" />
-        <activity android:name=".RequestManu" />
+        <activity android:name=".RequestMenu" />
+        <activity android:name=".ReturnMenu" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,17 +24,18 @@
             android:name=".SignUpActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".BorrowManu"
-            android:label="Goto Borrow Manu"
+            android:name=".BorrowMenu"
+            android:label="Goto Borrow Menu"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ViewBook"
             android:label="Goto View Book"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".RecieveBook"
+            android:name=".ReceiveBook"
             android:label="Goto View Book"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ProfilePage"/>
     </application>
 
 </manifest>

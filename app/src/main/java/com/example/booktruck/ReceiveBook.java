@@ -6,11 +6,11 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-public class RecieveBook extends Activity {
+public class ReceiveBook extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.isbn_recieve);
+        setContentView(R.layout.isbn_receive);
     }
 
 

@@ -27,24 +27,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // super class for go to next page button 
-    public void navigate (Class desitination_class) {
-        Intent gotoDesitination = new Intent(this,
-                desitination_class);
-        startActivity(gotoDesitination);
+    public void navigate (Class destination_class) {
+        Intent gotoDestination = new Intent(this,
+                destination_class);
+        startActivity(gotoDestination);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        profileButton = findViewById(R.id.action_profile);
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(this, )
-            }
-        });
 
         mAuth = FirebaseAuth.getInstance();
     }
@@ -84,11 +76,16 @@ public class MainActivity extends AppCompatActivity {
 
     //create a button to go to next page
     public void OnBorrow(View view) { 
-        navigate(BorrowManu.class);
+        navigate(BorrowMenu.class);
     }
 
 
     // create request button on main page (Xutong Li)
-    public void OnRequest(View view) {navigate(RequestManu.class);}
+    public void OnRequest(View view) {navigate(RequestMenu.class);}
 
+    // click profile icon to go to profile page
+    public void openProfile(MenuItem mItem) {navigate(ProfilePage.class);}
+
+    // create a button to return page
+    public void OnReturn(View view) {navigate(ReturnMenu.class);}
 }

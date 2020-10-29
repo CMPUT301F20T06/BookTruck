@@ -23,4 +23,11 @@
         android:onClick="OnRequest"
         android:text="request" />
 
+    <Button
+        android:id="@+id/returning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="OnReturn"
+        android:text="@string/returning" />
+
 </LinearLayout>
