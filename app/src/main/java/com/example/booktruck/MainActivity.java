@@ -26,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // super class for go to next page button 
+    public void navigate (Class desitination_class) {
+        Intent gotoDesitination = new Intent(this,
+                desitination_class);
+        startActivity(gotoDesitination);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,5 +81,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    //create a button to go to next page
+    public void OnBorrow(View view) { 
+        navigate(BorrowManu.class);
+    }
+
+
+    // create request button on main page (Xutong Li)
+    public void OnRequest(View view) {navigate(RequestManu.class);}
 
 }
