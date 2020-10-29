@@ -73,14 +73,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //create a button to go to next page
-    public void OnBorrow(View view) { 
+    public void onBorrow(View view) { 
         navigate(BorrowMenu.class);
 
 
 
     // create request button on main page (Xutong Li)
 
-    public void OnRequest(View view) {navigate(RequestMenu.class);}
+    public void onRequest(View view) {navigate(RequestMenu.class);}
 
     public void onMyBook(View view) {navigate(MyBookList.class);}
 
@@ -89,5 +89,5 @@ public class MainActivity extends AppCompatActivity {
     public void openProfile(MenuItem mItem) {navigate(ProfilePage.class);}
 
     // create a button to return page
-    public void OnReturn(View view) {navigate(ReturnMenu.class);}
+    public void onReturn(View view) {navigate(ReturnMenu.class);}
 }
