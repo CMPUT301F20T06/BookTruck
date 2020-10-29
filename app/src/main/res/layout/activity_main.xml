@@ -35,10 +35,11 @@
         tools:ignore="HardcodedText"/>
 
     <Button
-        android:id="@+id/Return"
+        android:id="@+id/returning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Return"
-        tools:ignore="HardcodedText"/>
+        android:onClick="onReturn"
+        android:text="@string/returning" />
+
 </LinearLayout>
