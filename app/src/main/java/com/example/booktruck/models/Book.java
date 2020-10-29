@@ -15,11 +15,13 @@ public class Book {
     private String title;
     private String author;
     private String status;
+    private String description;
     private String borrower;
-    private String[] requests = {};
+    private String[] requests;
     private String owner;
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
+
 
     // extract username from the email
     public String getUsername(String email){
@@ -33,13 +35,14 @@ public class Book {
 
     // initial book information and save it into firebase
     public void saveBookIntoFirebase(){
-        HashMap data = new HashMap();
+        HashMap<String, Object> data = new HashMap<>();
         data.put("ISBN", this.ISBN);
         data.put("title", this.title);
         data.put("author", this.author);
         data.put("status", this.status);
+        data.put("description", this.description);
         data.put("borrower", "");
-        data.put("requests", this.requests);
+//        data.put("requests", this.requests);
         data.put("owner", this.owner);
         db = FirebaseFirestore.getInstance();
         final CollectionReference collectionReference = db.collection("Books");
@@ -62,10 +65,11 @@ public class Book {
                 });
     }
 
-    public Book(String ISBN, String title, String author) {
+    public Book(String title, String author, String ISBN, String description) {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
+        this.description = description;
         mAuth = FirebaseAuth.getInstance();
         this.owner = getUsername(mAuth.getCurrentUser().getEmail());
         this.status = "active";
