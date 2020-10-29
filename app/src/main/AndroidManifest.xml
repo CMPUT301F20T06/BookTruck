@@ -36,6 +36,9 @@
             android:label="Goto View Book"
             android:theme="@style/AppTheme" />
         <activity android:name=".ProfilePage"/>
+
+        <activity android:name=".MyBookList"/>
+        <activity android:name=".CreateBook" />
     </application>
 
 </manifest>

@@ -4,40 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/myBook"
+    <EditText
+        android:id="@+id/BookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="My Books"
-        android:onClick="onMyBook"
-        tools:ignore="HardcodedText" />
+        android:ems="10"
+        android:inputType="textLongMessage"
+        android:text="Input book's Name" />
 
-    <Button
-        android:id="@+id/request"
+    <EditText
+        android:id="@+id/AuthorName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Request"
-        android:onClick="onRequest"
-        tools:ignore="HardcodedText"/>
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Input Author's Name"/>
 
-    <Button
-        android:id="@+id/borrow"
+    <EditText
+        android:id="@+id/ISBN_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Borrow"
-        android:onClick="onBorrow"
-        tools:ignore="HardcodedText"/>
+        android:ems="10"
+        android:inputType="number"
+        android:text="Input ISBN Number"/>
 
-    <Button
-        android:id="@+id/returning"
+    <EditText
+        android:id="@+id/Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:onClick="OnReturn"
-        android:text="@string/returning" />
+        android:layout_weight="3"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Input Book's Description"/>
+</LinearLayout>
