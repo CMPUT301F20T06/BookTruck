@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class BorrowMenu extends Activity implements View.OnClickListener{
+public class BorrowMenu extends AppCompatActivity implements View.OnClickListener{
 
     private Button ViewButton, ReceiveButton, HandOverButton;
 
