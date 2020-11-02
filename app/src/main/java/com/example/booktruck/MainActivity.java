@@ -10,15 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 
 
+import com.example.booktruck.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private UserService userService;
 
     public void checkAuth() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        userService = new UserService();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 // User chose the "logout" icon will sign out immediately
-                FirebaseAuth.getInstance().signOut();
+                userService.logout();
                 checkAuth();
                 return true;
 
