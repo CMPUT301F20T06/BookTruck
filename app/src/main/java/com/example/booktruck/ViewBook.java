@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.booktruck.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +49,6 @@ public class ViewBook extends AppCompatActivity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.view_book_layout, bookArray);
         bookList.setAdapter(arrayAdapter);
-
     }
 
     @Override

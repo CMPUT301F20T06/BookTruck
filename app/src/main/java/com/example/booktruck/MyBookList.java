@@ -7,7 +7,11 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.booktruck.models.Book;
+import com.example.booktruck.services.UserService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 
 public class MyBookList extends AppCompatActivity {
@@ -26,6 +30,5 @@ public class MyBookList extends AppCompatActivity {
 
             }
         });
-
     }
 }
