@@ -20,16 +20,23 @@
             android:id="@+id/signup_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:ems="7">
         </EditText>
-
         <Button
-            android:id="@+id/signup_button"
+            android:id="@+id/first_visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="signUp"
-            android:text="Sign Up"></Button>
+            android:text="PASSWORD HIDEN"></Button>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="signUp"
+        android:text="Sign Up"></Button>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,12 +54,18 @@
             android:layout_height="wrap_content"
             android:ems="7">
         </EditText>
-
         <Button
-            android:id="@+id/signin_button"
+            android:id="@+id/second_visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="signIn"
-            android:text="Sign In"></Button>
+            android:text="PASSWORD HIDEN"></Button>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/signin_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="signIn"
+        android:text="Sign In"></Button>
 </LinearLayout>

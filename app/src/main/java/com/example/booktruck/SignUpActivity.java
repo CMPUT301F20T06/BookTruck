@@ -3,6 +3,7 @@ package com.example.booktruck;
     SignUpActivity is the main activity for Sign Up page
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
@@ -34,6 +36,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText signInEmailText;
     private EditText signUpPasswordText;
     private EditText signInPasswordText;
+    private Button signUpVisible;
+    private Button signInVisible;
     FirebaseFirestore db;
 
     public void signUp(View view){
@@ -98,6 +102,16 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
+                            // If password and email address don't match, alert user by AlertDialog
+                            new AlertDialog.Builder(SignUpActivity.this)
+                                    //.setIcon(android.R.drawable.notify)
+                                    .setTitle("Email and password not match")
+                                    .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            signInPasswordText.setText("");
+                                        }
+                                    }).show();
                         }
                     }
                 });
@@ -112,6 +126,39 @@ public class SignUpActivity extends AppCompatActivity {
         signInEmailText = findViewById(R.id.signin_email);
         signInPasswordText = findViewById(R.id.signin_password);
         mAuth = FirebaseAuth.getInstance();
+        signUpVisible = findViewById(R.id.first_visible);
+        signInVisible = findViewById(R.id.second_visible);
+
+        //set both password invisible first
+        signUpPasswordText.setInputType(129);
+        signInPasswordText.setInputType(129);
+
+        // give user option to either hide or show password
+        signUpVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(signUpPasswordText.getInputType() == 128){
+                    signUpPasswordText.setInputType(129);
+                    signUpVisible.setText("password hiden");
+                }else {
+                    signUpPasswordText.setInputType(128);
+                    signUpVisible.setText("password shown");
+                }
+            }
+        });
+        signInVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(signInPasswordText.getInputType() == 128){
+                    signInPasswordText.setInputType(129);
+                    signInVisible.setText("password hiden");
+                }else {
+                    signInPasswordText.setInputType(128);
+                    signInVisible.setText("password shown");
+                }
+            }
+        });
+
     }
 
 }
