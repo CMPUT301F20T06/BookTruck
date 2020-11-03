@@ -12,6 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
 public class RequestMenu extends AppCompatActivity {
 
     ListView bookList;
@@ -26,7 +27,8 @@ public class RequestMenu extends AppCompatActivity {
         setContentView(R.layout.request_menu);
 
         bookList = findViewById(R.id.bookList_name);
-        String []books = {"book1          State", "book2          State", "book3          State", "book4          State", "book5          State"};
+        String[] books = {"book1          State", "book2          State", "book3          State", "book4          State", "book5          State"};
+//        String[] books
         dataList1 = new ArrayList<>();
         dataList1.addAll(Arrays.asList(books));
         bookAdapter = new ArrayAdapter<>(this, R.layout.fake_list_content, dataList1);
