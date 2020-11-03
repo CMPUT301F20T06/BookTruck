@@ -7,6 +7,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.booktruck.models.Book;
+import com.example.booktruck.services.BookService;
+
 public class ShowBookDetail extends AppCompatActivity {
 
     String ISBN;
@@ -19,6 +22,5 @@ public class ShowBookDetail extends AppCompatActivity {
         Intent gotoBook = getIntent();
         ISBN = gotoBook.getStringExtra("isbn");
         getSupportActionBar().setTitle(ISBN);
-
     }
 }
