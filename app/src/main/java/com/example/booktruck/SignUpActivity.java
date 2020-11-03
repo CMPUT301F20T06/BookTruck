@@ -10,13 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import com.example.booktruck.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText signUpEmailText;
+    private EditText signUpContactText;
     private EditText signInEmailText;
     private EditText signUpPasswordText;
     private EditText signInPasswordText;
@@ -42,28 +43,33 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void signUp(View view){
         final String email = signUpEmailText.getText().toString();
+        final String contact = signUpContactText.getText().toString();
         final String password = signUpPasswordText.getText().toString();
-        mAuth.createUserWithEmailAndPassword(email, password)
+
+        // create a new user
+        final User newUser = new User(email, contact, password);
+        mAuth.createUserWithEmailAndPassword(email+"@gmail.com", password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("SignUp", "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Log.d("SignUp", "createUserWithUsername:success");
+
                             // then save user information into User Database
                             HashMap<String, Object> data = new HashMap<>();
-                            data.put("email", email);
-                            data.put("password", password);
+                            data.put("username", newUser.getUsername());
+                            data.put("email", newUser.getEmail());
+                            data.put("password", newUser.getPassword());
                             db = FirebaseFirestore.getInstance();
                             final CollectionReference collectionReference = db.collection("Users");
                             collectionReference
-                                    .document(user.getUid())    // using user id as the document id
+                                    .document(newUser.getUsername())    // using user id as the document id
                                     .set(data)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                        // These are a method which gets executed when the task is succeeded
+                                            // These are a method which gets executed when the task is succeeded
                                             Log.d("SaveUser", "Data has been added successfully!");
                                             NavUtils.navigateUpFromSameTask(SignUpActivity.this);
                                         }
@@ -78,14 +84,37 @@ public class SignUpActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("SignUp", "createUserWithEmail:failure", task.getException());
+                            String error = task.getException().getMessage();
+                            Log.i("SIGNUP:failure" , error);
+                            // if the username is in use
+                            if ( error == "The email address is already in use by another account."){
+                                new AlertDialog.Builder(SignUpActivity.this)
+                                        .setTitle("The username is already in use by another account")
+                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                signUpPasswordText.setText("");
+                                                signUpEmailText.setText("");
+                                            }
+                                        }).show();
+                            } else {
+                                // if the password format is wrong
+                                new AlertDialog.Builder(SignUpActivity.this)
+                                        .setTitle("Password should be at least 6 characters")
+                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                signUpPasswordText.setText("");
+                                            }
+                                        }).show();
+                            }
                         }
                     }
                 });
     }
 
     public void signIn(View view){
-        final String email = signInEmailText.getText().toString();
+        final String email = signInEmailText.getText().toString() + "@gmail.com";
         final String password = signInPasswordText.getText().toString();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -121,10 +150,13 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_view);
-        signUpEmailText = findViewById(R.id.signup_email);
-        signUpPasswordText = findViewById(R.id.signup_password);
-        signInEmailText = findViewById(R.id.signin_email);
+
         signInPasswordText = findViewById(R.id.signin_password);
+        signUpPasswordText = findViewById(R.id.signup_password);
+        signUpEmailText = findViewById(R.id.signup_email);
+        signInEmailText = findViewById(R.id.signin_email);
+        signUpContactText = findViewById(R.id.signup_contact);
+
         mAuth = FirebaseAuth.getInstance();
         signUpVisible = findViewById(R.id.first_visible);
         signInVisible = findViewById(R.id.second_visible);
@@ -139,10 +171,16 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(signUpPasswordText.getInputType() == 128){
                     signUpPasswordText.setInputType(129);
+
                     signUpVisible.setText("password hiden");
                 }else {
                     signUpPasswordText.setInputType(128);
                     signUpVisible.setText("password shown");
+
+                    signUpVisible.setText("show");
+                }else {
+                    signUpPasswordText.setInputType(128);
+                    signUpVisible.setText("hide");
                 }
             }
         });
@@ -151,10 +189,17 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(signInPasswordText.getInputType() == 128){
                     signInPasswordText.setInputType(129);
+
                     signInVisible.setText("password hiden");
                 }else {
                     signInPasswordText.setInputType(128);
                     signInVisible.setText("password shown");
+
+                    signInVisible.setText("show");
+                }else {
+                    signInPasswordText.setInputType(128);
+                    signInVisible.setText("hide");
+
                 }
             }
         });

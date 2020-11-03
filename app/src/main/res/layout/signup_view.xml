@@ -10,19 +10,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/signup_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="8">
+            android:ems="8"
+            android:hint="User Name"></EditText>
+
+        <EditText
+            android:id="@+id/signup_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:inputType="textPassword"
+            android:ems="7">
         </EditText>
+            android:ems="8"
+            android:hint="Email"></EditText>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
         <EditText
             android:id="@+id/signup_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:ems="7">
-        </EditText>
+            android:ems="7"
+            android:hint="Password"
+            android:inputType="textPassword"></EditText>
+        <Button
+            android:id="@+id/first_visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show"></Button>
         <Button
             android:id="@+id/first_visible"
             android:layout_width="wrap_content"
@@ -31,6 +54,7 @@
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/signup_button"
         android:layout_width="wrap_content"
@@ -38,22 +62,38 @@
         android:onClick="signUp"
         android:text="Sign Up"></Button>
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/signin_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="8">
-        </EditText>
+            android:ems="8"
+            android:hint="User Name"></EditText>
+
         <EditText
             android:id="@+id/signin_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="7">
         </EditText>
+            android:ems="7"
+            android:hint="Password"></EditText>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/second_visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show"></Button>
         <Button
             android:id="@+id/second_visible"
             android:layout_width="wrap_content"
@@ -69,3 +109,5 @@
         android:onClick="signIn"
         android:text="Sign In"></Button>
 </LinearLayout>
+</LinearLayout>
+
