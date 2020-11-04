@@ -49,7 +49,9 @@ public class ViewBook extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
                 String bookname = arrayAdapter.getItem(position);
-                Intent bookdetail = new Intent(ViewBook.this, ShowBookDetail.class);
+                Intent bookDetail = new Intent(ViewBook.this, ShowBookDetail.class);
+                bookDetail.putExtra("ParentClass", "ViewBook");
+                startActivity(bookDetail);
 
             }
         });
