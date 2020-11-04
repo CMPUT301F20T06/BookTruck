@@ -11,6 +11,7 @@ import androidx.core.app.NavUtils;
 import com.example.booktruck.models.Book;
 import com.example.booktruck.services.BookService;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class CreateBook extends AppCompatActivity {
@@ -18,11 +19,9 @@ public class CreateBook extends AppCompatActivity {
     private String ISBN;
     private String author;
     private String title;
-    private String description;
     private EditText titleText;
     private EditText authorText;
     private EditText ISBNText;
-    private EditText descriptionText;
     private BookService bookService;
 
 
@@ -36,11 +35,11 @@ public class CreateBook extends AppCompatActivity {
         this.titleText = findViewById(R.id.bookName);
         this.authorText = findViewById(R.id.authorName);
         this.ISBNText = findViewById(R.id.ISBN_number);
-        this.descriptionText = findViewById(R.id.description);
 
         // disable ISBN user input, and generate an ISBN number
+        this.ISBN = generateISBN();
         ISBNText.setEnabled(false);
-        ISBNText.setText("ISBN: "+generateISBN());
+        ISBNText.setText("ISBN: "+ this.ISBN);
     }
 
     private String generateISBN(){
@@ -55,13 +54,12 @@ public class CreateBook extends AppCompatActivity {
     }
 
     public void onCreateBook(View view){
-        this.ISBN = ISBNText.getText().toString();
         this.author = authorText.getText().toString();
         this.title = titleText.getText().toString();
-        this.description = descriptionText.getText().toString();
 
-        bookService.createBook(title, author, ISBN, description);
+        bookService.createBook(title, author, ISBN);
 
         NavUtils.navigateUpFromSameTask(CreateBook.this);
     }
+
 }

@@ -14,8 +14,11 @@ import com.example.booktruck.models.Book;
 import com.example.booktruck.services.BookService;
 
 public class ShowBookDetail extends AppCompatActivity {
+
     TextView authorText, availabilityText, ownerText, descriptionText;
     String ISBN;
+    private BookService bookService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,6 @@ public class ShowBookDetail extends AppCompatActivity {
 //        availabilityText.setText(availability);
 //        ownerText.setText(owner);
 //        descriptionText.setText(description);
-
 
         //如果找不到ISBN， 需要给出找不到的提示
 
