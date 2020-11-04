@@ -22,6 +22,9 @@ public class Book {
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
 
+    public Book(String title, String author, String isbn) {
+    }
+
 
     // extract username from the email
     public String getUsername(String email){
