@@ -22,6 +22,7 @@ public class UserService {
     FirebaseFirestore db;
     FirebaseUser firebaseUser;
     CollectionReference userRef;
+    CollectionReference bookRef;
     private static BookService bookService = new BookService();
 
     public UserService(){
@@ -29,6 +30,7 @@ public class UserService {
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
+        bookRef = db.collection("Books");
     }
 
     public FirebaseUser getCurrentUser() {
