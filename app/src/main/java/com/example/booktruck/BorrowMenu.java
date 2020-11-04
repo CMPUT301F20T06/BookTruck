@@ -1,16 +1,16 @@
 package com.example.booktruck;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class BorrowManu extends Activity implements View.OnClickListener{
+public class BorrowMenu extends AppCompatActivity implements View.OnClickListener{
 
-    private Button ViewButton, RecieveButton, HandOverButton;
+    private Button ViewButton, ReceiveButton, HandOverButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,8 +21,8 @@ public class BorrowManu extends Activity implements View.OnClickListener{
         ViewButton = (Button) findViewById(R.id.view_book_button);
         ViewButton.setOnClickListener(this);
 
-        RecieveButton = (Button) findViewById(R.id.recieve_book_button);
-        RecieveButton.setOnClickListener(this);
+        ReceiveButton = (Button) findViewById(R.id.receive_book_button);
+        ReceiveButton.setOnClickListener(this);
 
         HandOverButton = (Button) findViewById(R.id.handover_book_button);
         HandOverButton.setOnClickListener(this);
@@ -38,13 +38,17 @@ public class BorrowManu extends Activity implements View.OnClickListener{
                 Intent gotoView = new Intent(this, ViewBook.class);
                 startActivity(gotoView);
                 break;
-            case R.id.recieve_book_button:
+            case R.id.receive_book_button:
                 //code here
-                Intent gotoRecieve = new Intent(this, RecieveBook.class);
-                startActivity(gotoRecieve);
+                Intent gotoReceive = new Intent(this, ScanISBN.class);
+                gotoReceive.putExtra("ParentClass", "Receive");
+                startActivity(gotoReceive);
                 break;
             case R.id.handover_book_button:
                 //code here
+                Intent gotoHandOver = new Intent(this, ScanISBN.class);
+                gotoHandOver.putExtra("ParentClass", "HandOver");
+                startActivity(gotoHandOver);
                 break;
             default:
                 break;

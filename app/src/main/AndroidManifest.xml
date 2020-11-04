@@ -9,36 +9,83 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchResult"></activity>
-        <activity android:name=".SearchPage" />
-        <activity android:name=".RequestManu" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--Auth Block-->
         <activity
             android:name=".SignUpActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            />
+        <!--Request Block-->
         <activity
-            android:name=".BorrowManu"
-            android:label="Goto Borrow Manu"
-            android:theme="@style/AppTheme" />
+            android:name=".RequestMenu"
+            android:parentActivityName=".MainActivity"
+            android:label="Request Menu"
+            />
+        <activity
+            android:name=".SearchPage"
+            android:parentActivityName=".RequestMenu"
+            android:label="Search Book"
+            />
+        <activity
+            android:name=".SearchResult"
+            android:parentActivityName=".SearchPage"
+            android:label="Search Result"
+            />
+        <!--Return Block-->
+        <activity
+            android:name=".ReturnMenu"
+            android:label="Return Menu"
+            android:parentActivityName=".MainActivity"
+            />
+        <!--Borrow Block-->
+        <activity
+            android:name=".BorrowMenu"
+            android:label="Borrow Menu"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme"
+            />
         <activity
             android:name=".ViewBook"
-            android:label="Goto View Book"
-            android:theme="@style/AppTheme" />
+            android:label="View Book"
+            android:parentActivityName=".BorrowMenu"
+            android:theme="@style/AppTheme"
+            />
+        <!--Receive Block-->
         <activity
-            android:name=".RecieveBook"
-            android:label="Goto View Book"
-            android:theme="@style/AppTheme" />
+            android:name=".ScanISBN"
+            android:label="Receive Book"
+            android:parentActivityName=".BorrowMenu"
+            android:theme="@style/AppTheme"
+            />
+        <!--Profile Block-->
+        <activity
+            android:name=".ProfilePage"
+            android:label="User Profile"
+            android:parentActivityName=".MainActivity"
+            />
 
-        <activity android:name=".MyBookList"
-            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ShowBookDetail"
+            android:label="Show Book Detail"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".ScanISBN"/>
+        <!--My Book Block-->
+        <activity
+            android:name=".MyBookList"
+            android:label="My Book"
+            android:parentActivityName=".MainActivity"
+            />
         <activity
             android:name=".CreateBook"
-            android:parentActivityName=".MyBookList" />
+            android:label="Create Book"
+            android:parentActivityName=".MyBookList"
+            />
     </application>
 
 </manifest>

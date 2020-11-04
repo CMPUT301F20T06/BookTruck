@@ -4,13 +4,11 @@ package com.example.booktruck;
  */
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -62,6 +60,12 @@ public class SignUpActivity extends AppCompatActivity {
                             data.put("username", newUser.getUsername());
                             data.put("email", newUser.getEmail());
                             data.put("password", newUser.getPassword());
+                            data.put("borrowed", newUser.getBorrowed());
+                            data.put("requested", newUser.getRequested());
+                            data.put("accepted", newUser.getAccepted());
+                            data.put("returned", newUser.getReturned());
+                            data.put("owned", newUser.getOwned());
+
                             db = FirebaseFirestore.getInstance();
                             final CollectionReference collectionReference = db.collection("Users");
                             collectionReference

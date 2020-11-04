@@ -20,9 +20,9 @@
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/recieve"
-        android:id="@+id/recieve_book_button"
-        android:onClick="onOpenRecieve" />
+        android:text="@string/receive"
+        android:id="@+id/receive_book_button"
+        android:onClick="onOpenReceive" />
 
     <Button
         android:layout_width="match_parent"

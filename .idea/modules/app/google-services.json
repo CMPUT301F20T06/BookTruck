@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "341139176667",
+    "firebase_url": "https://booktruck-64e8a.firebaseio.com",
+    "project_id": "booktruck-64e8a",
+    "storage_bucket": "booktruck-64e8a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341139176667:android:1fcb7f72fa4bacaf7c20fe",
+        "android_client_info": {
+          "package_name": "com.example.booktruck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341139176667-lsl2bl72krtfm5vnpgi2qg8tcn97b7pl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.booktruck",
+            "certificate_hash": "25027e4b2839c7c1daeba10dddeaa7943a948eec"
+          }
+        },
+        {
+          "client_id": "341139176667-0crp6pv74hrc2i0i667234g05dj7104f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAC4EZMfiSgGiMsqlspxOA-YK4bOy76k8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341139176667-0crp6pv74hrc2i0i667234g05dj7104f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

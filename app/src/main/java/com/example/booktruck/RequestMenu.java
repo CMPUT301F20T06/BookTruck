@@ -12,7 +12,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class RequestManu extends AppCompatActivity {
+public class RequestMenu extends AppCompatActivity {
 
     ListView bookList;
     ArrayAdapter<String> bookAdapter;
@@ -23,7 +23,7 @@ public class RequestManu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.request_manu);
+        setContentView(R.layout.request_menu);
 
         bookList = findViewById(R.id.bookList_name);
         String []books = {"book1          State", "book2          State", "book3          State", "book4          State", "book5          State"};
@@ -36,7 +36,7 @@ public class RequestManu extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(RequestManu.this, SearchPage.class);
+                Intent intent=new Intent(RequestMenu.this, SearchPage.class);
                 startActivity(intent);
             }
         });

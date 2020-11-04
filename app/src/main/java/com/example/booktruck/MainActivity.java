@@ -9,15 +9,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+
+import com.example.booktruck.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private UserService userService;
 
     public void checkAuth() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = userService.getCurrentUser();
         if (currentUser == null) {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
@@ -25,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // super class for go to next page button 
-    public void navigate (Class desitination_class) {
-        Intent gotoDesitination = new Intent(this,
-                desitination_class);
-        startActivity(gotoDesitination);
+    public void navigate (Class destination_class) {
+        Intent gotoDestination = new Intent(this,
+                destination_class);
+        startActivity(gotoDestination);
     }
 
     @Override
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        userService = new UserService();
     }
 
     @Override
@@ -60,27 +63,27 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 // User chose the "logout" icon will sign out immediately
-                FirebaseAuth.getInstance().signOut();
+                userService.logout();
                 checkAuth();
                 return true;
-
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     //create a button to go to next page
-    public void onBorrow(View view) {
-        navigate(BorrowManu.class);
-    }
-
+    public void onBorrow(View view) { navigate(BorrowMenu.class); }
 
     // create request button on main page (Xutong Li)
-    public void onRequest(View view) {navigate(RequestManu.class);}
+    public void onRequest(View view) { navigate(RequestMenu.class); }
 
-    public void onMyBook(View view) {navigate(MyBookList.class);}
+    public void onMyBook(View view) { navigate(MyBookList.class); }
 
+    // click profile icon to go to profile page
+    public void openProfile(MenuItem mItem) { navigate(ProfilePage.class); }
+
+    // create a button to return page
+    public void onReturn(View view) { navigate(ReturnMenu.class); }
 }
