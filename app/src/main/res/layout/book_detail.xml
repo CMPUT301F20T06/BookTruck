@@ -8,15 +8,16 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="209dp"
+        android:layout_width="fill_parent"
         android:layout_height="210dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp">
 
         <ImageView
-            android:id="@+id/bookimage"
+            android:id="@+id/bookImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
     </LinearLayout>
 
