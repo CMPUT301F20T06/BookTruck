@@ -11,14 +11,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import static com.google.android.gms.tasks.Tasks.await;
 
 public class BookService {
 
@@ -31,20 +27,14 @@ public class BookService {
         bookRef = db.collection("Books");
     }
 
-    // search service
-//    public static ArrayList<Book> searchBooks(String keyword){
-//
-//    }
-
     // create a book and save it into firebase
-    public void createBook(String title, String author, String ISBN, String description){
-        Book book = new Book(title, author, ISBN, description);
+    public void createBook(String title, String author, String ISBN){
+        Book book = new Book(title, author, ISBN);
         HashMap<String, Object> data = new HashMap<>();
         data.put("ISBN", book.getISBN());
         data.put("title", book.getTitle());
         data.put("author", book.getAuthor());
         data.put("status", book.getStatus());
-        data.put("description", book.getDescription());
         data.put("borrower", book.getBorrower());
         data.put("requests", book.getRequests());
         data.put("owner", userService.getCurrentUsername());
@@ -53,7 +43,7 @@ public class BookService {
         bookRef.document(book.getISBN()).set(data);
     }
 
-    public synchronized Book getBookByISBN(String ISBN) {
+    public Book getBookByISBN(String ISBN) {
         final Book[] book = new Book[1];
         final DocumentReference docRef = bookRef.document(ISBN);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -67,7 +57,7 @@ public class BookService {
                         Log.i("GET_BOOK_BY_ISBN", data.toString());
                         book[0] = new Book(
                                 data.get("title").toString(), data.get("author").toString(),
-                                data.get("ISBN").toString(), data.get("description").toString(),
+                                data.get("ISBN").toString(),
                                 data.get("status").toString(), data.get("owner").toString(),
                                 data.get("borrower").toString(), (ArrayList<String>) data.get("requests"));
                     } else {
