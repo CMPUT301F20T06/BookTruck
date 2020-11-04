@@ -1,5 +1,7 @@
 package com.example.booktruck.models;
 
+import java.util.ArrayList;
+
 public class Book {
 
     private String ISBN;
@@ -9,7 +11,7 @@ public class Book {
     private String description;
     private String owner;
     private String borrower;
-    private String[] requests;
+    private ArrayList<String> requests;
 
     public Book(String title, String author, String ISBN, String description) {
         this.ISBN = ISBN;
@@ -18,10 +20,11 @@ public class Book {
         this.description = description;
         this.status = "active";
         this.borrower = "";
+        this.requests = new ArrayList<>();
     }
 
     public Book(String title, String author, String ISBN, String description, String status,
-                String owner, String borrower, String[] requests) {
+                String owner, String borrower, ArrayList<String> requests) {
         this.ISBN = ISBN;
         this.title = title;
         this.author = author;
@@ -60,7 +63,7 @@ public class Book {
         return owner;
     }
 
-    public String[] getRequests() {
+    public ArrayList<String> getRequests() {
         return requests;
     }
 }

@@ -12,8 +12,11 @@ import com.example.booktruck.models.Book;
 import com.example.booktruck.services.BookService;
 
 public class ShowBookDetail extends AppCompatActivity {
+
     TextView authorText, availabilityText, ownerText, descriptionText;
     String ISBN;
+    private BookService bookService;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +29,12 @@ public class ShowBookDetail extends AppCompatActivity {
         ownerText = (TextView)findViewById(R.id.ownerView);
         descriptionText = (TextView)findViewById(R.id.descriptionView);
 
+        bookService = new BookService();
+
         Intent gotoBook = getIntent();
         String ISBN = gotoBook.getStringExtra("isbn");
 
-        Book book = BookService.getBookByISBN(ISBN);
+        Book book = bookService.getBookByISBN(ISBN);
         String title = book.getTitle();
         getSupportActionBar().setTitle(title);
 

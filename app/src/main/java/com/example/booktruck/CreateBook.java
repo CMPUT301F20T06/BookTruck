@@ -39,8 +39,9 @@ public class CreateBook extends AppCompatActivity {
         this.descriptionText = findViewById(R.id.description);
 
         // disable ISBN user input, and generate an ISBN number
+        this.ISBN = generateISBN();
         ISBNText.setEnabled(false);
-        ISBNText.setText("ISBN: "+generateISBN());
+        ISBNText.setText("ISBN: "+ this.ISBN);
     }
 
     private String generateISBN(){
@@ -55,7 +56,6 @@ public class CreateBook extends AppCompatActivity {
     }
 
     public void onCreateBook(View view){
-        this.ISBN = ISBNText.getText().toString();
         this.author = authorText.getText().toString();
         this.title = titleText.getText().toString();
         this.description = descriptionText.getText().toString();

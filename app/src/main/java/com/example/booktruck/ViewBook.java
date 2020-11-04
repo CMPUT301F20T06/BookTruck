@@ -28,6 +28,7 @@ public class ViewBook extends AppCompatActivity {
 
     private ListView bookList;
     private ArrayList<String> bookArray = new ArrayList<>();
+    private UserService userService;
 
 
     @Override
@@ -35,11 +36,13 @@ public class ViewBook extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_book_layout);
 
+        userService = new UserService();
+
         bookList = (ListView) findViewById(R.id.view_book_list);
         //get user name
-        String user = UserService.getCurrentUsername();
+        String user = userService.getCurrentUsername();
         //get borrowed book
-        ArrayList borrowed = UserService.getBorrowedBook();
+        ArrayList borrowed = userService.getBorrowedBook();
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.view_book_layout, borrowed);
         bookList.setAdapter(arrayAdapter);
