@@ -20,21 +20,24 @@ public class UserService {
 
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
-    static FirebaseUser firebaseUser;
-    static CollectionReference userRef;
+    FirebaseUser firebaseUser;
+    CollectionReference userRef;
+    CollectionReference bookRef;
+    private static BookService bookService = new BookService();
 
     public UserService(){
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
+        bookRef = db.collection("Books");
     }
 
     public FirebaseUser getCurrentUser() {
         return firebaseUser;
     }
 
-    public static String getCurrentUsername() {
+    public String getCurrentUsername() {
         String email = firebaseUser.getEmail();
         String username = "";
         String[] array = email.split("@");
@@ -49,7 +52,7 @@ public class UserService {
         FirebaseAuth.getInstance().signOut();
     }
 
-    public static ArrayList<Book> getBorrowedBook() {
+    public ArrayList<Book> getBorrowedBook() {
         final ArrayList<Book> books = new ArrayList<>();
         final DocumentReference docRef = userRef.document(getCurrentUsername());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -59,7 +62,7 @@ public class UserService {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists() && document.getData().containsKey("borrowed")) {
                         for (String ISBN : (String[]) document.getData().get("borrowed")){
-                            books.add(BookService.getBookByISBN(ISBN));
+                            books.add(bookService.getBookByISBN(ISBN));
                         }
                     }
                 }
@@ -68,7 +71,7 @@ public class UserService {
         return books;
     }
 
-    public static ArrayList<Book> getOwnedBook() {
+    public ArrayList<Book> getOwnedBook() {
         final ArrayList<Book> books = new ArrayList<>();
         final DocumentReference docRef = userRef.document(getCurrentUsername());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -78,7 +81,7 @@ public class UserService {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists() && document.getData().containsKey("owned")) {
                         for (String ISBN : (String[]) document.getData().get("owned")){
-                            books.add(BookService.getBookByISBN(ISBN));
+                            books.add(bookService.getBookByISBN(ISBN));
                         }
                     }
                 }
@@ -87,7 +90,7 @@ public class UserService {
         return books;
     }
 
-    public static ArrayList<Book> getRequestedBook() {
+    public ArrayList<Book> getRequestedBook() {
         final ArrayList<Book> books = new ArrayList<>();
         final DocumentReference docRef = userRef.document(getCurrentUsername());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,7 +100,7 @@ public class UserService {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists() && document.getData().containsKey("requested")) {
                         for (String ISBN : (String[]) document.getData().get("requested")){
-                            books.add(BookService.getBookByISBN(ISBN));
+                            books.add(bookService.getBookByISBN(ISBN));
                         }
                     }
                 }
@@ -106,37 +109,37 @@ public class UserService {
         return books;
     }
 
-    public static void handOverBook(String ISBN, String username){
+    public void handOverBook(String ISBN, String username){
         // change the book status to "accepted"
-        BookService.changeBookStatus(ISBN, "accepted");
+        bookService.changeBookStatus(ISBN, "accepted");
         // check if the request is in the book, delete it
-        BookService.deleteRequest(ISBN, username);
+        bookService.deleteRequest(ISBN, username);
     }
 
-    public static void receiveBook(String ISBN) {
+    public void receiveBook(String ISBN) {
         // change book status to "borrowed"
-        BookService.changeBookStatus(ISBN, "borrowed");
+        bookService.changeBookStatus(ISBN, "borrowed");
         // change the borrower in the book
-        BookService.changeBorrower(ISBN, getCurrentUsername());
+        bookService.changeBorrower(ISBN, getCurrentUsername());
         // add book into user borrowed list and delete it in requested list
         addBorrowWithDeletingRequest(ISBN);
     }
 
-    public static void returnBook(String ISBN) {
+    public void returnBook(String ISBN) {
         // change the book status to "returned"
-        BookService.changeBookStatus(ISBN, "returned");
+        bookService.changeBookStatus(ISBN, "returned");
     }
 
-    public static void confirmReturn(String ISBN, String username) {
+    public void confirmReturn(String ISBN, String username) {
         // change the book status to "active"
-        BookService.changeBookStatus(ISBN, "active");
+        bookService.changeBookStatus(ISBN, "active");
         // delete the book in user's borrowed list
         deleteBookInBorrowedList(ISBN, username);
         // delete the book's borrower
-        BookService.changeBorrower(ISBN, "");
+        bookService.changeBorrower(ISBN, "");
     }
 
-    private static void addBorrowWithDeletingRequest(String ISBN){
+    private void addBorrowWithDeletingRequest(String ISBN){
         final String bookISBN = ISBN;
         final DocumentReference docRef = userRef.document(getCurrentUsername());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -167,7 +170,7 @@ public class UserService {
         });
     }
 
-    private static void deleteBookInBorrowedList(String ISBN, String username){
+    private void deleteBookInBorrowedList(String ISBN, String username){
         final String bookISBN = ISBN;
         final DocumentReference docRef = userRef.document(username);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

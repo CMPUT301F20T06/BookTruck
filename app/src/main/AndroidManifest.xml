@@ -58,7 +58,7 @@
             />
         <!--Receive Block-->
         <activity
-            android:name=".ReceiveBook"
+            android:name=".ScanISBN"
             android:label="Receive Book"
             android:parentActivityName=".BorrowMenu"
             android:theme="@style/AppTheme"
@@ -74,7 +74,7 @@
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
             android:theme="@style/AppTheme"
-            android:parentActivityName=".ReceiveBook"/>
+            android:parentActivityName=".ScanISBN"/>
         <!--My Book Block-->
         <activity
             android:name=".MyBookList"
