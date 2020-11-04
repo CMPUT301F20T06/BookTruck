@@ -20,11 +20,12 @@ public class BookService {
 
     FirebaseFirestore db;
     CollectionReference bookRef;
-    private static UserService userService = new UserService();
+    private UserService userService;
 
     public BookService () {
         db = FirebaseFirestore.getInstance();
         bookRef = db.collection("Books");
+        userService = new UserService();
     }
 
     // create a book and save it into firebase
