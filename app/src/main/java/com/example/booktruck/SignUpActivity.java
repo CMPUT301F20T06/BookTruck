@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -44,111 +45,118 @@ public class SignUpActivity extends AppCompatActivity {
         final String email = signUpEmailText.getText().toString();
         final String contact = signUpContactText.getText().toString();
         final String password = signUpPasswordText.getText().toString();
+        if (password.equals("") || contact.equals("") || email.equals("")) {
+            Toast.makeText(getApplicationContext(),"Username, Email or Password must not be empty!", Toast.LENGTH_SHORT).show();
+        } else {
+            // create a new user
+            final User newUser = new User(email, contact, password);
+            mAuth.createUserWithEmailAndPassword(email + "@gmail.com", password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("SignUp", "createUserWithUsername:success");
 
-        // create a new user
-        final User newUser = new User(email, contact, password);
-        mAuth.createUserWithEmailAndPassword(email+"@gmail.com", password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("SignUp", "createUserWithUsername:success");
+                                // then save user information into User Database
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("username", newUser.getUsername());
+                                data.put("email", newUser.getEmail());
+                                data.put("password", newUser.getPassword());
+                                data.put("borrowed", newUser.getBorrowed());
+                                data.put("requested", newUser.getRequested());
+                                data.put("accepted", newUser.getAccepted());
+                                data.put("returned", newUser.getReturned());
+                                data.put("owned", newUser.getOwned());
 
-                            // then save user information into User Database
-                            HashMap<String, Object> data = new HashMap<>();
-                            data.put("username", newUser.getUsername());
-                            data.put("email", newUser.getEmail());
-                            data.put("password", newUser.getPassword());
-                            data.put("borrowed", newUser.getBorrowed());
-                            data.put("requested", newUser.getRequested());
-                            data.put("accepted", newUser.getAccepted());
-                            data.put("returned", newUser.getReturned());
-                            data.put("owned", newUser.getOwned());
-
-                            db = FirebaseFirestore.getInstance();
-                            final CollectionReference collectionReference = db.collection("Users");
-                            collectionReference
-                                    .document(newUser.getUsername())    // using user id as the document id
-                                    .set(data)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            // These are a method which gets executed when the task is succeeded
-                                            Log.d("SaveUser", "Data has been added successfully!");
-                                            NavUtils.navigateUpFromSameTask(SignUpActivity.this);
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            // These are a method which gets executed if there’s any problem
-                                            Log.d("SaveUser", "Data could not be added!" + e.toString());
-                                        }
-                                    });
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            String error = task.getException().getMessage();
-                            Log.i("SIGNUP:failure" , error);
-                            // if the username is in use
-                            if ( error == "The email address is already in use by another account."){
-                                new AlertDialog.Builder(SignUpActivity.this)
-                                        .setTitle("The username is already in use by another account")
-                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                db = FirebaseFirestore.getInstance();
+                                final CollectionReference collectionReference = db.collection("Users");
+                                collectionReference
+                                        .document(newUser.getUsername())    // using user id as the document id
+                                        .set(data)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                signUpPasswordText.setText("");
-                                                signUpEmailText.setText("");
+                                            public void onSuccess(Void aVoid) {
+                                                // These are a method which gets executed when the task is succeeded
+                                                Log.d("SaveUser", "Data has been added successfully!");
+                                                NavUtils.navigateUpFromSameTask(SignUpActivity.this);
                                             }
-                                        }).show();
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // These are a method which gets executed if there’s any problem
+                                                Log.d("SaveUser", "Data could not be added!" + e.toString());
+                                            }
+                                        });
+
                             } else {
-                                // if the password format is wrong
-                                new AlertDialog.Builder(SignUpActivity.this)
-                                        .setTitle("Password should be at least 6 characters")
-                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                signUpPasswordText.setText("");
-                                            }
-                                        }).show();
+                                // If sign in fails, display a message to the user.
+                                String error = task.getException().getMessage();
+                                Log.i("SIGNUP:failure", error);
+                                // if the username is in use
+                                if (error == "The email address is already in use by another account.") {
+                                    new AlertDialog.Builder(SignUpActivity.this)
+                                            .setTitle("The username is already in use by another account")
+                                            .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    signUpPasswordText.setText("");
+                                                    signUpEmailText.setText("");
+                                                }
+                                            }).show();
+                                } else {
+                                    // if the password format is wrong
+                                    new AlertDialog.Builder(SignUpActivity.this)
+                                            .setTitle("Password should be at least 6 characters")
+                                            .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    signUpPasswordText.setText("");
+                                                }
+                                            }).show();
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     public void signIn(View view){
         final String email = signInEmailText.getText().toString() + "@gmail.com";
         final String password = signInPasswordText.getText().toString();
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("SIGNIN", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            if (user != null) {
-                                // check the current user, if not null, then navigate back to main page
-                                NavUtils.navigateUpFromSameTask(SignUpActivity.this);
+        if (password.equals("") || email.equals("@gmail.com")){
+            Toast.makeText(getApplicationContext(),"Username or Password must not be empty!", Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                Log.d("SIGNIN", "signInWithEmail:success");
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                if (user != null) {
+                                    // check the current user, if not null, then navigate back to main page
+                                    NavUtils.navigateUpFromSameTask(SignUpActivity.this);
+                                }
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
+                                // If password and email address don't match, alert user by AlertDialog
+                                new AlertDialog.Builder(SignUpActivity.this)
+                                        //.setIcon(android.R.drawable.notify)
+                                        .setTitle("Username does not exist or Username and password do not match")
+                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                signInPasswordText.setText("");
+                                            }
+                                        }).show();
                             }
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
-                            // If password and email address don't match, alert user by AlertDialog
-                            new AlertDialog.Builder(SignUpActivity.this)
-                                    //.setIcon(android.R.drawable.notify)
-                                    .setTitle("Email and password not match")
-                                    .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            signInPasswordText.setText("");
-                                        }
-                                    }).show();
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
