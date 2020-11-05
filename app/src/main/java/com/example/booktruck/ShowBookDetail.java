@@ -26,13 +26,14 @@ public class ShowBookDetail extends AppCompatActivity {
         setContentView(R.layout.book_detail);
         //显示的书必须满足条件
         //必需是owner拥有的书
-//        authorText = (TextView)findViewById(R.id.authorView);
-//        availabilityText = (TextView)findViewById(R.id.availabilityView);
-//        ownerText = (TextView)findViewById(R.id.ownerView);
-//        descriptionText = (TextView)findViewById(R.id.descriptionView);
+        authorText = (TextView)findViewById(R.id.authorView);
+        availabilityText = (TextView)findViewById(R.id.availabilityView);
+        ownerText = (TextView)findViewById(R.id.ownerView);
+        descriptionText = (TextView)findViewById(R.id.descriptionView);
 //
-//        Intent gotoBook = getIntent();
-//        String ISBN = gotoBook.getStringExtra("isbn");
+        Intent gotoBook = getIntent();
+        String ISBN = gotoBook.getStringExtra("isbn");
+        getSupportActionBar().setTitle(ISBN);
 //
 //        Book book = BookService.getBookByISBN(ISBN);
 //        String title = book.getTitle();

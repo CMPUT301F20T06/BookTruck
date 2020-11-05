@@ -61,7 +61,6 @@
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
-            android:parentActivityName=".BorrowMenu"
             android:theme="@style/AppTheme"
             />
         <!--Profile Block-->
