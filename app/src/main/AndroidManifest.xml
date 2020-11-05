@@ -64,6 +64,11 @@
             android:name=".EditProfile"
             android:label="Edit Contact Info"
             android:parentActivityName=".ProfilePage" />
+        <!--Notification Page -->
+        <activity
+            android:name=".NotificationPage"
+            android:label="Notification"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
