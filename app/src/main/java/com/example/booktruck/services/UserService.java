@@ -19,8 +19,8 @@ import java.util.Map;
 public class UserService {
 
     private FirebaseAuth mAuth;
-    FirebaseFirestore db;
     FirebaseUser firebaseUser;
+    FirebaseFirestore db;
     CollectionReference userRef;
 
     private static BookService bookService = new BookService();
