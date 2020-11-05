@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/signup_text"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Sign Up"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="30sp" />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +40,7 @@
             android:ems="8"
             android:hint="Email"></EditText>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,14 +58,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show"></Button>
+
         <Button
             android:id="@+id/signup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00BCD4"
             android:onClick="signUp"
             android:text="Sign Up"></Button>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/signin_text"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Sign In"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="30sp" />
+    </LinearLayout>
 
 
     <LinearLayout
@@ -80,10 +111,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Show"></Button>
+
         <Button
             android:id="@+id/signin_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="#00BCD4"
             android:onClick="signIn"
             android:text="Sign In"></Button>
     </LinearLayout>

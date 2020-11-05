@@ -16,6 +16,11 @@
     <string name="returning">Return</string>
     <string name="return_book">Return Book</string>
     <string name="confirm_returning">Confirm Returning</string>
+    <string name="confirm_receiving">Confirm Receiving</string>
+    <string name="confirm_handover">Confirm Handover</string>
+    <string name="finish_viewing">Finish Viewing</string>
+    <string name="pickup_location">Pick-Up Location</string>
+
 
     <string name="setting">setting</string>
 

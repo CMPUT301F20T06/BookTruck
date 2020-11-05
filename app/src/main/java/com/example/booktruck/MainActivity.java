@@ -17,11 +17,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private UserService userService;
+    private FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
 
     public void checkAuth() {
-        FirebaseUser currentUser = userService.getCurrentUser();
-        if (currentUser == null) {
+        firebaseUser = mAuth.getCurrentUser();
+        if (firebaseUser == null) {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userService = new UserService();
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_logout:
                 // User chose the "logout" icon will sign out immediately
-                userService.logout();
+                FirebaseAuth.getInstance().signOut();
                 checkAuth();
                 return true;
             default:
