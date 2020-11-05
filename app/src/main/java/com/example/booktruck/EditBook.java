@@ -23,13 +23,13 @@ import java.util.Map;
 public class EditBook extends AppCompatActivity {
 
     FirebaseFirestore db;
-    static CollectionReference bookRef;
-    DocumentReference bookDoc;
     EditText title;
     EditText author;
     EditText isbn;
     String ISBN;
 
+    DocumentReference bookDoc;
+    CollectionReference bookRef;
     CollectionReference userRef;
 
     @Override
@@ -37,13 +37,13 @@ public class EditBook extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_book_detail);
 
-        db = FirebaseFirestore.getInstance();
-        bookRef = db.collection("Books");
-        userRef = db.collection("Users");
-
         Intent gotoBook = getIntent();
         ISBN = gotoBook.getStringExtra("ISBN");
-        bookDoc = bookRef.document(ISBN);
+
+        db = FirebaseFirestore.getInstance();
+        userRef = db.collection("Users");
+        bookRef = db.collection("Books");
+        bookDoc = db.collection("Books").document(ISBN);
 
         title = findViewById(R.id.editTitleView);
         author = findViewById(R.id.editAuthorView);
@@ -88,11 +88,15 @@ public class EditBook extends AppCompatActivity {
                         data.put("author",author.getText().toString());
                         data.put("title",title.getText().toString());
                         data.put("ISBN",isbn.getText().toString());
-                        bookDoc.delete();
-                        deleteBookFromOwnedList();
+
+                        // delete old ISBN and add new ISBN into user's owned list
+                        deleteAndAddBookFromOwnedList(isbn.getText().toString());
+                        // create new book
                         bookRef.document(isbn.getText().toString()).set(data);
-                        addBookIntoOwnedList(isbn.getText().toString());
-                        Intent gotoDestination = new Intent(EditBook.this, MyBookList.class);
+                        // delete the old Book
+                        bookDoc.delete();
+
+                        Intent gotoDestination = new Intent(EditBook.this, MainActivity.class);
                         startActivity(gotoDestination);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
@@ -115,7 +119,7 @@ public class EditBook extends AppCompatActivity {
         return username;
     }
 
-    public void addBookIntoOwnedList(String ISBN) {
+    public void deleteAndAddBookFromOwnedList(String newISBN) {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -125,34 +129,11 @@ public class EditBook extends AppCompatActivity {
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
                         ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
-                        ownedList.add(ISBN);
-                        userRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    public void deleteBookFromOwnedList() {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "current user found");
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
-                        Log.d("ISBN",ISBN);
+                        ownedList.add(newISBN);
                         ownedList.remove(ISBN);
                         userRef.set(data);
                     } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such current user");
+                        Log.d("GET_BOOK_BY_ISBN", "cannot find the user");
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -160,5 +141,4 @@ public class EditBook extends AppCompatActivity {
             }
         });
     }
-
 }
