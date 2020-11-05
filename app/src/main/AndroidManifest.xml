@@ -16,17 +16,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Auth Block -->
+        </activity> 
+        <!-- Auth Block -->
         <activity
             android:name=".SignUpActivity"
-<<<<<<< HEAD
-            android:parentActivityName=".MainActivity" /> <!-- Request Block -->
-=======
             android:label="BookTruck Sign In/Up"
             android:parentActivityName=".MainActivity"
             />
         <!--Request Block-->
->>>>>>> 06a1b500d929b6e8a7228847b8e07fcd3f060d8a
         <activity
             android:name=".RequestMenu"
             android:label="Request Menu"
@@ -56,14 +53,9 @@
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
-<<<<<<< HEAD
-            android:parentActivityName=".BorrowMenu"
-            android:theme="@style/AppTheme" /> <!-- Profile Block -->
-=======
             android:theme="@style/AppTheme"
             />
         <!--Profile Block-->
->>>>>>> 06a1b500d929b6e8a7228847b8e07fcd3f060d8a
         <activity
             android:name=".ProfilePage"
             android:label="User Profile"
@@ -71,14 +63,9 @@
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
-<<<<<<< HEAD
-            android:parentActivityName=".ReceiveBook"
-            android:theme="@style/AppTheme" /> <!-- My Book Block -->
-=======
             android:theme="@style/AppTheme"
             android:parentActivityName=".ScanISBN"/>
         <!--My Book Block-->
->>>>>>> 06a1b500d929b6e8a7228847b8e07fcd3f060d8a
         <activity
             android:name=".MyBookList"
             android:label="My Book"
