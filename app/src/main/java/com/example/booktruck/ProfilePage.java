@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.booktruck.models.User;
-import com.example.booktruck.services.UserService;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -19,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfilePage extends AppCompatActivity {
 
-    private UserService userService;
     private TextView UserNameInProfile;
     private TextView EmailInProfile;
     private TextView additionInProfile;
