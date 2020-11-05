@@ -25,37 +25,36 @@ import java.util.Map;
 
 public class ShowBookDetail extends AppCompatActivity {
 
-    TextView authorText, statusText, ownerText, titleText;
+    TextView authorText, statusText, ownerText, titleText, ISBNView;
     String titleContent, authorContent, statusContent, ownerContent;
-    private BookService bookService;
     FirebaseFirestore db;
     Button editBtn, deleteBtn;
     String ISBN;
+
     DocumentReference bookRef;
     CollectionReference userRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db = FirebaseFirestore.getInstance();
         setContentView(R.layout.book_detail);
+
         //显示的书必须满足条件
         //必需是owner拥有的书
-        titleText = (TextView)findViewById(R.id.titleView);
-        authorText = (TextView)findViewById(R.id.authorView);
-        statusText = (TextView)findViewById(R.id.statusView);
-        ownerText = (TextView)findViewById(R.id.ownerView);
-
-        userRef = db.collection("Users");
-
+        titleText = findViewById(R.id.titleView);
+        authorText = findViewById(R.id.authorView);
+        statusText = findViewById(R.id.statusView);
+        ownerText = findViewById(R.id.ownerView);
+        ISBNView = findViewById(R.id.ISBNView);
 
         Intent gotoBook = getIntent();
         ISBN = gotoBook.getStringExtra("ISBN");
         Log.i("RECICVE_ISBN",ISBN);
 
-
-
+        db = FirebaseFirestore.getInstance();
+        userRef = db.collection("Users");
         bookRef = db.collection("Books").document(ISBN);
+
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -64,19 +63,12 @@ public class ShowBookDetail extends AppCompatActivity {
                     if (document.exists()) {
                         Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        titleContent = data.get("title").toString();
-                        authorContent = data.get("author").toString();
-                        statusContent = data.get("status").toString();
-                        ownerContent = data.get("owner").toString();
-                        Log.i("CONTENT",authorContent);
-
                         getSupportActionBar().setTitle(titleContent);
-
-                        titleText.setText(titleContent);
-                        authorText.setText(authorContent);
-                        statusText.setText(statusContent);
-                        ownerText.setText(ownerContent);
-
+                        titleText.setText("Title: "+ data.get("title").toString());
+                        authorText.setText("Author: "+ data.get("author").toString());
+                        statusText.setText("Status: "+ data.get("status").toString());
+                        ownerText.setText("Owner: "+ data.get("owner").toString());
+                        ISBNView.setText("ISBN: "+ data.get("ISBN").toString());
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -157,12 +149,9 @@ public class ShowBookDetail extends AppCompatActivity {
 
     }
 
-
     public void onBookDetailEdit(View view){
         Intent gotoDestination = new Intent(this, EditBook.class);
         gotoDestination.putExtra("ISBN", ISBN);
         startActivity(gotoDestination);
-
     }
-
 }
