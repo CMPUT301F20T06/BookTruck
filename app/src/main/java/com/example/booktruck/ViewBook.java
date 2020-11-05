@@ -101,7 +101,8 @@ public class ViewBook extends AppCompatActivity {
         bookListView.setAdapter(arrayAdapter);
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Intent bookDetail = new Intent(ViewBook.this, ShowBookDetail.class);
                 bookDetail.putExtra("ParentClass", "ViewBook");
                 bookDetail.putExtra("ISBN", bookISBN.get(position));
