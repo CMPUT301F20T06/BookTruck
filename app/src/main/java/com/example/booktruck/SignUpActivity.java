@@ -171,12 +171,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(signUpPasswordText.getInputType() == 128){
                     signUpPasswordText.setInputType(129);
-
-                    signUpVisible.setText("password hiden");
-                }else {
-                    signUpPasswordText.setInputType(128);
-                    signUpVisible.setText("password shown");
-
                     signUpVisible.setText("show");
                 }else {
                     signUpPasswordText.setInputType(128);
@@ -189,17 +183,10 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(signInPasswordText.getInputType() == 128){
                     signInPasswordText.setInputType(129);
-
-                    signInVisible.setText("password hiden");
-                }else {
-                    signInPasswordText.setInputType(128);
-                    signInVisible.setText("password shown");
-
                     signInVisible.setText("show");
                 }else {
                     signInPasswordText.setInputType(128);
                     signInVisible.setText("hide");
-
                 }
             }
         });
