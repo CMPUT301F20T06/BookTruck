@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import com.example.booktruck.models.Book;
 import com.example.booktruck.models.User;
-import com.example.booktruck.services.BookService;
-import com.example.booktruck.services.UserService;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,17 +25,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.booktruck.services.UserService.getCurrentUsername;
-
 public class EditProfile extends AppCompatActivity {
 
     private EditText emailaddress;
     private Button Confirm_email_Button;
-    private FirebaseAuth mAuth;
     FirebaseFirestore db;
-    static FirebaseUser firebaseUser;
     static CollectionReference userRef;
-    private UserService userService = new UserService();
+    
+    public String getCurrentUsername() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String username = "";
+        String[] array = email.split("@");
+        for (int i=0; i<array.length-1; i++) {
+            username += array[i];
+        }
+        return username;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
