@@ -74,14 +74,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
 
 
-
-        //如果找不到ISBN， 需要给出找不到的提示
-
-        //在找到书之后，根据对应的parent 显示不同的界面
-        //1. hand over a book, 需要明确一个pick up 地址，然后确认借出去
-        //2. receive a book, 可以查看pick up location，然后确认收到
-        //3. view book， 显示所有借到的书
-
         String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
 
         if(parentClass.equalsIgnoreCase("Receive")) {

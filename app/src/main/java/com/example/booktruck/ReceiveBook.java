@@ -42,8 +42,40 @@ public class ReceiveBook extends AppCompatActivity {
     private FirebaseAuth mAuth;
     FirebaseUser firebaseUser;
     FirebaseFirestore db;
-    CollectionReference userRef;
+    ArrayList<String> Books;
+/*
+    public String getCurrentUsername() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String username = "";
+        String[] array = email.split("@");
+        for (int i=0; i<array.length-1; i++) {
+            username += array[i];
+        }
+        return username;
+    }
 
+    public ArrayList<String> getAcceptedBooks() {
+        ArrayList<String> AcceptedBooks = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("Users").document(getCurrentUsername());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+
+                    if (document.exists() && document.getData().containsKey("accepted")) {
+                        for (String ISBN : (ArrayList<String>) document.getData().get("accepted")) {
+                            AcceptedBooks.add(ISBN);
+                        }
+                    }
+                }
+            }
+        });
+        return AcceptedBooks;
+    }
+
+*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,16 +85,17 @@ public class ReceiveBook extends AppCompatActivity {
         editISBN = (EditText) findViewById(R.id.ISBNcode);
         CodeSender = (Button) findViewById(R.id.Code_Sender);
 
-
-
         CodeSender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String ISBN = editISBN.getText().toString();
-                Intent gotoBook = new Intent(ReceiveBook.this, ShowBookDetail.class);
+                //Books = getAcceptedBooks();
+                Toast.makeText(getApplicationContext(),ISBN,Toast.LENGTH_SHORT).show();
+                //Intent gotoBook = new Intent(ReceiveBook.this, ShowBookDetail.class);
+                //gotoBook.putExtra("ISBN", ISBN);
+                //startActivity(gotoBook);
 
-                gotoBook.putExtra("isbn", ISBN);
-                startActivity(gotoBook);
+
             }
         });
 

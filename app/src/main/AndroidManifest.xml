@@ -73,8 +73,7 @@
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".ScanISBN"/>
+            android:theme="@style/AppTheme" />
         <!--My Book Block-->
         <activity
             android:name=".MyBookList"
