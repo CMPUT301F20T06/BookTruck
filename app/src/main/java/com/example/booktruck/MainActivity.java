@@ -67,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
                 checkAuth();
                 return true;
+            case R.id.action_profile:
+                // click profile icon to go to profile page(Yanlin Chen)
+                navigate(ProfilePage.class);
+                return true;
+            case R.id.action_notify:
+                navigate(NotificationPage.class);
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -81,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
     public void onRequest(View view) { navigate(RequestMenu.class); }
 
     public void onMyBook(View view) { navigate(MyBookList.class); }
-
-    // click profile icon to go to profile page(Yanlin Chen)
-    public void openProfile(MenuItem mItem) { navigate(ProfilePage.class); }
 
     // create a button to return page
     public void onReturn(View view) { navigate(ReturnMenu.class); }

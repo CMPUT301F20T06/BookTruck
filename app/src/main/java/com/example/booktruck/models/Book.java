@@ -9,8 +9,10 @@ public class Book {
     private String author;
     private String status;
     private String owner;
+
     private String borrower;
     private ArrayList<String> requests;
+
 
     public Book(String title, String author, String ISBN) {
         this.ISBN = ISBN;
