@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,10 +27,12 @@ import java.util.Map;
 
 public class MyBookList extends AppCompatActivity {
 
+
     private ListView bookListView;
     FirebaseFirestore db;
     private ArrayList<String> bookISBN = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
+    private ArrayList<String> bookStatus = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
 
@@ -47,6 +51,8 @@ public class MyBookList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mybook_list);
+        db = FirebaseFirestore.getInstance();
+        bookListView = findViewById(R.id.bookList);
 
         FloatingActionButton add_btn = findViewById(R.id.add_btn);
         add_btn.setOnClickListener(new View.OnClickListener() {
@@ -58,9 +64,6 @@ public class MyBookList extends AppCompatActivity {
             }
         });
 
-        db = FirebaseFirestore.getInstance();
-        bookListView = findViewById(R.id.bookList);
-
         DocumentReference docRef = db.collection("Users").document(getCurrentUsername());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -69,9 +72,11 @@ public class MyBookList extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("owned")) {
-                        for (final String ISBN : (ArrayList<String>) document.getData().get("owned")){
-                            bookISBN.add(ISBN);
+                        ArrayList<String> list = (ArrayList<String>) document.getData().get("owned");
+                        for (int i=0; i<list.size(); i++) {
+                            String ISBN = list.get(i);
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
+                            int finalI = i;
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -81,8 +86,12 @@ public class MyBookList extends AppCompatActivity {
                                             Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
                                             Map<String, Object> data = document.getData();
                                             bookArray.add(data.get("title").toString());
+                                            bookStatus.add(data.get("status").toString());
                                             bookISBN.add(ISBN);
-                                            showBooks();
+                                            if (finalI == list.size()-1) {
+                                                showBooks();
+                                            }
+
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
@@ -91,6 +100,7 @@ public class MyBookList extends AppCompatActivity {
                                     }
                                 }
                             });
+
                         }
                     }
                 }
@@ -100,11 +110,12 @@ public class MyBookList extends AppCompatActivity {
     protected void showBooks() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         bookListView.setAdapter(arrayAdapter);
+
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent bookDetail = new Intent(MyBookList.this, ShowBookDetail.class);
-                bookDetail.putExtra("ParentClass", "ViewBook");
+                bookDetail.putExtra("ParentClass", "MyBookList");
                 bookDetail.putExtra("ISBN", bookISBN.get(position));
                 startActivity(bookDetail);
             }

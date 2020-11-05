@@ -1,6 +1,8 @@
 package com.example.booktruck;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -118,13 +120,11 @@ public class CreateBook extends AppCompatActivity {
         }
         else {
             createBook(title, author, ISBN);
+            addBookIntoOwnedList(this.ISBN);
         }
 
-
-        createBook(title, author, this.ISBN);
-        addBookIntoOwnedList(this.ISBN);
-
-        NavUtils.navigateUpFromSameTask(CreateBook.this);
+        Intent gotoDestination = new Intent(this, MainActivity.class);
+        startActivity(gotoDestination);
     }
 
 }
