@@ -83,6 +83,12 @@
             android:name=".CreateBook"
             android:label="Create Book"
             android:parentActivityName=".MyBookList" />
+        <activity
+            android:name=".EditBook"
+            android:label="Edit Book"
+            android:parentActivityName=".MyBookList" />
+
+
     </application>
 
 </manifest>
