@@ -67,9 +67,11 @@ public class ViewBook extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("borrowed")) {
-                        for (String ISBN : (ArrayList<String>) document.getData().get("borrowed")){
-                            bookISBN.add(ISBN);
+                        ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
+                        for (int i=0; i<list.size(); i++) {
+                            String ISBN = list.get(i);
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
+                            int finalI = i;
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -80,7 +82,9 @@ public class ViewBook extends AppCompatActivity {
                                             Map<String, Object> data = document.getData();
                                             bookArray.add(data.get("title").toString());
                                             bookISBN.add(ISBN);
-                                            showBooks();
+                                            if (finalI == list.size()-1) {
+                                                showBooks();
+                                            }
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
