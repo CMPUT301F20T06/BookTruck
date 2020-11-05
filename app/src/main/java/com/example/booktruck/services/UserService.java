@@ -33,10 +33,6 @@ public class UserService {
 
     }
 
-    public FirebaseUser getCurrentUser() {
-        return firebaseUser;
-    }
-
     public String getCurrentUsername() {
         String email = firebaseUser.getEmail();
         String username = "";
