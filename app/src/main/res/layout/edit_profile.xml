@@ -11,9 +11,9 @@
         android:id="@+id/Edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:text="Edit your profile"
-        android:padding="60dp"
+        android:textSize="30sp"
+        android:text="Edit your Contact Info"
+        android:padding="40dp"
         android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
