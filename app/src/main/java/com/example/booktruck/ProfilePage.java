@@ -17,8 +17,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static com.example.booktruck.services.UserService.getCurrentUsername;
-
 public class ProfilePage extends AppCompatActivity {
 
     private UserService userService;
@@ -26,19 +24,28 @@ public class ProfilePage extends AppCompatActivity {
     private TextView EmailInProfile;
     private TextView additionInProfile;
     private Button EditProfileButton;
-    private DocumentReference userRef = FirebaseFirestore.getInstance().collection("Users").document(getCurrentUsername());
+    private DocumentReference userRef;
+    
+    public String getCurrentUsername() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String username = "";
+        String[] array = email.split("@");
+        for (int i=0; i<array.length-1; i++) {
+            username += array[i];
+        }
+        return username;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_main);
 
-        UserService userService = new UserService();
-
         UserNameInProfile = findViewById(R.id.userName);
         EmailInProfile = findViewById(R.id.userEmail);
         EditProfileButton = findViewById(R.id.EditProfile);
-
+        
+        userRef = FirebaseFirestore.getInstance().collection("Users").document(getCurrentUsername());
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -48,9 +55,6 @@ public class ProfilePage extends AppCompatActivity {
                 }
             }
         });
-
-        UserNameInProfile.setText(userService.getCurrentUsername());
-        EmailInProfile.setText(userService.getCurrentUserEmail());
 
         EditProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
