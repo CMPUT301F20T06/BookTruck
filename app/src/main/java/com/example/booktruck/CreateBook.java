@@ -1,22 +1,32 @@
 package com.example.booktruck;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
 import com.example.booktruck.models.Book;
-import com.example.booktruck.services.BookService;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
 
 public class CreateBook extends AppCompatActivity {
 
@@ -26,8 +36,10 @@ public class CreateBook extends AppCompatActivity {
     private EditText titleText;
     private EditText authorText;
     private EditText ISBNText;
+
     FirebaseFirestore db;
     CollectionReference bookRef;
+    CollectionReference userRef;
 
 
     @Override
@@ -39,26 +51,15 @@ public class CreateBook extends AppCompatActivity {
         this.authorText = findViewById(R.id.authorName);
         this.ISBNText = findViewById(R.id.ISBN_number);
 
-        // disable ISBN user input, and generate an ISBN number
-        this.ISBN = generateISBN();
-        ISBNText.setEnabled(false);
-        ISBNText.setText("ISBN: "+ this.ISBN);
 
         // Setup and Firestore
         db = FirebaseFirestore.getInstance();
         bookRef = db.collection("Books");
+
+        userRef = db.collection("Users");
     }
 
-    private String generateISBN(){
-        Random random = new Random();
-        String ISBN = "";
-        for (int i=0; i<13; i++) {
-            int num = Math.abs(random.nextInt());
-            num = num % 10;
-            ISBN += String.valueOf(num);
-        }
-        return ISBN;
-    }
+
 
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -85,13 +86,45 @@ public class CreateBook extends AppCompatActivity {
         bookRef.document(book.getISBN()).set(data);
     }
 
+    public void addBookIntoOwnedList(String ISBN) {
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
+                        ownedList.add(ISBN);
+                        userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
     public void onCreateBook(View view){
         this.author = authorText.getText().toString();
         this.title = titleText.getText().toString();
+        this.ISBN = ISBNText.getText().toString();
 
-        createBook(title, author, ISBN);
+        if (author.equals("") || title.equals("") || ISBN.equals("")){
+            Toast.makeText(getApplicationContext(),"Book's title, author and ISBN must not be empty!", Toast.LENGTH_SHORT).show();
+        } else if (ISBN.length() < 13){
+            Toast.makeText(getApplicationContext(),"Book's ISBN must have 13 digits!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            createBook(title, author, ISBN);
+            addBookIntoOwnedList(this.ISBN);
+        }
 
-        NavUtils.navigateUpFromSameTask(CreateBook.this);
+        Intent gotoDestination = new Intent(this, MainActivity.class);
+        startActivity(gotoDestination);
     }
 
 }
