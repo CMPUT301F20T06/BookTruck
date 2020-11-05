@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditProfile"></activity>
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +60,10 @@
             android:name=".ProfilePage"
             android:label="User Profile"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".EditProfile"
+            android:label="Edit Contact Info"
+            android:parentActivityName=".ProfilePage" />
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"

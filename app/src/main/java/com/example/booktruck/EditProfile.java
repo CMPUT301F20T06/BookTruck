@@ -47,8 +47,6 @@ public class EditProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
 
-        mAuth = FirebaseAuth.getInstance();
-        firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
 

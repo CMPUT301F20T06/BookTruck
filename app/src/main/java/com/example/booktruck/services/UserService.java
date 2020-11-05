@@ -33,10 +33,6 @@ public class UserService {
 
     }
 
-    public FirebaseUser getCurrentUser() {
-        return firebaseUser;
-    }
-
     public String getCurrentUsername() {
         String email = firebaseUser.getEmail();
         String username = "";
@@ -46,9 +42,6 @@ public class UserService {
         }
         return username;
     }
-
-
-    public static String getCurrentUserEmail(){ return firebaseUser.getEmail(); }
 
     public void logout(){
         firebaseUser = null;
