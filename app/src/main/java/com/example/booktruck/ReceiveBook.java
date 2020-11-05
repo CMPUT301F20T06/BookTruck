@@ -20,18 +20,30 @@ import com.example.booktruck.services.BookService;
 import com.example.booktruck.services.UserService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.rpc.Code;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ReceiveBook extends AppCompatActivity implements View.OnClickListener {
+public class ReceiveBook extends AppCompatActivity {
 
     private EditText editISBN;
     private Button CodeSender;
-    private BookService bookService;
-    private String title;
+    private FirebaseAuth mAuth;
+    FirebaseUser firebaseUser;
+    FirebaseFirestore db;
+    CollectionReference userRef;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,31 +51,23 @@ public class ReceiveBook extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.isbn_receive);
 
         editISBN = (EditText) findViewById(R.id.ISBNcode);
-
         CodeSender = (Button) findViewById(R.id.Code_Sender);
-        CodeSender.setOnClickListener(this);
 
-        bookService = new BookService();
+
+
+        CodeSender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ISBN = editISBN.getText().toString();
+                Intent gotoBook = new Intent(ReceiveBook.this, ShowBookDetail.class);
+
+                gotoBook.putExtra("isbn", ISBN);
+                startActivity(gotoBook);
+            }
+        });
+
     }
 
-
-    @Override
-    public void onClick(View view) {
-        String ISBN = editISBN.getText().toString();
-        Book book = bookService.getBookByISBN(ISBN);
-//        Log.i("RECEIVE_BOOK", book.getTitle());
-        if (book == null) {
-            Context context = getApplicationContext();
-            CharSequence worningText = "Book Not exist";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context,worningText,duration);
-        }
-        else {
-            Intent gotoBook = new Intent(this, ShowBookDetail.class);
-            gotoBook.putExtra("isbn", ISBN);
-            startActivity(gotoBook);
-        }
-    }
 }
 
 

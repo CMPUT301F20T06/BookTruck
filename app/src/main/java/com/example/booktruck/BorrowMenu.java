@@ -12,6 +12,7 @@ public class BorrowMenu extends AppCompatActivity implements View.OnClickListene
 
     private Button ViewButton, ReceiveButton, HandOverButton;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
