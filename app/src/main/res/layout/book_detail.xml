@@ -32,27 +32,35 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
+            android:id="@+id/titleView"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="TextView"
+            android:layout_margin="10dp"
+            android:textSize="24sp" />
+
+        <TextView
             android:id="@+id/authorView"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:textSize="24sp"
+            android:layout_margin="10dp"
             android:text="TextView" />
 
         <TextView
-            android:id="@+id/availabilityView"
+            android:id="@+id/statusView"
             android:layout_width="match_parent"
             android:layout_height="70dp"
+            android:textSize="24sp"
+            android:layout_margin="10dp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/ownerView"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/descriptionView"
-            android:layout_width="match_parent"
-            android:layout_height="184dp"
+            android:textSize="24sp"
+            android:layout_margin="10dp"
             android:text="TextView" />
 
         <Button

@@ -19,6 +19,7 @@
         <!--Auth Block-->
         <activity
             android:name=".SignUpActivity"
+            android:label="BookTruck Sign In/Up"
             android:parentActivityName=".MainActivity"
             />
         <!--Request Block-->
@@ -60,7 +61,6 @@
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
-            android:parentActivityName=".BorrowMenu"
             android:theme="@style/AppTheme"
             />
         <!--Profile Block-->

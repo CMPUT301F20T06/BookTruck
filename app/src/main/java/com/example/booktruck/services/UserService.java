@@ -19,9 +19,10 @@ import java.util.Map;
 public class UserService {
 
     private FirebaseAuth mAuth;
-    FirebaseFirestore db;
     FirebaseUser firebaseUser;
+    FirebaseFirestore db;
     CollectionReference userRef;
+
     private static BookService bookService = new BookService();
 
     public UserService(){
@@ -29,6 +30,7 @@ public class UserService {
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
+
     }
 
     public FirebaseUser getCurrentUser() {
