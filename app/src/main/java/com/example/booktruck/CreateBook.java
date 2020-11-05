@@ -1,7 +1,6 @@
 package com.example.booktruck;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,15 +10,12 @@ import androidx.core.app.NavUtils;
 
 import com.example.booktruck.models.Book;
 
-import com.example.booktruck.services.BookService;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.util.HashMap;
-import java.util.Random;
 
 public class CreateBook extends AppCompatActivity {
 
@@ -34,7 +30,6 @@ public class CreateBook extends AppCompatActivity {
     CollectionReference bookRef;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,28 +40,9 @@ public class CreateBook extends AppCompatActivity {
         this.ISBNText = findViewById(R.id.ISBN_number);
 
 
-        // disable ISBN user input, and generate an ISBN number
-        this.ISBN = generateISBN();
-        ISBNText.setEnabled(false);
-        ISBNText.setText("ISBN: "+ this.ISBN);
-
-
         // Setup and Firestore
         db = FirebaseFirestore.getInstance();
         bookRef = db.collection("Books");
-
-    }
-
-    private String generateISBN(){
-        Random random = new Random();
-        String ISBN = "";
-        for (int i=0; i<13; i++) {
-            int num = Math.abs(random.nextInt());
-            num = num % 10;
-            ISBN += String.valueOf(num);
-        }
-        return ISBN;
-
 
     }
 
@@ -98,9 +74,16 @@ public class CreateBook extends AppCompatActivity {
     public void onCreateBook(View view){
         this.author = authorText.getText().toString();
         this.title = titleText.getText().toString();
+        this.ISBN = ISBNText.getText().toString();
 
-
-        createBook(title, author, ISBN);
+        if (author.equals("") || title.equals("") || ISBN.equals("")){
+            Toast.makeText(getApplicationContext(),"Book's title, author and ISBN must not be empty!", Toast.LENGTH_SHORT).show();
+        } else if (ISBN.length() < 13){
+            Toast.makeText(getApplicationContext(),"Book's ISBN must have 13 digits!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            createBook(title, author, ISBN);
+        }
 
 
         NavUtils.navigateUpFromSameTask(CreateBook.this);
