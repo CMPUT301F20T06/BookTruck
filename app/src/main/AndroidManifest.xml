@@ -9,14 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity">
+        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--Auth Block-->
+        </activity> 
+        <!-- Auth Block -->
         <activity
             android:name=".SignUpActivity"
             android:label="BookTruck Sign In/Up"
@@ -25,39 +26,30 @@
         <!--Request Block-->
         <activity
             android:name=".RequestMenu"
-            android:parentActivityName=".MainActivity"
             android:label="Request Menu"
-            />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".SearchPage"
-            android:parentActivityName=".RequestMenu"
             android:label="Search Book"
-            />
+            android:parentActivityName=".RequestMenu" />
         <activity
             android:name=".SearchResult"
-            android:parentActivityName=".SearchPage"
             android:label="Search Result"
-            />
-        <!--Return Block-->
+            android:parentActivityName=".SearchPage" /> <!-- Return Block -->
         <activity
             android:name=".ReturnMenu"
             android:label="Return Menu"
-            android:parentActivityName=".MainActivity"
-            />
-        <!--Borrow Block-->
+            android:parentActivityName=".MainActivity" /> <!-- Borrow Block -->
         <activity
             android:name=".BorrowMenu"
             android:label="Borrow Menu"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme"
-            />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ViewBook"
             android:label="View Book"
             android:parentActivityName=".BorrowMenu"
-            android:theme="@style/AppTheme"
-            />
-        <!--Receive Block-->
+            android:theme="@style/AppTheme" /> <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
@@ -67,9 +59,7 @@
         <activity
             android:name=".ProfilePage"
             android:label="User Profile"
-            android:parentActivityName=".MainActivity"
-            />
-
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
@@ -79,13 +69,11 @@
         <activity
             android:name=".MyBookList"
             android:label="My Book"
-            android:parentActivityName=".MainActivity"
-            />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".CreateBook"
             android:label="Create Book"
-            android:parentActivityName=".MyBookList"
-            />
+            android:parentActivityName=".MyBookList" />
     </application>
 
 </manifest>

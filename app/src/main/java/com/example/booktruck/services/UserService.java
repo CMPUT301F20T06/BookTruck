@@ -47,6 +47,9 @@ public class UserService {
         return username;
     }
 
+
+    public static String getCurrentUserEmail(){ return firebaseUser.getEmail(); }
+
     public void logout(){
         firebaseUser = null;
         FirebaseAuth.getInstance().signOut();

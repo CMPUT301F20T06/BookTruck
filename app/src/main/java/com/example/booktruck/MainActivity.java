@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onMyBook(View view) { navigate(MyBookList.class); }
 
-    // click profile icon to go to profile page
+    // click profile icon to go to profile page(Yanlin Chen)
     public void openProfile(MenuItem mItem) { navigate(ProfilePage.class); }
 
     // create a button to return page
