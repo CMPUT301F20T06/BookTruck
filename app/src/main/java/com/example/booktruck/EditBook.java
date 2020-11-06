@@ -32,15 +32,15 @@ import java.util.Map;
  */
 public class EditBook extends AppCompatActivity {
 
-    FirebaseFirestore db;
-    EditText title;
-    EditText author;
-    EditText isbn;
-    String ISBN;
+    private FirebaseFirestore db;
+    private EditText title;
+    private EditText author;
+    private EditText isbn;
+    private String ISBN;
 
-    DocumentReference bookDoc;
-    CollectionReference bookRef;
-    CollectionReference userRef;
+    private DocumentReference bookDoc;
+    private CollectionReference bookRef;
+    private CollectionReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +147,8 @@ public class EditBook extends AppCompatActivity {
      * deleteAndAddBookFromOwnedList method will delete the old ISBN number and add the new ISBN
      * number into the current user's owned book list.
      */
-    public void deleteAndAddBookFromOwnedList(String newISBN) {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+    public void deleteAndAddBookFromOwnedList(final String newISBN) {
+        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

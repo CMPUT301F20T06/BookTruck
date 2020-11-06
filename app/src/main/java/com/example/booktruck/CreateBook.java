@@ -42,9 +42,9 @@ public class CreateBook extends AppCompatActivity {
     private EditText authorText;
     private EditText ISBNText;
 
-    FirebaseFirestore db;
-    CollectionReference bookRef;
-    CollectionReference userRef;
+    private FirebaseFirestore db;
+    private CollectionReference bookRef;
+    private CollectionReference userRef;
 
 
     @Override

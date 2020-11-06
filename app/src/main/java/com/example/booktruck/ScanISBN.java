@@ -8,21 +8,38 @@ package com.example.booktruck;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+
 
 /*
  * ScanISBN class provides an EditText that user can input or Scan the ISBN barcode.
  */
+
 public class ScanISBN extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editISBN;
     private Button CodeSender;
+    FirebaseFirestore db;
+    DocumentReference docRef;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,10 +56,9 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         String ISBN = editISBN.getText().toString();
-        if (ISBN == ""){
-            Toast.makeText(getApplicationContext(),"Please Enter ISBN",Toast.LENGTH_SHORT).show();
-        }
-        else {
+        if (ISBN == "") {
+            Toast.makeText(getApplicationContext(), "Please Enter ISBN", Toast.LENGTH_SHORT).show();
+        } else {
             String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
             Intent gotoBook = new Intent(this, ShowBookDetail.class);
             if (parentClass.equalsIgnoreCase("BorrowHandOver")) {
@@ -58,22 +74,7 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
             gotoBook.putExtra("ISBN", ISBN);
             startActivity(gotoBook);
         }
-//        Book book = BookService.getBookByISBN(ISBN);
-//
-//        if (book == null) {
-//            Context context = getApplicationContext();
-//            CharSequence warningText = "Book Not exist";
-//            int duration = Toast.LENGTH_SHORT;
-//            Toast toast = Toast.makeText(context,warningText,duration);
-//        }
-//        else {
-//            Intent gotoBook = new Intent(this, ShowBookDetail.class);
-//            //gotoBook.putExtra("isbn", ISBN);
-//            gotoBook.putExtra("ParentClass", "ReceiveBook");
-//            startActivity(gotoBook);
-//        }
+
     }
 }
-
-
 
