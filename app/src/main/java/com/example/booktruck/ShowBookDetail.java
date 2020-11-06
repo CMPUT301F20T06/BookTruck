@@ -173,7 +173,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addUserInBookRequestAndSetStatusAsRequested() {
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        final DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -582,7 +582,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addBookToRequestededList(){
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
