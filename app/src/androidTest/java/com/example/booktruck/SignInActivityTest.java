@@ -11,9 +11,21 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class TestSignInActivity {
+import java.util.Random;
+
+public class SignInActivityTest {
 
     private Solo solo;
+
+    public String generateString(){
+        String str = "";
+        Random rnd = new Random();
+        for (int i=0; i<10; i++){
+            char randomChar = (char) ('a' + rnd.nextInt(26));
+            str += randomChar;
+        }
+        return str;
+    }
 
     @Rule
     public ActivityTestRule<SignUpActivity> rule = new ActivityTestRule<>(SignUpActivity.class, true, true);
@@ -32,8 +44,8 @@ public class TestSignInActivity {
 
     @Test
     public void testSignupWithWrongPassword(){
-        solo.enterText((EditText) solo.getView(R.id.signin_email),"fake_email");
-        solo.enterText((EditText) solo.getView(R.id.signin_password),"fake_password");
+        solo.enterText((EditText) solo.getView(R.id.signin_email), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signin_password), generateString());
         solo.clickOnButton("Sign In");
         solo.waitForText("Try again");
     }
