@@ -1,7 +1,16 @@
+/*
+ *  Classname: Book
+ *  Version: V1
+ *  Date: 2020.10.20
+ *  Copyright: Qi Song
+ */
 package com.example.booktruck.models;
 
 import java.util.ArrayList;
 
+/*
+ *  Book Class is the Book Schema, and provides some basic getter methods
+ */
 public class Book {
 
     private String ISBN;
@@ -12,6 +21,11 @@ public class Book {
     private String borrower;
     private ArrayList<String> requests;
 
+    /**
+     * @param title     book title
+     * @param author    book author
+     * @param ISBN      book ISBN number
+     */
     public Book(String title, String author, String ISBN) {
         this.ISBN = ISBN;
         this.title = title;
@@ -21,6 +35,15 @@ public class Book {
         this.requests = new ArrayList<>();
     }
 
+    /**
+     * @param title     book title
+     * @param author    book author
+     * @param ISBN      book ISBN number
+     * @param status    book status
+     * @param owner     book owner
+     * @param borrower  book borrower
+     * @param requests  users who requested this book
+     */
     public Book(String title, String author, String ISBN, String status,
                 String owner, String borrower, ArrayList<String> requests) {
         this.ISBN = ISBN;

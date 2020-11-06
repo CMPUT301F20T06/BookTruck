@@ -1,3 +1,9 @@
+/*
+ *  Classname: ProfilePage
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Yanlin Chen
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -6,16 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+ * ProfilePage class can let user to see their personal information
+ */
 public class ProfilePage extends AppCompatActivity {
 
     private TextView UserNameInProfile;

@@ -32,21 +32,24 @@
         <activity
             android:name=".SearchResult"
             android:label="Search Result"
-            android:parentActivityName=".SearchPage" /> <!-- Return Block -->
+            android:parentActivityName=".SearchPage" />
+        <!-- Return Block -->
         <activity
             android:name=".ReturnMenu"
             android:label="Return Menu"
-            android:parentActivityName=".MainActivity" /> <!-- Borrow Block -->
+            android:parentActivityName=".MainActivity" />
+        <!-- Borrow Block -->
         <activity
             android:name=".BorrowMenu"
             android:label="Borrow Menu"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ViewBook"
+            android:name=".BorrowBookList"
             android:label="View Book"
             android:parentActivityName=".BorrowMenu"
-            android:theme="@style/AppTheme" /> <!-- Receive Block -->
+            android:theme="@style/AppTheme" />
+        <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
@@ -66,8 +69,8 @@
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
-            android:parentActivityName=".ScanISBN"
-            android:theme="@style/AppTheme" /> <!-- My Book Block -->
+            android:theme="@style/AppTheme" />
+        <!--My Book Block-->
         <activity
             android:name=".MyBookList"
             android:label="My Book"
@@ -76,6 +79,12 @@
             android:name=".CreateBook"
             android:label="Create Book"
             android:parentActivityName=".MyBookList" />
+        <activity
+            android:name=".EditBook"
+            android:label="Edit Book"
+            android:parentActivityName=".MyBookList" />
+
+
     </application>
 
 </manifest>

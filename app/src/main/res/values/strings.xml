@@ -12,7 +12,7 @@
     <string name="user_name">User Name</string>
     <string name="user_email">test@ualberta.ca</string>
     <string name="user_phone_number">888–888–8888</string>
-    <string name="user_info">Additional Info...</string>
+    <string name="user_info">Additional Info…</string>
     <string name="returning">Return</string>
     <string name="return_book">Return Book</string>
     <string name="confirm_returning">Confirm Returning</string>
@@ -20,8 +20,11 @@
     <string name="confirm_handover">Confirm Handover</string>
     <string name="finish_viewing">Finish Viewing</string>
     <string name="pickup_location">Pick-Up Location</string>
+    <string name="book_not_exist">This book does not exist…</string>
 
 
     <string name="setting">setting</string>
+    <string name="borrowed_books">Borrowed Books</string>
+    <string name="receive_book">Receive Book</string>
 
 </resources>

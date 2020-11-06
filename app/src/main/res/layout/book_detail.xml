@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="fill_parent"
-        android:layout_height="210dp"
+        android:layout_height="150dp"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp">
 
@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -34,40 +35,94 @@
         <TextView
             android:id="@+id/titleView"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:text="TextView"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
             android:textSize="24sp" />
 
         <TextView
             android:id="@+id/authorView"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:textSize="24sp"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/ISBNView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="24sp"
+            android:layout_marginLeft="10dp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/statusView"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:textSize="24sp"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
             android:text="TextView" />
 
         <TextView
             android:id="@+id/ownerView"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:textSize="24sp"
-            android:layout_margin="10dp"
+            android:layout_marginLeft="10dp"
             android:text="TextView" />
 
         <Button
             android:id="@+id/confirmButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Confirm" />
+            android:text="Confirm"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/confirmReturnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm"
+            android:visibility="invisible"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/editButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:visibility="invisible"
+                android:onClick="onBookDetailEdit"/>
+
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:visibility="invisible"
+                android:onClick="onBookDetailDelete"/>
+            <Button
+                android:id="@+id/requestButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Request"
+                android:visibility="invisible"
+                android:onClick="onBookDetailRequest"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </LinearLayout>
