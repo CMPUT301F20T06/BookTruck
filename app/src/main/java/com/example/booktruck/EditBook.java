@@ -147,8 +147,8 @@ public class EditBook extends AppCompatActivity {
      * deleteAndAddBookFromOwnedList method will delete the old ISBN number and add the new ISBN
      * number into the current user's owned book list.
      */
-    public void deleteAndAddBookFromOwnedList(String newISBN) {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+    public void deleteAndAddBookFromOwnedList(final String newISBN) {
+        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
