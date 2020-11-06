@@ -73,7 +73,8 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         getSupportActionBar().setTitle(titleContent);
                         titleText.setText("Title: "+ data.get("title").toString());
@@ -125,6 +126,16 @@ public class ShowBookDetail extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+        } else if (parentClass.equalsIgnoreCase("SearchResult")){
+            Button button = findViewById(R.id.requestButton);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // check if book is user's owned book add ISBN into user's requested list
+                    addBookToRequestededList();
+                }
+            });
         }
     }
 
@@ -136,6 +147,39 @@ public class ShowBookDetail extends AppCompatActivity {
             username += array[i];
         }
         return username;
+    }
+
+    public void addUserInBookRequestAndSetStatusAsRequested() {
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        String status = data.get("status").toString();
+                        if (status.equals("available") || status.equals("requested")) {
+                            data.put("status", "requested");
+                            ArrayList<String> requests = ( ArrayList<String>) data.get("requests");
+                            requests.add(getCurrentUsername());
+                            bookRef.set(data);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "You cannot request an unavailable book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     public void checkValidReceiveAndDeleteISBNInAccepted(){
@@ -417,6 +461,39 @@ public class ShowBookDetail extends AppCompatActivity {
                         ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
                         borrowedList.add(ISBN);
                         userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void addBookToRequestededList(){
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
+                        if (ownedList.contains(ISBN)) {
+                            Toast.makeText(getApplicationContext(),
+                                    "You cannot request your own book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
+                            requestedList.add(ISBN);
+                            userRef.set(data);
+                            // add username into book's requests list & set status as "requested"
+                            addUserInBookRequestAndSetStatusAsRequested();
+                        }
+                        Intent intent = new Intent(ShowBookDetail.this, RequestMenu.class);
+                        startActivity(intent);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
