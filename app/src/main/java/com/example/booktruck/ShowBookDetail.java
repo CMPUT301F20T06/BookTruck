@@ -117,7 +117,7 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setStatusToHandOverd();
+                    setStatusToHandOvered();
                 }
             });
         }
@@ -257,7 +257,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
 
-    public void setStatusToHandOverd(){
+    public void setStatusToHandOvered(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

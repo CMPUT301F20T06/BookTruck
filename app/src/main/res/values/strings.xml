@@ -23,5 +23,7 @@
 
 
     <string name="setting">setting</string>
+    <string name="borrowed_books">Borrowed Books</string>
+    <string name="receive_book">Receive Book</string>
 
 </resources>
