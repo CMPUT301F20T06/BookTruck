@@ -104,7 +104,7 @@ public class ShowBookDetail extends AppCompatActivity {
                     // add book to current user's borrowed list
                     addBookToBorrowedList();
                     // mark book un available
-                    setStatusToNotAvailable();
+                    setStatusToBorrowed();
                     // remove book from accepted
                     deleteBookFromAcceptedList();
                 }
@@ -121,7 +121,7 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setStatusToHandOverd();
+                    setStatusToHandOvered();
                 }
             });
         }
@@ -285,9 +285,9 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     /**
-     * setStatusToHandOverd method can change the current book's status to "handovered"
+     * setStatusToHandOvered method can change the current book's status to "handovered"
      */
-    public void setStatusToHandOverd(){
+    public void setStatusToHandOvered(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -308,7 +308,7 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-    public void setStatusToNotAvailable(){
+    public void setStatusToBorrowed(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -318,7 +318,7 @@ public class ShowBookDetail extends AppCompatActivity {
                     if (document.exists()) {
                         Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        data.put("status","Unavailable");
+                        data.put("status","Borrowed");
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
