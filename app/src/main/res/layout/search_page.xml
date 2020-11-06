@@ -16,6 +16,7 @@
         tools:context=".MainActivity">
 
         <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:height="70dp"
@@ -25,10 +26,11 @@
 
 
         <Button
-            android:id="@+id/search"
+            android:id="@+id/searchPageButton"
             android:layout_width="380dp"
             android:layout_height="75dp"
-            android:text="Search" />
+            android:text="Search"
+            android:onClick="onSearchButtonClick"/>
 
     </LinearLayout>
 
