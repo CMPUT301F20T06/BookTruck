@@ -36,5 +36,17 @@ public class BorrowBookListUnitTest {
 
     }
 
+    @Test
+    void testShowBooks() {
+        BorrowBookList borrowBookList = mockBorrwoBookList();
+        ArrayList<String> bookList =new ArrayList<String> ();
+        bookList.add("b1");
+        bookList.add("b2");
+        borrowBookList.setBookArray(bookList);
+//        requestMenu.getBookArray();
+        assertEquals(bookList, borrowBookList.getBookArray());
+    }
+
+
 
 }
