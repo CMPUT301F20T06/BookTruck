@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
  */
 public class BorrowMenuTest {
     private Solo solo;
-    FirebaseAuth mAuth;
+
 
     @Rule
     public ActivityTestRule<BorrowMenu> rule = new ActivityTestRule<>(BorrowMenu.class, true, true);
