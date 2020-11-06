@@ -33,7 +33,8 @@ public class MyBookList extends AppCompatActivity {
     private ArrayList<String> bookISBN = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
     private ArrayList<String> bookStatus = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
+    private FloatingActionButton add_btn;
 
 
     public String getCurrentUsername() {
