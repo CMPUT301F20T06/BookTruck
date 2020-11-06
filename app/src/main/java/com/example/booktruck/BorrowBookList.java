@@ -37,8 +37,25 @@ public class BorrowBookList extends AppCompatActivity {
     private ArrayList<String> bookArray = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
 
+    public ArrayList<String> getBookArray() {
+        return bookArray;
+    }
+
+    public void setBookArray(ArrayList<String> bookArray) {
+        this.bookArray = bookArray;
+    }
+
+    public static String email = "";
+    public static void setEmail(String email) {
+        BorrowBookList.email = email;
+    };
+
     public String getCurrentUsername() {
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        // for junit test
+        if (email == "") {
+            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        }
         String username = "";
         String[] array = email.split("@");
         for (int i=0; i<array.length-1; i++) {
@@ -68,11 +85,11 @@ public class BorrowBookList extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("borrowed")) {
-                        final ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
+                        ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
                         for (int i=0; i<list.size(); i++) {
-                            final String ISBN = list.get(i);
+                            String ISBN = list.get(i);
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
-                            final int finalI = i;
+                            int finalI = i;
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
