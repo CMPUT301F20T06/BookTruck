@@ -113,12 +113,10 @@ public class EditBook extends AppCompatActivity {
 
                         // delete old ISBN and add new ISBN into user's owned list
                         deleteAndAddBookFromOwnedList(isbn.getText().toString());
-
                         // delete the old Book
                         bookDoc.delete();
                         // create new book
                         bookRef.document(isbn.getText().toString()).set(data);
-
 
                         Intent gotoDestination = new Intent(EditBook.this, MainActivity.class);
                         startActivity(gotoDestination);

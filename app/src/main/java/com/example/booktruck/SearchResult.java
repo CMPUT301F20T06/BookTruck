@@ -23,6 +23,22 @@ public class SearchResult extends AppCompatActivity {
     ArrayList<String> bookISBN;
     ArrayList<String> bookTitle;
 
+    public ArrayList<String> getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(ArrayList<String> bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public ArrayList<String> getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(ArrayList<String> bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
