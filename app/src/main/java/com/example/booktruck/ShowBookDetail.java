@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -99,14 +101,9 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // set borrower to current user
-                    setBorrower();
-                    // add book to current user's borrowed list
-                    addBookToBorrowedList();
-                    // mark book un available
-                    setStatusToBorrowed();
-                    // remove book from accepted
-                    deleteBookFromAcceptedList();
+                    Log.i("SHOW_BOOK_DETAIL", "REVEIVE_BOOK");
+                    // check valid receive
+                    checkValidReceiveAndDeleteISBNInAccepted();
                 }
             });
         } else if (parentClass.equalsIgnoreCase("MyBookList")) {
@@ -114,6 +111,7 @@ public class ShowBookDetail extends AppCompatActivity {
             deleteBtn = findViewById(R.id.deleteButton);
             editBtn.setVisibility(View.VISIBLE);
             deleteBtn.setVisibility(View.VISIBLE);
+
         } else if (parentClass.equalsIgnoreCase("HandOver")) {
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_handover);
@@ -121,7 +119,10 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Log.i("SHOW_BOOK_DETAIL", "HAND_OVER_BOOK");
                     setStatusToHandOvered();
+                    Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                    startActivity(intent);
                 }
             });
         }
@@ -137,6 +138,43 @@ public class ShowBookDetail extends AppCompatActivity {
         return username;
     }
 
+    public void checkValidReceiveAndDeleteISBNInAccepted(){
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
+                        Boolean valid = acceptedList.contains(ISBN);
+                        if (!valid) {
+                            Toast.makeText(getApplicationContext(),
+                                    "You do not have the permission to receive this book!",
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                            startActivity(intent);
+                        } else {
+                            acceptedList.remove(ISBN);
+                            ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
+                            borrowedList.add(ISBN);
+                            userRef.set(data);
+                            // mark book Borrowed & set borrower to current user
+                            setStatusToBorrowedAndSetBorrower();
+                            Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
     /**
      * setBorrower method updated the book's borrower to the current username
      */
@@ -148,9 +186,11 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        data.put("borrower",getCurrentUsername());
+                        data.put("borrower", getCurrentUsername());
+                        bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -175,6 +215,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         data.put("borrower","");
+                        bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -271,9 +312,11 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         data.put("status","available");
+                        bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -295,9 +338,11 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        data.put("status","handovered");
+                        data.put("status", "handovered");
+                        bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -308,7 +353,7 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-    public void setStatusToBorrowed(){
+    public void setStatusToBorrowedAndSetBorrower(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -316,9 +361,12 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        data.put("status","Borrowed");
+                        data.put("status", "Borrowed");
+                        data.put("borrower", getCurrentUsername());
+                        bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
