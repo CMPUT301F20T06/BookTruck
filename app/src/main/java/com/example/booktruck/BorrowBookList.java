@@ -68,11 +68,11 @@ public class BorrowBookList extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("borrowed")) {
-                        ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
+                        final ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
                         for (int i=0; i<list.size(); i++) {
-                            String ISBN = list.get(i);
+                            final String ISBN = list.get(i);
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
-                            int finalI = i;
+                            final int finalI = i;
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
