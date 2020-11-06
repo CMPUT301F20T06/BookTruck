@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorLight"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="50dp"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <Button
@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:text="@string/borrowed_books" />
@@ -21,8 +22,6 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:text="@string/hand_over_books" />
 
     <Button
@@ -31,8 +30,6 @@
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:text="@string/receive_book" />
 
 </LinearLayout>
