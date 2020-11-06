@@ -37,8 +37,18 @@ public class RequestMenu extends AppCompatActivity {
     private ArrayList<String> bookArray = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
+    // for junit test
+    public static String email = "";
+    public static void setEmail(String email) {
+        RequestMenu.email = email;
+    }
+
     public String getCurrentUsername() {
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        // for junit test
+        if (email == "") {
+            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        }
+//        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
         String[] array = email.split("@");
         for (int i=0; i<array.length-1; i++) {
@@ -123,7 +133,9 @@ public class RequestMenu extends AppCompatActivity {
                 startActivity(bookDetail);
             }
         });
+        Log.i("LOGG",bookISBN.toString());
     }
+
 }
 
 
