@@ -32,8 +32,10 @@ public class ReturnMenuTest {
 
         solo.clickOnButton("Return");
         solo.assertCurrentActivity("Return Menu Entered", ScanISBN.class);
+
         solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
         solo.clickOnButton("Enter");
+        solo.
 
     }
 
