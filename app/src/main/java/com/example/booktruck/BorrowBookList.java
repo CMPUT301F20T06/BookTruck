@@ -45,17 +45,8 @@ public class BorrowBookList extends AppCompatActivity {
         this.bookArray = bookArray;
     }
 
-    public static String email = "";
-    public static void setEmail(String email) {
-        BorrowBookList.email = email;
-    };
-
     public String getCurrentUsername() {
-//        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        // for junit test
-        if (email == "") {
-            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        }
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
         String[] array = email.split("@");
         for (int i=0; i<array.length-1; i++) {

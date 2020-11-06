@@ -7,12 +7,9 @@
 package com.example.booktruck;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,20 +17,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class showRequestInDetail extends AppCompatActivity {
+public class ShowRequestInDetail extends AppCompatActivity {
 
     private ListView requestListView;
     private Button accept_Request, reject_Request;
@@ -103,87 +96,47 @@ public class showRequestInDetail extends AppCompatActivity {
                 accept_Request.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        //这本书被加到owner的accepted里
-                        /*
-                        DocumentReference ownerRef = db.collection("Users").document(getCurrentUsername());
-                        ownerRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        Map<String, Object> data = document.getData();
-                                        ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
-                                        acceptedList.add(ISBN);
-                                        ownerRef.set(data);
-                                    }
-                                }
-                            }
-                        });
-*/
-
-                        //被accept的人，acceptance_received中会出现这本书
-                        DocumentReference acceptedPersonRef = db.collection("Users").document(whoSentRequestList.get(position));
-                        acceptedPersonRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()) {
-                                        Map<String, Object> data = document.getData();
-
-                                        data.put("accepted",ISBN);
-                                        //ArrayList<String> requestedList = (ArrayList<String>) data.get("acceptance");
-                                        //requestedList.add(ISBN);
-                                        acceptedPersonRef.set(data);
-                                    }
-                                }
-                            }
-                        });
-
-
-                        //DocumentReference selectedBook = db.collection("Books").document(ISBN);
-                        bookRef = db.collection("Books").document(ISBN);
-                        bookRef.update("status","accepted");
-                        //bookRef.update("requests",[]);
-                        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    if (document.exists()){
-                                        Map<String, Object> data = document.getData();
-                                        ArrayList<String> requests = (ArrayList<String>) data.get("requests");
-                                        requests.clear();
-                                        bookRef.set(data);
-                                    }
-                                }
-                            }
-                        });
-                        finish();
-
-/*
-                        //所有借书的人的requested列表里，这本书都会被删掉
-                        for(String ppl : whoSentRequestList){
-                            Log.i("CHECKPPL",ppl);
-                            DocumentReference whoRequestRef = db.collection("Users").document(ppl);
+                        for(String username : whoSentRequestList){
+                            DocumentReference whoRequestRef = db.collection("Users").document(username);
                             whoRequestRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                     if(task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            Map<String, Object> data = document.getData();
-                                            ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
+                                            Map<String, Object> individualData = document.getData();
+                                            ArrayList<String> requestedList = (ArrayList<String>) individualData.get("requested");
                                             requestedList.remove(ISBN);
-                                            whoRequestRef.set(data);
+                                            if (username.equals(whoSentRequestList.get(position))) {
+                                                ArrayList<String> acceptedList = (ArrayList<String>) individualData.get("accepted");
+                                                acceptedList.add(ISBN);
+                                            }
+                                            whoRequestRef.set(individualData);
+                                            if (username.equals(whoSentRequestList.get(whoSentRequestList.size()-1))) {
+                                                bookRef = db.collection("Books").document(ISBN);
+                                                bookRef.update("status","accepted");
+                                                bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists()){
+                                                                Map<String, Object> data = document.getData();
+                                                                ArrayList<String> requests = (ArrayList<String>) data.get("requests");
+                                                                requests.clear();
+                                                                bookRef.set(data);
+                                                                Intent intent = new Intent(ShowRequestInDetail.this, NotificationPage.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
                                 }
                             });
                         }
-                        */
                     }
                 });
 

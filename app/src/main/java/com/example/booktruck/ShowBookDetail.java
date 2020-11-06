@@ -105,7 +105,7 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i("SHOW_BOOK_DETAIL", "REVEIVE_BOOK");
+                    Log.i("SHOW_BOOK_DETAIL", "RECEIVE_BOOK");
                     // check valid receive
                     checkValidReceiveAndDeleteISBNInAccepted();
                 }
@@ -174,7 +174,8 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addUserInBookRequestAndSetStatusAsRequested() {
-       DocumentReference bookRef = db.collection("Books").document(ISBN);
+
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -248,7 +249,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrower method updated the book's borrower to the current username
      */
     public void setBorrower() {
-       DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -274,7 +275,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrowerToEmpty method delete the book's borrower
      */
     public void setBorrowerToEmpty(){
-       DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -396,7 +397,7 @@ public class ShowBookDetail extends AppCompatActivity {
     /**
      * validateReturnAction method can validate a return action by checking the book status and borrower
      */
-    public void validateReturnAction(final String borrowerName) {
+    public void validateReturnAction(String borrowerName) {
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
         @Override
         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -411,7 +412,7 @@ public class ShowBookDetail extends AppCompatActivity {
                     //Log.d("borrower", borrower);
                     if (!valid) {
                         Toast.makeText(getApplicationContext(),
-                                "You do not have the permission to receive this book!",
+                                "You do not have access to return this book!",
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -442,7 +443,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         Boolean valid = (status.equals("returned") && owner.equals(ownerName));
                         if (!valid) {
                             Toast.makeText(getApplicationContext(),
-                                    "You do not have the permission to receive this book!",
+                                    "You do not have access to receive this book!",
                                     Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -489,7 +490,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setStatusToHandOvered method can change the current book's status to "handovered"
      */
     public void setStatusToHandOvered(){
-       DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -513,7 +514,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void setStatusToBorrowedAndSetBorrower(){
-       DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -541,7 +542,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromBorrowedList method remove the ISBN from the current user's borrowed book list
      */
     public void deleteBookFromBorrowedList() {
-       DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -589,25 +590,54 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addBookToRequestededList(){
-       DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
+                        Map<String, Object> userData = document.getData();
+                        ArrayList<String> ownedList = (ArrayList<String>) userData.get("owned");
                         if (ownedList.contains(ISBN)) {
                             Toast.makeText(getApplicationContext(),
                                     "You cannot request your own book!",
                                     Toast.LENGTH_SHORT).show();
                         }else {
-                            ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
-                            requestedList.add(ISBN);
-                            userRef.set(data);
                             // add username into book's requests list & set status as "requested"
-                            addUserInBookRequestAndSetStatusAsRequested();
+                            DocumentReference bookRef = db.collection("Books").document(ISBN);
+                            bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                                    document.getData().get("title").toString());
+                                            Map<String, Object> bookData = document.getData();
+                                            String status = bookData.get("status").toString();
+                                            if (status.equals("available") || status.equals("requested")) {
+                                                bookData.put("status", "requested");
+                                                ArrayList<String> requestedList = (ArrayList<String>) userData.get("requested");
+                                                requestedList.add(ISBN);
+                                                userRef.set(userData);
+                                                ArrayList<String> requests = ( ArrayList<String>) bookData.get("requests");
+                                                requests.add(getCurrentUsername());
+                                                bookRef.set(bookData);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(),
+                                                        "You cannot request an unavailable book!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } else {
+                                            Log.d("GET_BOOK_BY_ISBN", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
                         }
                         Intent intent = new Intent(ShowBookDetail.this, RequestMenu.class);
                         startActivity(intent);

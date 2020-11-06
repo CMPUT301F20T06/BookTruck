@@ -27,9 +27,7 @@ public class ProfilePage extends AppCompatActivity {
 
     private TextView UserNameInProfile;
     private TextView EmailInProfile;
-    private Button EditProfileButton;
-    private DocumentReference userRef;
-    
+
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
@@ -45,31 +43,29 @@ public class ProfilePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_main);
 
-        UserNameInProfile = findViewById(R.id.userName);
-        EmailInProfile = findViewById(R.id.userEmail);
-        EditProfileButton = findViewById(R.id.EditProfile);
-        
-        userRef = FirebaseFirestore.getInstance().collection("Users").document(getCurrentUsername());
+        UserNameInProfile = this.<TextView>findViewById(R.id.userName);
+        EmailInProfile = this.<TextView>findViewById(R.id.userEmail);
+        Button editProfileButton = this.<Button>findViewById(R.id.EditProfile);
+
+        DocumentReference userRef = FirebaseFirestore.getInstance().collection("Users").document(getCurrentUsername());
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    UserNameInProfile.setText("User Name: "+documentSnapshot.getString("username"));
-                    EmailInProfile.setText("Contact Info: " + documentSnapshot.getString("email"));
+                    UserNameInProfile.setText(documentSnapshot.getString("username"));
+                    EmailInProfile.setText(documentSnapshot.getString("email"));
                 }
             }
         });
 
-        EditProfileButton.setOnClickListener(new View.OnClickListener() {
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent goToEdit = new Intent(ProfilePage.this,EditProfile.class);
                 startActivityForResult(goToEdit,1);
             }
         });
-
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
