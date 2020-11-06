@@ -113,10 +113,10 @@ public class EditBook extends AppCompatActivity {
 
                         // delete old ISBN and add new ISBN into user's owned list
                         deleteAndAddBookFromOwnedList(isbn.getText().toString());
-                        // create new book
-                        bookRef.document(isbn.getText().toString()).set(data);
                         // delete the old Book
                         bookDoc.delete();
+                        // create new book
+                        bookRef.document(isbn.getText().toString()).set(data);
 
                         Intent gotoDestination = new Intent(EditBook.this, MainActivity.class);
                         startActivity(gotoDestination);
@@ -157,8 +157,8 @@ public class EditBook extends AppCompatActivity {
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
                         ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
-                        ownedList.add(newISBN);
                         ownedList.remove(ISBN);
+                        ownedList.add(newISBN);
                         userRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "cannot find the user");

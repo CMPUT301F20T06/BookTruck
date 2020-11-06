@@ -90,8 +90,10 @@ public class RequestMenu extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("requested")) {
-                        for (String ISBN : (ArrayList<String>) document.getData().get("requested")){
-                            bookISBN.add(ISBN);
+                        ArrayList<String> list = (ArrayList<String>) document.getData().get("requested");
+                        for (int i=0; i<list.size(); i++) {
+                            String ISBN = list.get(i);
+                            int finalI = i;
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -99,13 +101,17 @@ public class RequestMenu extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                                    document.getData().get("title").toString());
                                             Map<String, Object> data = document.getData();
 //                                            bookArray.add(data.get("title").toString());
-                                            String title_status = data.get("title").toString() + " ---- " + data.get("status").toString();
+                                            String title_status = data.get("title").toString() +
+                                                    " ---- " + data.get("status").toString();
                                             bookArray.add(title_status);
                                             bookISBN.add(ISBN);
-                                            showBooks();
+                                            if (finalI == list.size()-1) {
+                                                showBooks();
+                                            }
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
