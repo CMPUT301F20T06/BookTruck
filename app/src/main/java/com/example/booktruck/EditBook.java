@@ -118,7 +118,7 @@ public class EditBook extends AppCompatActivity {
                         // create new book
                         bookRef.document(isbn.getText().toString()).set(data);
 
-                        Intent gotoDestination = new Intent(EditBook.this, MainActivity.class);
+                        Intent gotoDestination = new Intent(EditBook.this, MyBookList.class);
                         startActivity(gotoDestination);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");

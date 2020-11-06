@@ -52,7 +52,7 @@
         <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
-            android:label="Receive Book"
+            android:label="Scan ISBN"
             android:theme="@style/AppTheme" /> <!-- Profile Block -->
         <activity
             android:name=".ProfilePage"
@@ -61,7 +61,8 @@
         <activity
             android:name=".EditProfile"
             android:label="Edit Contact Info"
-            android:parentActivityName=".ProfilePage" /> <!-- Notification Page -->
+            android:parentActivityName=".ProfilePage" />
+        <!-- Notification Page -->
         <activity
             android:name=".NotificationPage"
             android:label="Notification"
@@ -83,7 +84,6 @@
             android:name=".EditBook"
             android:label="Edit Book"
             android:parentActivityName=".MyBookList" />
-
 
     </application>
 
