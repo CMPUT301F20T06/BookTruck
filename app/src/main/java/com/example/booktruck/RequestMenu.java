@@ -90,7 +90,7 @@ public class RequestMenu extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("requested")) {
-                        for (String ISBN : (ArrayList<String>) document.getData().get("requested")){
+                        for (final String ISBN : (ArrayList<String>) document.getData().get("requested")){
                             bookISBN.add(ISBN);
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
