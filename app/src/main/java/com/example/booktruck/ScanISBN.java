@@ -1,24 +1,17 @@
+/*
+ *
+ *
+ *
+ */
 package com.example.booktruck;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.booktruck.models.Book;
-import com.example.booktruck.models.User;
-import com.example.booktruck.services.BookService;
-import com.example.booktruck.services.UserService;
-import com.google.rpc.Code;
-
-import java.util.ArrayList;
 
 public class ScanISBN extends AppCompatActivity implements View.OnClickListener {
 

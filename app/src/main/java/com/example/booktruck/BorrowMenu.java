@@ -1,3 +1,8 @@
+/*
+ *
+ *
+ *
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -42,13 +47,13 @@ public class BorrowMenu extends AppCompatActivity implements View.OnClickListene
             case R.id.receive_book_button:
                 //code here
                 Intent gotoReceive = new Intent(this, ScanISBN.class);
-                gotoReceive.putExtra("ParentClass", "Receive");
+                gotoReceive.putExtra("ParentClass", "BorrowReceive");
                 startActivity(gotoReceive);
                 break;
             case R.id.handover_book_button:
                 //code here
                 Intent gotoHandOver = new Intent(this, ScanISBN.class);
-                gotoHandOver.putExtra("ParentClass", "HandOver");
+                gotoHandOver.putExtra("ParentClass", "BorrowHandOver");
                 startActivity(gotoHandOver);
                 break;
             default:

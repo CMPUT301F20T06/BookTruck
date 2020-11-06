@@ -1,3 +1,8 @@
+/*
+ *
+ *
+ *
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -6,12 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.booktruck.services.BookService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +21,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -95,9 +96,9 @@ public class ShowBookDetail extends AppCompatActivity {
             button.setText(R.string.confirm_receiving);
 
         }
-        else if(parentClass.equalsIgnoreCase("ViewBook")) {
+        else if (parentClass.equalsIgnoreCase("ViewBook")) {
 
-        }else if(parentClass.equalsIgnoreCase("MyBookList")) {
+        } else if (parentClass.equalsIgnoreCase("MyBookList")) {
             editBtn = findViewById(R.id.editButton);
             deleteBtn = findViewById(R.id.deleteButton);
             editBtn.setVisibility(View.VISIBLE);

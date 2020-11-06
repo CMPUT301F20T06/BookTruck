@@ -1,13 +1,14 @@
+/*
+ *
+ *
+ *
+ */
 package com.example.booktruck;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.example.booktruck.services.UserService;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

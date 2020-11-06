@@ -35,11 +35,13 @@
         <activity
             android:name=".SearchResult"
             android:label="Search Result"
-            android:parentActivityName=".SearchPage" /> <!-- Return Block -->
+            android:parentActivityName=".SearchPage" />
+        <!-- Return Block -->
         <activity
             android:name=".ReturnMenu"
             android:label="Return Menu"
-            android:parentActivityName=".MainActivity" /> <!-- Borrow Block -->
+            android:parentActivityName=".MainActivity" />
+        <!-- Borrow Block -->
         <activity
             android:name=".BorrowMenu"
             android:label="Borrow Menu"
@@ -49,7 +51,8 @@
             android:name=".ViewBook"
             android:label="View Book"
             android:parentActivityName=".BorrowMenu"
-            android:theme="@style/AppTheme" /> <!-- Receive Block -->
+            android:theme="@style/AppTheme" />
+        <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"

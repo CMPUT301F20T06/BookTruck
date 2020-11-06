@@ -1,7 +1,10 @@
-package com.example.booktruck;
 /*
-    SignUpActivity is the main activity for Sign Up page
+ *  Classname: SignUpActivity
+ *  Version: V1
+ *  Date: 2020.10.20
+ *  Copyright: Qi Song
  */
+package com.example.booktruck;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +33,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+/*
+ *  SignUpActivity provides Sign Up and Sign In methods.
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -40,8 +46,17 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText signInPasswordText;
     private Button signUpVisible;
     private Button signInVisible;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
+    private User newUser;
 
+    /**
+     *
+     * @param view
+     * signUp provides Sign Up method
+     *  1. check if the information is valid
+     *  2. use firebase authentication email and password method
+     *  3. save user information into cloud firestore database "Users" collection
+     */
     public void signUp(View view){
         final String email = signUpEmailText.getText().toString();
         final String contact = signUpContactText.getText().toString();
@@ -50,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Username, Email or Password must not be empty!", Toast.LENGTH_SHORT).show();
         } else {
             // create a new user
-            final User newUser = new User(email, contact, password);
+            newUser = new User(email, contact, password);
             mAuth.createUserWithEmailAndPassword(email + "@gmail.com", password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
@@ -123,11 +138,17 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param view
+     * signIn method uses Friebase Authentication to verify the user's username and password
+     */
     public void signIn(View view){
         final String email = signInEmailText.getText().toString() + "@gmail.com";
         final String password = signInPasswordText.getText().toString();
         if (password.equals("") || email.equals("@gmail.com")){
-            Toast.makeText(getApplicationContext(),"Username or Password must not be empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Username or Password must not be empty!",
+                    Toast.LENGTH_SHORT).show();
         } else {
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -160,6 +181,11 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method sets password EditText as invisible when the activity creates.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -32,7 +32,7 @@
             android:text="@string/enter"
             android:id="@+id/Code_Sender"
             android:layout_marginEnd="20dp"
-            android:onClick="OnCodeEnter"/>
+            android:onClick="onReceiveBook"/>
 
     </LinearLayout>
 
