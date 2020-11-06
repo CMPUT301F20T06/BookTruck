@@ -56,7 +56,7 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         String ISBN = editISBN.getText().toString();
-        if (ISBN == "") {
+        if (ISBN.equals("")) {
             Toast.makeText(getApplicationContext(), "Please Enter ISBN", Toast.LENGTH_SHORT).show();
         } else {
             String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
