@@ -13,22 +13,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.booktruck.services.BookService;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ShowBookDetail extends AppCompatActivity {
+public class ShowBookDetail extends AppCompatActivity implements View.OnClickListener {
 
     TextView authorText, statusText, ownerText, titleText, ISBNView;
     String titleContent, authorContent, statusContent, ownerContent;
     FirebaseFirestore db;
-    Button editBtn, deleteBtn;
+    Button editBtn, deleteBtn, returnBtn;
     String ISBN;
 
     DocumentReference bookRef;
@@ -91,9 +94,6 @@ public class ShowBookDetail extends AppCompatActivity {
 
         if(parentClass.equalsIgnoreCase("Receive")) {
 
-            Button button = (Button) findViewById(R.id.confirmButton);
-            button.setText(R.string.confirm_receiving);
-
         }
         else if(parentClass.equalsIgnoreCase("ViewBook")) {
 
@@ -103,11 +103,40 @@ public class ShowBookDetail extends AppCompatActivity {
             editBtn.setVisibility(View.VISIBLE);
             deleteBtn.setVisibility(View.VISIBLE);
         }
-        else { // parentClass == "HandOver"
-            Button button = (Button) findViewById(R.id.confirmButton);
-            button.setText(R.string.confirm_handover);
+        else if (parentClass.equalsIgnoreCase("Handover")){
+
+
+        }
+        else if (parentClass.equalsIgnoreCase("Return")){
+            returnBtn = findViewById(R.id.returnButton);
+            returnBtn.setVisibility(View.VISIBLE);
+            returnBtn.setOnClickListener((View.OnClickListener) this);
+        }
+        else if (parentClass.equalsIgnoreCase("ConfirmReturn")){
+            returnBtn = findViewById(R.id.confirmReturnButton);
+            returnBtn.setVisibility(View.VISIBLE);
+            returnBtn.setOnClickListener((View.OnClickListener) this);
+        }
+
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.returnButton:
+                Log.d("ISBN", "return finished");
+                this.returnUpdate(view);
+                //finish();
+                break;
+            case R.id.confirmReturnButton:
+                Log.d("ISBN", "return finished");
+                this.confirmReturnUpdate(view);
+                //finish();
+                break;
         }
     }
+
 
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -120,7 +149,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void deleteBookFromOwnedList() {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -153,5 +182,19 @@ public class ShowBookDetail extends AppCompatActivity {
         Intent gotoDestination = new Intent(this, EditBook.class);
         gotoDestination.putExtra("ISBN", ISBN);
         startActivity(gotoDestination);
+    }
+
+    public void returnUpdate(View view){
+        String username = getCurrentUsername();
+        DocumentReference userRef = this.userRef.document(username);
+
+        bookRef.update("status", "returned");
+        userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
+        bookRef.update("borrower", "");
+    }
+
+    public void confirmReturnUpdate(View view){
+
+        bookRef.update("status", "available");
     }
 }
