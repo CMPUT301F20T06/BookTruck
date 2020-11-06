@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: ReturnMenu
+ *  Version: V1
+ *  Date: 2020.11.02
+ *  Copyright: Chuqing Fu
  */
 package com.example.booktruck;
 
@@ -13,6 +14,9 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * ReturnMenu class provides buttons the user can click on to redirect to "return" relative pages.
+ */
 public class ReturnMenu extends AppCompatActivity implements View.OnClickListener{
 
     @Override

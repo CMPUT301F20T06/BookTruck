@@ -48,7 +48,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ViewBook"
+            android:name=".BorrowBookList"
             android:label="View Book"
             android:parentActivityName=".BorrowMenu"
             android:theme="@style/AppTheme" />
@@ -75,8 +75,7 @@
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".ScanISBN"/>
+            android:theme="@style/AppTheme" />
         <!--My Book Block-->
         <activity
             android:name=".MyBookList"

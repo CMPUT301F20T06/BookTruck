@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: ScanISBN
+ *  Version: V2
+ *  Date: 2020.11.05
+ *  Copyright: Chuqing Fu, Xutong Li, Jiachen Xu, Yifan Fan, Yanlin Chen, Qi Song
  */
 package com.example.booktruck;
 
@@ -10,9 +11,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * ScanISBN class provides an EditText that user can input or Scan the ISBN barcode.
+ */
 public class ScanISBN extends AppCompatActivity implements View.OnClickListener {
 
     private EditText editISBN;
@@ -33,23 +39,25 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         String ISBN = editISBN.getText().toString();
+        if (ISBN == ""){
+            Toast.makeText(getApplicationContext(),"Please Enter ISBN",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
+            Intent gotoBook = new Intent(this, ShowBookDetail.class);
+            if (parentClass.equalsIgnoreCase("BorrowHandOver")) {
+                gotoBook.putExtra("ParentClass", "HandOver");
+            } else if (parentClass.equalsIgnoreCase("BorrowReceive")) {
+                gotoBook.putExtra("ParentClass", "Receive");
 
-        String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
-        Intent gotoBook = new Intent(this, ShowBookDetail.class);
-        if (parentClass.equalsIgnoreCase("HandOver")) {
-            gotoBook.putExtra("ParentClass", "HandOver");
+            } else if (parentClass.equalsIgnoreCase("Return")) {
+                gotoBook.putExtra("ParentClass", "Return");
+            } else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
+                gotoBook.putExtra("ParentClass", "ConfirmReturn");
+            }
+            gotoBook.putExtra("ISBN", ISBN);
+            startActivity(gotoBook);
         }
-        else if (parentClass.equalsIgnoreCase("Receive")) {
-            gotoBook.putExtra("ParentClass", "Receive");
-        }
-        else if (parentClass.equalsIgnoreCase("Return")) {
-            gotoBook.putExtra("ParentClass", "Return");
-        }
-        else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
-            gotoBook.putExtra("ParentClass", "ConfirmReturn");
-        }
-        startActivity(gotoBook);
-
 //        Book book = BookService.getBookByISBN(ISBN);
 //
 //        if (book == null) {

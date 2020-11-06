@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: BorrowBookList
+ *  Version: V2
+ *  Date: 2020.11.01
+ *  Copyright: Jiachen Xu
  */
 package com.example.booktruck;
 
@@ -25,7 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ViewBook extends AppCompatActivity {
+/*
+ *  BorrowBookList class provides the information of current user's borrowed books
+ */
+public class BorrowBookList extends AppCompatActivity {
 
     private ListView bookListView;
     FirebaseFirestore db;
@@ -43,6 +47,12 @@ public class ViewBook extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects to the Cloud Firestore to get the current user's borrowed book list,
+     * then use the ISBN in the list to extract information of those books in "Books" collection.
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +108,7 @@ public class ViewBook extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent bookDetail = new Intent(ViewBook.this, ShowBookDetail.class);
+                Intent bookDetail = new Intent(BorrowBookList.this, ShowBookDetail.class);
                 bookDetail.putExtra("ParentClass", "ViewBook");
                 bookDetail.putExtra("ISBN", bookISBN.get(position));
                 startActivity(bookDetail);

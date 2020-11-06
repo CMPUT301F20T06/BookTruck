@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: RequestMenu
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Xutong Li
  */
 package com.example.booktruck;
 
@@ -25,6 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/*
+ * RequestMenu class provides the information of current user's requested books.
+ */
 public class RequestMenu extends AppCompatActivity {
 
     private ListView bookListView;
@@ -43,6 +47,13 @@ public class RequestMenu extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects to the cloud firestore and extract
+     * the current user's requested book list, then it uses the ISBN list to
+     * load information of those books in the "Books" collection
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
