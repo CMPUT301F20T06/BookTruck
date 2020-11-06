@@ -115,6 +115,7 @@ public class NotificationPage extends AppCompatActivity {
                                                 Map<String, Object> data = document.getData();
                                                 bookArray.add("Requested:   "+data.get("title").toString());
                                                 bookISBN.add(ISBN);
+
                                                 showRequestInDetail();
                                             }
                                         } else {
@@ -148,6 +149,4 @@ public class NotificationPage extends AppCompatActivity {
             }
         });
     }
-
-
 }
