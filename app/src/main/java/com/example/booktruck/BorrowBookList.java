@@ -37,6 +37,13 @@ public class BorrowBookList extends AppCompatActivity {
     private ArrayList<String> bookArray = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
 
+    public ArrayList<String> getBookArray() {
+        return bookArray;
+    }
+
+    public void setBookArray(ArrayList<String> bookArray) {
+        this.bookArray = bookArray;
+    }
 
     public static String email = "";
     public static void setEmail(String email) {
