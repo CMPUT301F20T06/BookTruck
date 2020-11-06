@@ -159,3 +159,4 @@ public class NotificationPage extends AppCompatActivity {
         });
     }
 }
+
