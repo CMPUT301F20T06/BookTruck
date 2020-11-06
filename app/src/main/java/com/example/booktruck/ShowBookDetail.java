@@ -85,6 +85,21 @@ public class ShowBookDetail extends AppCompatActivity {
 
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_receiving);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // when borrower receive a book
+                    // set borrower to current user
+                    setBorrower();
+                    // add book to current user's borrowed list
+                    addBookToBorrowedList();
+                    // mark book un available
+                    setStatusToNotAvailable();
+                    // remove book from accepted
+                    deleteBookFromAcceptedList();
+                }
+            });
 
         }
         else if(parentClass.equalsIgnoreCase("ViewBook")) {
@@ -98,6 +113,13 @@ public class ShowBookDetail extends AppCompatActivity {
         else { // parentClass == "HandOver"
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_handover);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setStatusToHandOverd();
+                }
+            });
         }
     }
 
@@ -110,6 +132,47 @@ public class ShowBookDetail extends AppCompatActivity {
         }
         return username;
     }
+    public void setBorrower() {
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        data.put("borrower",getCurrentUsername());
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+    public void setBorrowerToEmpty(){
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        data.put("borrower","");
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
 
     public void deleteBookFromOwnedList() {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
@@ -133,6 +196,30 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
+
+    public void deleteBookFromAcceptedList() {
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
+                        acceptedList.remove(ISBN);
+                        userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+
     public void onBookDetailDelete (View view) {
         bookRef.delete();
         deleteBookFromOwnedList();
@@ -145,5 +232,113 @@ public class ShowBookDetail extends AppCompatActivity {
         Intent gotoDestination = new Intent(this, EditBook.class);
         gotoDestination.putExtra("ISBN", ISBN);
         startActivity(gotoDestination);
+    }
+
+
+    public void setStatusToAvailable(){
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        data.put("status","available");
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+
+    public void setStatusToHandOverd(){
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        data.put("status","handovered");
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void setStatusToNotAvailable(){
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        data.put("status","Unavailable");
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void deleteBookFromBorrowedList() {
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
+                        borrowedList.remove(ISBN);
+                        userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+    public void addBookToBorrowedList() {
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
+                        borrowedList.add(ISBN);
+                        userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 }
