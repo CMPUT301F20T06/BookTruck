@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -27,7 +28,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class NotificationPage extends AppCompatActivity {
 
     private ArrayList<String> bookISBN = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
+    private ArrayList<String> combined = new ArrayList<>();
     private ArrayList<String> requestArray = new ArrayList<>();
     private  ArrayAdapter<String> arrayAdapter;
     private ListView notifyListView;
@@ -56,6 +60,16 @@ public class NotificationPage extends AppCompatActivity {
         return username;
     }
 
+/*
+    @Override
+    public void onStart() {
+        super.onStart();
+        //this.onCreate(savedInstanceState);
+        //showRequestInDetail();
+        Toast.makeText(NotificationPage.this, "onREStart",Toast.LENGTH_LONG).show();
+        Log.i("CHECK"," in      onstart");
+    }
+*/
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +91,16 @@ public class NotificationPage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     //find books by corresponding ISBN
                     if (document.exists() && document.getData().containsKey("owned")) {
+/*
+                        ArrayList<String> ownedBooks = (ArrayList<String>) document.getData().get("owned");
+                        ArrayList<String> acceptedBooks = (ArrayList<String>) document.getData().get("acceptance_received");
+                        int ownedSize = ownedBooks.size();
+                        int acceptedSize = acceptedBooks.size();
+
+                        combined.addAll(ownedBooks);
+                        combined.addAll(acceptedBooks);
+*/
+                        //iterate through every book the owner has
                         for (String ISBN : (ArrayList<String>) document.getData().get("owned")){
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -86,11 +110,14 @@ public class NotificationPage extends AppCompatActivity {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists() && document.getData().containsKey("requests")) {
                                             Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
-                                            Map<String, Object> data = document.getData();
-                                            //requestArray.add(data.get("request").toString());
-                                            bookArray.add("Requested:   "+data.get("title").toString());
-                                            bookISBN.add(ISBN);
-                                            showRequestInDetail();
+                                            ArrayList<String> the_array = (ArrayList<String>) document.getData().get("requests");
+                                            if(the_array.size() != 0) {
+                                                Map<String, Object> data = document.getData();
+                                                bookArray.add("Requested:   "+data.get("title").toString());
+                                                bookISBN.add(ISBN);
+
+                                                showRequestInDetail();
+                                            }
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
@@ -104,6 +131,8 @@ public class NotificationPage extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     protected void showRequestInDetail() {
@@ -120,5 +149,4 @@ public class NotificationPage extends AppCompatActivity {
             }
         });
     }
-
 }

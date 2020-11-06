@@ -58,9 +58,9 @@ public class SignUpActivity extends AppCompatActivity {
      *  3. save user information into cloud firestore database "Users" collection
      */
     public void signUp(View view){
-        final String email = signUpEmailText.getText().toString();
-        final String contact = signUpContactText.getText().toString();
-        final String password = signUpPasswordText.getText().toString();
+        String email = signUpEmailText.getText().toString().toLowerCase();
+        String contact = signUpContactText.getText().toString();
+       String password = signUpPasswordText.getText().toString();
         if (password.equals("") || contact.equals("") || email.equals("")) {
             Toast.makeText(getApplicationContext(),"Username, Email or Password must not be empty!", Toast.LENGTH_SHORT).show();
         } else {
@@ -144,8 +144,8 @@ public class SignUpActivity extends AppCompatActivity {
      * signIn method uses Friebase Authentication to verify the user's username and password
      */
     public void signIn(View view){
-        final String email = signInEmailText.getText().toString() + "@gmail.com";
-        final String password = signInPasswordText.getText().toString();
+        String email = signInEmailText.getText().toString().toLowerCase() + "@gmail.com";
+        String password = signInPasswordText.getText().toString();
         if (password.equals("") || email.equals("@gmail.com")){
             Toast.makeText(getApplicationContext(),"Username or Password must not be empty!",
                     Toast.LENGTH_SHORT).show();
