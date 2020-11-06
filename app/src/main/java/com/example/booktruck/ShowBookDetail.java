@@ -34,13 +34,13 @@ import java.util.Map;
  */
 public class ShowBookDetail extends AppCompatActivity {
 
-    TextView authorText, statusText, ownerText, titleText, ISBNView;
-    String titleContent, authorContent, statusContent, ownerContent;
-    FirebaseFirestore db;
-    Button editBtn, deleteBtn, returnBtn;
-    String ISBN;
-    DocumentReference bookRef;
-    CollectionReference userRef;
+    private TextView authorText, statusText, ownerText, titleText, ISBNView;
+    private String titleContent, authorContent, statusContent, ownerContent;
+    private FirebaseFirestore db;
+    private Button editBtn, deleteBtn, returnBtn;
+    private String ISBN;
+    private DocumentReference bookRef;
+    private CollectionReference userRef;
 
     /**
      *
