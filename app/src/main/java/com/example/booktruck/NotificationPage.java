@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: NotificationPage
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen, Qi Song
  */
 package com.example.booktruck;
 
@@ -39,6 +40,8 @@ public class NotificationPage extends AppCompatActivity {
     private ArrayList<String> requestArray = new ArrayList<>();
     private  ArrayAdapter<String> arrayAdapter;
     private ListView notifyListView;
+    private int ownedSize;
+    private int acceptedSize;
 
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
@@ -69,16 +72,72 @@ public class NotificationPage extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     //find books by corresponding ISBN
-                    if (document.exists() && document.getData().containsKey("owned")) {
-/*
-                        ArrayList<String> ownedBooks = (ArrayList<String>) document.getData().get("owned");
-                        ArrayList<String> acceptedBooks = (ArrayList<String>) document.getData().get("acceptance_received");
-                        int ownedSize = ownedBooks.size();
-                        int acceptedSize = acceptedBooks.size();
+                    if (document.exists()) {
 
-                        combined.addAll(ownedBooks);
-                        combined.addAll(acceptedBooks);
-*/
+                        ArrayList<String> ownedBooks = (ArrayList<String>) document.getData().get("owned");
+                        ArrayList<String> acceptedBooks = (ArrayList<String>) document.getData().get("accepted");
+
+                        if(ownedBooks != null){
+                            if (ownedBooks.size() != 0){
+                                ownedSize = ownedBooks.size();
+                                combined.addAll(ownedBooks);
+                                Log.i("OWNEDSIZE",String.valueOf(ownedSize));
+                            }
+                        }
+                        else{
+                            ownedSize = 0;
+                        }
+
+                        if(acceptedBooks != null){
+                            if (acceptedBooks.size() != 0){
+                                acceptedSize = acceptedBooks.size();
+                                combined.addAll(acceptedBooks);
+                                Log.i("ACCEPTESIZE",String.valueOf(acceptedSize));
+                            }
+                        }
+                        else{
+                            acceptedSize = 0;
+                        }
+
+                        for (String ISBN : combined){
+                            Log.d("GET_BOOK_BY_ISBN", ISBN);
+                            DocumentReference bookRef = db.collection("Books").document(ISBN);
+                            bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists() && document.getData().containsKey("requests")) {
+                                            //if requested
+                                            if(document.getData().get("status").toString() == "requested") {
+                                                ArrayList<String> the_array = (ArrayList<String>) document.getData().get("requests");
+                                                if(the_array.size() != 0) {
+                                                    Map<String, Object> data = document.getData();
+                                                    bookArray.add("Requested:   "+data.get("title").toString());
+                                                    bookISBN.add(ISBN);
+                                                    showRequestInDetail();
+                                                }
+                                            }
+                                            //if accepted
+
+                                            if(document.getData().get("status").toString() == "accepted"){
+                                                Map<String, Object> data = document.getData();
+                                                bookArray.add("accepted:  "+data.get("title").toString());
+                                                bookISBN.add(ISBN);
+                                                showRequestInDetail();
+                                            }
+
+                                        } else {
+                                            Log.d("WEIRDOOOO", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        }
+
+                        /*
                         //iterate through every book the owner has
                         for (String ISBN : (ArrayList<String>) document.getData().get("owned")){
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
@@ -106,6 +165,7 @@ public class NotificationPage extends AppCompatActivity {
                                 }
                             });
                         }
+                        */
                     }
                 }
             }
