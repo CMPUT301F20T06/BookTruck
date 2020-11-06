@@ -1,3 +1,9 @@
+/*
+ *  Classname: MyBookList
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Yifan Fan
+ */
 package com.example.booktruck;
 
 import  android.content.Intent;
@@ -24,9 +30,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
-
+/*
+ * MyBookList class provides a list of book that the current user owns.
+ * And it also provides a button which can create new book.
+ */
 public class MyBookList extends AppCompatActivity {
-
 
     private ListView bookListView;
     FirebaseFirestore db;
@@ -36,7 +44,10 @@ public class MyBookList extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private FloatingActionButton add_btn;
 
-
+    /**
+     *
+     * @return current user's username
+     */
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
@@ -47,7 +58,13 @@ public class MyBookList extends AppCompatActivity {
         return username;
     }
 
-
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects to the Cloud Firestore to get the current user's owned book list
+     * in the "Users" collection, then, it gets the access to the "Books" Collection to get all
+     * information of the books by the owned book list.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +101,9 @@ public class MyBookList extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                                            Log.d("GET_BOOK_BY_ISBN",
+                                                    "DocumentSnapshot data: "+
+                                                            document.getData().get("title").toString());
                                             Map<String, Object> data = document.getData();
                                             bookArray.add(data.get("title").toString());
                                             bookStatus.add(data.get("status").toString());
@@ -92,12 +111,12 @@ public class MyBookList extends AppCompatActivity {
                                             if (finalI == list.size()-1) {
                                                 showBooks();
                                             }
-
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
                                     } else {
-                                        Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                                        Log.d("GET_BOOK_BY_ISBN", "get failed with ",
+                                                task.getException());
                                     }
                                 }
                             });
@@ -108,6 +127,12 @@ public class MyBookList extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * showBooks methods will adapt the book information ArrayList to ViewList in the layout
+     * and when user clicks on the specific book, it will redirect to the book details page by
+     * the book ISBN indexing
+     */
     protected void showBooks() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         bookListView.setAdapter(arrayAdapter);

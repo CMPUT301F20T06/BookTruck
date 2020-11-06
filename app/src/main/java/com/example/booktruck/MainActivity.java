@@ -1,37 +1,48 @@
+/*
+ *  Classname: MainActivity
+ *  Version: V1
+ *  Date: 2020.10.20
+ *  Copyright: Qi Song
+ */
 package com.example.booktruck;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-
-import com.example.booktruck.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
+/*
+ *  MainActivity provides Four buttons to redirect to 4 different blocks: "My Book",
+ *          "Request", "Borrow", and "Return" and 3 icons in the app bar to redirect to
+ *          "profile", "notification" and "SignIn" page.
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    FirebaseUser firebaseUser;
-
+    /**
+     * checkAuth helps the MainActivity to check if the current user has SignIn.
+     * if not, the app will automatically redirect the page to Sign In page.
+     */
     public void checkAuth() {
-        firebaseUser = mAuth.getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
     }
 
+    /**
+     * @param destinationClass an Activity class where it should redirect
+     * navigate is a helper method for 4 buttons to redirect to different pages
+     */
     // super class for go to next page button 
-    public void navigate (Class destination_class) {
+    public void navigate (Class destinationClass) {
         Intent gotoDestination = new Intent(this,
-                destination_class);
+                destinationClass);
         startActivity(gotoDestination);
     }
 
@@ -39,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -68,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 checkAuth();
                 return true;
             case R.id.action_profile:
-                // click profile icon to go to profile page(Yanlin Chen)
+                // click profile icon to go to profile page
                 navigate(ProfilePage.class);
                 return true;
             case R.id.action_notify:
@@ -81,14 +90,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //create a button to go to next page
+    // button onClick to "Borrow" page
     public void onBorrow(View view) { navigate(BorrowMenu.class); }
 
-    // create request button on main page (Xutong Li)
+    // button onClick to "Request" page
     public void onRequest(View view) { navigate(RequestMenu.class); }
 
+    // button onClick to "My Book" page
     public void onMyBook(View view) { navigate(MyBookList.class); }
 
-    // create a button to return page
+    // button onClick to "Return" page
     public void onReturn(View view) { navigate(ReturnMenu.class); }
 }
