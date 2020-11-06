@@ -79,7 +79,6 @@ public class showRequestInDetail extends AppCompatActivity {
                     public void onClick(View v) {
                         //navigate to the rejected borrower, and update this borrower in database after rejection
                         DocumentReference rejectedPersonRef = db.collection("Users").document(whoSentRequestList.get(position));
-
                         rejectedPersonRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
