@@ -20,7 +20,7 @@ public class ReturnMenuTest {
     private Solo solo;
 
     @Rule
-    public ActivityTestRule<RequestMenu> rule = new ActivityTestRule<>(RequestMenu.class, true, true);
+    public ActivityTestRule<ReturnMenu> rule = new ActivityTestRule<>(ReturnMenu.class, true, true);
 
     @Before
     public void setUp() throws Exception {
@@ -31,11 +31,47 @@ public class ReturnMenuTest {
     public void testReturnBook() {
 
         solo.clickOnButton("Return");
-        solo.assertCurrentActivity("Return Menu Entered", ScanISBN.class);
 
+        // Test Empty Input
+        solo.clickOnButton("Enter");
+        solo.waitForText("Please Enter ISBN");
+
+        // Test Wrong Input
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1");
+        solo.clickOnButton("Enter");
+        solo.waitForText("Book Not Found");
+
+        // Test Book with no access
+        solo.goBack();
+        solo.sendKey(Solo.DELETE);
         solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
         solo.clickOnButton("Enter");
-        solo.
+        solo.clickOnButton("Confirm");
+        solo.waitForText("You do not have access to return this book!");
+
+    }
+
+    @Test
+    public void testConfirmReturnBook() {
+
+        solo.clickOnButton("Confirm Returning");
+
+        // Test Empty Input
+        solo.clickOnButton("Enter");
+        solo.waitForText("Please Enter ISBN");
+
+        // Test Wrong Input
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1");
+        solo.clickOnButton("Enter");
+        solo.waitForText("Book Not Found");
+
+        // Test Book with no access
+        solo.goBack();
+        solo.sendKey(Solo.DELETE);
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
+        solo.clickOnButton("Enter");
+        solo.clickOnButton("Confirm");
+        solo.waitForText("You do not have access to receive this book!");
 
     }
 

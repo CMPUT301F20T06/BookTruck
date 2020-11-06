@@ -412,7 +412,7 @@ public class ShowBookDetail extends AppCompatActivity {
                     //Log.d("borrower", borrower);
                     if (!valid) {
                         Toast.makeText(getApplicationContext(),
-                                "You do not have the permission to receive this book!",
+                                "You do not have access to return this book!",
                                 Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -443,7 +443,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         Boolean valid = (status.equals("returned") && owner.equals(ownerName));
                         if (!valid) {
                             Toast.makeText(getApplicationContext(),
-                                    "You do not have the permission to receive this book!",
+                                    "You do not have access to receive this book!",
                                     Toast.LENGTH_SHORT).show();
                         }
                     } else {
