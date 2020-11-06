@@ -1,3 +1,9 @@
+/*
+ *  Classname: CreateBook
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Yifan Fan
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -20,6 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/*
+ * EditBook Class provides the EditText for user to change his/her book information
+ * and it connects to the Cloud Firestore to save the changed information into "Books" Collection
+ */
 public class EditBook extends AppCompatActivity {
 
     FirebaseFirestore db;
@@ -55,10 +65,9 @@ public class EditBook extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-
                         Map<String, Object> data = document.getData();
-                        setUpData(data.get("author").toString(),data.get("title").toString(),data.get("ISBN").toString());
-
+                        setUpData(data.get("author").toString(),data.get("title").toString(),
+                                data.get("ISBN").toString());
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -70,12 +79,25 @@ public class EditBook extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param author    current book's author
+     * @param title     current book's title
+     * @param isbn      current book's ISBN number
+     * setUpData methods initialize the current book's information
+     */
     public void setUpData(String author, String title, String isbn){
         this.title.setText(title);
         this.author.setText(author);
         this.isbn.setText(isbn);
 
     }
+
+    /**
+     *
+     * @param view
+     * confirmEditData method will update the current book details based on user's input
+     */
     public void confirmEditData(View view){
         bookDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -119,6 +141,12 @@ public class EditBook extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param newISBN   current book's new ISBN number
+     * deleteAndAddBookFromOwnedList method will delete the old ISBN number and add the new ISBN
+     * number into the current user's owned book list.
+     */
     public void deleteAndAddBookFromOwnedList(String newISBN) {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

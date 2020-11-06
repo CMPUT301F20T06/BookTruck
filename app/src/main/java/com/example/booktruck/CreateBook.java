@@ -1,3 +1,9 @@
+/*
+ *  Classname: CreateBook
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Yifan Fan
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -6,13 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
-
 import com.example.booktruck.models.Book;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-
+/*
+ * CreateBook Class provides the EditText for user to input new book information
+ * and it connects to the Cloud Firestore to save the new book into "Books" Collection
+ */
 public class CreateBook extends AppCompatActivity {
 
     private String ISBN;
@@ -51,16 +56,15 @@ public class CreateBook extends AppCompatActivity {
         this.authorText = findViewById(R.id.authorName);
         this.ISBNText = findViewById(R.id.ISBN_number);
 
-
-        // Setup and Firestore
         db = FirebaseFirestore.getInstance();
         bookRef = db.collection("Books");
-
         userRef = db.collection("Users");
     }
 
-
-
+    /**
+     *
+     * @return current user's username
+     */
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
@@ -71,6 +75,12 @@ public class CreateBook extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param title     new book title
+     * @param author    new book author
+     * @param ISBN      new Book ISBN number
+     */
     public void createBook(String title, String author, String ISBN){
         Book book = new Book(title, author, ISBN);
         HashMap<String, Object> data = new HashMap<>();
@@ -86,6 +96,11 @@ public class CreateBook extends AppCompatActivity {
         bookRef.document(book.getISBN()).set(data);
     }
 
+    /**
+     *
+     * @param ISBN  new book's ISBN number
+     * addBookIntoOwnedList method will add the new book's ISBN into current user's own book list
+     */
     public void addBookIntoOwnedList(String ISBN) {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -108,15 +123,22 @@ public class CreateBook extends AppCompatActivity {
         });
     }
 
+    /**
+     * @param view
+     * onCreateBook method will be triggered when the "createBook" button onClick
+     * onCreateBook method will connect to the Firestore and save the new book into "Books" Collection
+     */
     public void onCreateBook(View view){
         this.author = authorText.getText().toString();
         this.title = titleText.getText().toString();
         this.ISBN = ISBNText.getText().toString();
 
         if (author.equals("") || title.equals("") || ISBN.equals("")){
-            Toast.makeText(getApplicationContext(),"Book's title, author and ISBN must not be empty!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Book's title, author and ISBN must not be empty!",
+                    Toast.LENGTH_SHORT).show();
         } else if (ISBN.length() < 13){
-            Toast.makeText(getApplicationContext(),"Book's ISBN must have 13 digits!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Book's ISBN must have 13 digits!",
+                    Toast.LENGTH_SHORT).show();
         }
         else {
             createBook(title, author, ISBN);
