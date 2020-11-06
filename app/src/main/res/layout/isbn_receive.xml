@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="20dp"
+        android:maxLength="13"
         android:hint="@string/enter_isbn_code_here" />
 
     <LinearLayout
