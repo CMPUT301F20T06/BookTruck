@@ -32,6 +32,22 @@ public class SearchPage extends AppCompatActivity {
     private ArrayList<String> bookISBN;
     private ArrayList<String> bookTitle;
 
+    public ArrayList<String> getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(ArrayList<String> bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
+    public ArrayList<String> getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(ArrayList<String> bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

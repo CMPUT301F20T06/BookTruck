@@ -121,7 +121,12 @@ public class RequestMenu extends AppCompatActivity {
         });
     }
 
+    public void setBookArray(ArrayList<String> bookArray) {
+        this.bookArray = bookArray;
+    }
+
     protected void showBooks() {
+
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         bookListView.setAdapter(arrayAdapter);
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -136,6 +141,8 @@ public class RequestMenu extends AppCompatActivity {
         Log.i("LOGG",bookISBN.toString());
     }
 
+    public ArrayList<String> getBookArray() {
+        return bookArray;
+    }
 }
-
 
