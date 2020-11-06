@@ -1,32 +1,24 @@
+/*
+ *  Classname: BorrowBookList
+ *  Version: V2
+ *  Date: 2020.11.01
+ *  Copyright: Jiachen Xu
+ */
 package com.example.booktruck;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.booktruck.models.Book;
-import com.example.booktruck.models.User;
-import com.example.booktruck.services.UserService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,7 +26,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class ViewBook extends AppCompatActivity {
+/*
+ *  BorrowBookList class provides the information of current user's borrowed books
+ */
+public class BorrowBookList extends AppCompatActivity {
 
     private ListView bookListView;
     private FirebaseFirestore db;
@@ -52,6 +47,12 @@ public class ViewBook extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects to the Cloud Firestore to get the current user's borrowed book list,
+     * then use the ISBN in the list to extract information of those books in "Books" collection.
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +108,7 @@ public class ViewBook extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Intent bookDetail = new Intent(ViewBook.this, ShowBookDetail.class);
+                Intent bookDetail = new Intent(BorrowBookList.this, ShowBookDetail.class);
                 bookDetail.putExtra("ParentClass", "ViewBook");
                 bookDetail.putExtra("ISBN", bookISBN.get(position));
                 startActivity(bookDetail);

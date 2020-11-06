@@ -1,7 +1,16 @@
+/*
+ *  Classname: User
+ *  Version: V1
+ *  Date: 2020.10.20
+ *  Copyright: Qi Song
+ */
 package com.example.booktruck.models;
 
 import java.util.ArrayList;
 
+/*
+ *  User Class is the User Schema, and provides some basic getter methods
+ */
 public class User {
     private String username;
     private String email;
@@ -12,6 +21,12 @@ public class User {
     private ArrayList<String> returned;
     private ArrayList<String> accepted;
 
+    /**
+     *
+     * @param username  user's name
+     * @param email     user contact information
+     * @param password  user Sign In password
+     */
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

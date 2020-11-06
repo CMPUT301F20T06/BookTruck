@@ -1,9 +1,14 @@
+/*
+ *  Classname: RequestMenu
+ *  Version: V1
+ *  Date: 2020.11.01
+ *  Copyright: Xutong Li
+ */
 package com.example.booktruck;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,30 +17,23 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
-import com.example.booktruck.models.Book;
-import com.example.booktruck.services.BookService;
-import com.example.booktruck.services.UserService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
-
+/*
+ * RequestMenu class provides the information of current user's requested books.
+ */
 public class RequestMenu extends AppCompatActivity {
 
     private ListView bookListView;
     FirebaseFirestore db;
     private ArrayList<String> bookISBN = new ArrayList<>();
-//    private ArrayList<String> bookStatus = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
@@ -49,6 +47,13 @@ public class RequestMenu extends AppCompatActivity {
         return username;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects to the cloud firestore and extract
+     * the current user's requested book list, then it uses the ISBN list to
+     * load information of those books in the "Books" collection
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -104,9 +109,6 @@ public class RequestMenu extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     protected void showBooks() {

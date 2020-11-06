@@ -1,3 +1,9 @@
+/*
+ *  Classname: ShowBookDetail
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Chuqing Fu, Xutong Li, Jiachen Xu, Yifan Fan, Yanlin Chen, Qi Song
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -6,12 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.booktruck.services.BookService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,10 +22,13 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
 import java.util.Map;
 
+/*
+ * ShowBookDetail extracts a specific book's information from the firebase database,
+ * and it presents different components based on parent activity
+ */
 public class ShowBookDetail extends AppCompatActivity {
 
     TextView authorText, statusText, ownerText, titleText, ISBNView;
@@ -30,10 +36,14 @@ public class ShowBookDetail extends AppCompatActivity {
     FirebaseFirestore db;
     Button editBtn, deleteBtn;
     String ISBN;
-
     DocumentReference bookRef;
     CollectionReference userRef;
 
+    /**
+     *
+     * @param savedInstanceState
+     * onCreate method connects the firebase database and extracts one specific book info
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +92,13 @@ public class ShowBookDetail extends AppCompatActivity {
         String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
 
         if(parentClass.equalsIgnoreCase("Receive")) {
-
+            // when borrower receive a book
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_receiving);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // when borrower receive a book
                     // set borrower to current user
                     setBorrower();
                     // add book to current user's borrowed list
@@ -100,17 +109,12 @@ public class ShowBookDetail extends AppCompatActivity {
                     deleteBookFromAcceptedList();
                 }
             });
-
-        }
-        else if(parentClass.equalsIgnoreCase("ViewBook")) {
-
-        }else if(parentClass.equalsIgnoreCase("MyBookList")) {
+        } else if (parentClass.equalsIgnoreCase("MyBookList")) {
             editBtn = findViewById(R.id.editButton);
             deleteBtn = findViewById(R.id.deleteButton);
             editBtn.setVisibility(View.VISIBLE);
             deleteBtn.setVisibility(View.VISIBLE);
-        }
-        else { // parentClass == "HandOver"
+        } else if (parentClass.equalsIgnoreCase("HandOver")) {
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_handover);
             button.setVisibility(View.VISIBLE);
@@ -132,6 +136,10 @@ public class ShowBookDetail extends AppCompatActivity {
         }
         return username;
     }
+
+    /**
+     * setBorrower method updated the book's borrower to the current username
+     */
     public void setBorrower() {
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -152,6 +160,10 @@ public class ShowBookDetail extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * setBorrowerToEmpty method delete the book's borrower
+     */
     public void setBorrowerToEmpty(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -173,7 +185,9 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * deleteBookFromOwnedList method remove the book ISBN from the current user's owened book list
+     */
     public void deleteBookFromOwnedList() {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -196,7 +210,9 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * deleteBookFromOwnedList method remove the book ISBN from the current user's accepted book list
+     */
     public void deleteBookFromAcceptedList() {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -219,7 +235,11 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     *
+     * @param view
+     * onBookDetailDelete method is triggered when user want to delete the current book
+     */
     public void onBookDetailDelete (View view) {
         bookRef.delete();
         deleteBookFromOwnedList();
@@ -228,6 +248,11 @@ public class ShowBookDetail extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param view
+     * onBookDetailEdit method is triggered when user want to confirm the changes of book info
+     */
     public void onBookDetailEdit(View view){
         Intent gotoDestination = new Intent(this, EditBook.class);
         gotoDestination.putExtra("ISBN", ISBN);
@@ -235,6 +260,9 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
 
+    /**
+     * setStatusToAvailable method can change the current book's status to "available"
+     */
     public void setStatusToAvailable(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -256,7 +284,9 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * setStatusToHandOvered method can change the current book's status to "handovered"
+     */
     public void setStatusToHandOvered(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -299,6 +329,9 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
+    /**
+     * deleteBookFromBorrowedList method remove the ISBN from the current user's borrowed book list
+     */
     public void deleteBookFromBorrowedList() {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -320,6 +353,10 @@ public class ShowBookDetail extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * addBookToBorrowedList method adds the ISBN to the current user's borrowed book list
+     */
     public void addBookToBorrowedList() {
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

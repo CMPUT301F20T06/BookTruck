@@ -1,3 +1,9 @@
+/*
+ *  Classname: BorrowMenu
+ *  Version: V2
+ *  Date: 2020.11.01
+ *  Copyright: Jiachen Xu
+ */
 package com.example.booktruck;
 
 import android.content.Intent;
@@ -8,6 +14,10 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/*
+ * BorrowMenu class provides three buttons that user can click on and redirect to other pages
+ * about "Borrow" functionality.
+ */
 public class BorrowMenu extends AppCompatActivity implements View.OnClickListener{
 
     private Button ViewButton, ReceiveButton, HandOverButton;
@@ -35,18 +45,15 @@ public class BorrowMenu extends AppCompatActivity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.view_book_button:
-                //code here
-                Intent gotoView = new Intent(this, ViewBook.class);
+                Intent gotoView = new Intent(this, BorrowBookList.class);
                 startActivity(gotoView);
                 break;
             case R.id.receive_book_button:
-                //code here
                 Intent gotoReceive = new Intent(this, ScanISBN.class);
                 gotoReceive.putExtra("ParentClass", "BorrowReceive");
                 startActivity(gotoReceive);
                 break;
             case R.id.handover_book_button:
-                //code here
                 Intent gotoHandOver = new Intent(this, ScanISBN.class);
                 gotoHandOver.putExtra("ParentClass", "BorrowHandOver");
                 startActivity(gotoHandOver);
