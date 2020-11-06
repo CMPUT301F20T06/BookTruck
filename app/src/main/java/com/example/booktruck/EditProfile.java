@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: EditProfile
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen
  */
 package com.example.booktruck;
 
@@ -59,9 +60,9 @@ public class EditProfile extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
+        userDoc = userRef.document(getCurrentUsername());
 
         emailaddress = findViewById(R.id.email_addresss);
-        userDoc = userRef.document(getCurrentUsername());
     }
 
     public void onEditProfile(View view){

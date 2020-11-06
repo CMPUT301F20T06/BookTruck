@@ -56,10 +56,9 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onClick(View view) {
         String ISBN = editISBN.getText().toString();
-        if (ISBN == ""){
-            Toast.makeText(getApplicationContext(),"Please Enter ISBN",Toast.LENGTH_SHORT).show();
-        }
-        else {
+        if (ISBN.equals("")) {
+            Toast.makeText(getApplicationContext(), "Please Enter ISBN", Toast.LENGTH_SHORT).show();
+        } else {
             String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
             Intent gotoBook = new Intent(this, ShowBookDetail.class);
             if (parentClass.equalsIgnoreCase("BorrowHandOver")) {
@@ -77,80 +76,5 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
         }
 
     }
-
-    public String getCurrentUsername() {
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        String username = "";
-        String[] array = email.split("@");
-        for (int i=0; i<array.length-1; i++) {
-            username += array[i];
-        }
-        return username;
-    }
-
 }
-
-//    public void onClick(final View view) {
-//        final String ISBN = editISBN.getText().toString();
-//
-//        String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
-//        final Intent gotoBook = new Intent(this, ShowBookDetail.class);
-//        //final Intent errorPage = new Intent(this, BookNotExist.class);
-//        gotoBook.putExtra("ISBN", ISBN);
-//        if (parentClass.equalsIgnoreCase("HandOver")) {
-//            gotoBook.putExtra("ParentClass", "HandOver");
-//            startActivity(gotoBook);
-//        }
-//        else if (parentClass.equalsIgnoreCase("Receive")) {
-//            gotoBook.putExtra("ParentClass", "Receive");
-//            startActivity(gotoBook);
-//        }
-//        else if (parentClass.equalsIgnoreCase("Return")) {
-//            db = FirebaseFirestore.getInstance();
-//            docRef = db.collection("Users").document(getCurrentUsername());
-//
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//
-//                        if (document.exists() && document.getData().containsKey("borrowed")) {
-//                            final ArrayList<String> list = (ArrayList<String>) document.getData().get("borrowed");
-//                            if (!list.contains(ISBN)) {
-//                                Log.d("SCAN_ISBN", "No such document");
-//                                //startActivity(errorPage);
-//                            } else {
-//                                gotoBook.putExtra("ParentClass", "Return");
-//                                startActivity(gotoBook);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
-//        else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
-//            db = FirebaseFirestore.getInstance();
-//            docRef = db.collection("Users").document(getCurrentUsername());
-//
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//
-//                        if (document.exists() && document.getData().containsKey("owned")) {
-//                            final ArrayList<String> list = (ArrayList<String>) document.getData().get("owned");
-//                            if (!list.contains(ISBN)) {
-//                                Log.d("SCAN_ISBN", "No such document");
-//                                //startActivity(errorPage);
-//                            } else {
-//                                gotoBook.putExtra("ParentClass", "ConfirmReturn");
-//                                startActivity(gotoBook);
-//                            }
-//                        }
-//                    }
-//                }
-//            });
-//        }
 

@@ -6,7 +6,11 @@
 package com.example.booktruck;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.ArrayList;
@@ -16,7 +20,24 @@ public class SearchResult extends AppCompatActivity {
 
     ListView matchList;
     ArrayAdapter<String> matchAdapter;
-    ArrayList<String> dataList1;
+    ArrayList<String> bookISBN;
+    ArrayList<String> bookTitle;
+
+    public ArrayList<String> getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(ArrayList<String> bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public ArrayList<String> getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(ArrayList<String> bookTitle) {
+        this.bookTitle = bookTitle;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +45,25 @@ public class SearchResult extends AppCompatActivity {
         setContentView(R.layout.search_result);
 
         matchList = findViewById(R.id.match_books);
-        String []notifies = {"Match book 1", "Match book 2", "Match book 3", "Match book 4", "Match book 5"};
-        dataList1 = new ArrayList<>();
-        dataList1.addAll(Arrays.asList(notifies));
-        matchAdapter = new ArrayAdapter<>(this, R.layout.fake_list_content, dataList1);
-        matchList.setAdapter(matchAdapter);
+        bookISBN = new ArrayList<>();
+        bookTitle = new ArrayList<>();
 
+        Intent intent = getIntent();
+        int size = Integer.parseInt(intent.getStringExtra("number"));
+        for (int i=0; i<size; i++) {
+            bookISBN.add(intent.getStringExtra(String.valueOf(i)+"ISBN"));
+            bookTitle.add(intent.getStringExtra(String.valueOf(i)+"Title"));
+        }
+        matchAdapter = new ArrayAdapter<>(this, R.layout.content, bookTitle);
+        matchList.setAdapter(matchAdapter);
+        matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent bookDetail = new Intent(SearchResult.this, ShowBookDetail.class);
+                bookDetail.putExtra("ParentClass", "SearchResult");
+                bookDetail.putExtra("ISBN", bookISBN.get(position));
+                startActivity(bookDetail);
+            }
+        });
     }
 }

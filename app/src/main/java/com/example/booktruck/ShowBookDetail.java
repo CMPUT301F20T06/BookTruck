@@ -74,14 +74,15 @@ public class ShowBookDetail extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         getSupportActionBar().setTitle(titleContent);
-                        titleText.setText("Title: " + data.get("title").toString());
-                        authorText.setText("Author: " + data.get("author").toString());
-                        statusText.setText("Status: " + data.get("status").toString());
-                        ownerText.setText("Owner: " + data.get("owner").toString());
-                        ISBNView.setText("ISBN: " + data.get("ISBN").toString());
+                        titleText.setText(data.get("title").toString());
+                        authorText.setText(data.get("author").toString());
+                        statusText.setText(data.get("status").toString());
+                        ownerText.setText(data.get("owner").toString());
+                        ISBNView.setText(data.get("ISBN").toString());
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -121,6 +122,7 @@ public class ShowBookDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     returnUpdate(v);
+                    startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
                 }
             });
         } else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
@@ -130,6 +132,7 @@ public class ShowBookDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     confirmReturnUpdate(v);
+                    startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
                 }
             });
         } else if (parentClass.equalsIgnoreCase("HandOver")) {
@@ -143,6 +146,16 @@ public class ShowBookDetail extends AppCompatActivity {
                     setStatusToHandOvered();
                     Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
                     startActivity(intent);
+                }
+            });
+        } else if (parentClass.equalsIgnoreCase("SearchResult")){
+            Button button = findViewById(R.id.requestButton);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // check if book is user's owned book add ISBN into user's requested list
+                    addBookToRequestededList();
                 }
             });
         }
@@ -159,8 +172,41 @@ public class ShowBookDetail extends AppCompatActivity {
         return username;
     }
 
+    public void addUserInBookRequestAndSetStatusAsRequested() {
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        String status = data.get("status").toString();
+                        if (status.equals("available") || status.equals("requested")) {
+                            data.put("status", "requested");
+                            ArrayList<String> requests = ( ArrayList<String>) data.get("requests");
+                            requests.add(getCurrentUsername());
+                            bookRef.set(data);
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "You cannot request an unavailable book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
     public void checkValidReceiveAndDeleteISBNInAccepted(){
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -200,7 +246,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrower method updated the book's borrower to the current username
      */
     public void setBorrower() {
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -226,7 +272,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrowerToEmpty method delete the book's borrower
      */
     public void setBorrowerToEmpty(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -248,10 +294,10 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     /**
-     * deleteBookFromOwnedList method remove the book ISBN from the current user's owened book list
+     * deleteBookFromOwnedList method remove the book ISBN from the current user's owned book list
      */
     public void deleteBookFromOwnedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -276,7 +322,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromOwnedList method remove the book ISBN from the current user's accepted book list
      */
     public void deleteBookFromAcceptedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -321,26 +367,97 @@ public class ShowBookDetail extends AppCompatActivity {
         startActivity(gotoDestination);
     }
 
+    /**
+     * returnUpdate method can update the database when a borrower returns the current book
+     */
     public void returnUpdate(View view){
         String username = getCurrentUsername();
         DocumentReference userRef = this.userRef.document(username);
+
+        validateReturnAction(username);
 
         bookRef.update("status", "returned");
         userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
         bookRef.update("borrower", "");
     }
 
+    /**
+     * confirmReturnUpdate method can update the database when an owner receives the current book
+     */
     public void confirmReturnUpdate(View view){
 
+        validateConfirmReturnAction();
         bookRef.update("status", "available");
     }
+
+    /**
+     * validateReturnAction method can validate a return action by checking the book status and borrower
+     */
+    public void validateReturnAction(final String borrowerName) {
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Map<String, Object> data = document.getData();
+                    String status = (String) data.get("status");
+                    String borrower = (String) data.get("borrower");
+                    Boolean valid = (status.equals("borrowed") && borrower.equals(borrowerName));
+                    //Log.d("status", status);
+                    //Log.d("borrower", borrower);
+                    if (!valid) {
+                        Toast.makeText(getApplicationContext(),
+                                "You do not have the permission to receive this book!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+                }
+            } else {
+                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+            }
+        }
+        });
+    }
+
+    /**
+     * validateConfirmReturnAction method can validate a confirm return action by checking the book status and owner
+     */
+    public void validateConfirmReturnAction() {
+        String ownerName = getCurrentUsername();
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        String status = (String) data.get("status");
+                        String owner = (String) data.get("owner");
+                        Boolean valid = (status.equals("returned") && owner.equals(ownerName));
+                        if (!valid) {
+                            Toast.makeText(getApplicationContext(),
+                                    "You do not have the permission to receive this book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
 
 
     /**
      * setStatusToAvailable method can change the current book's status to "available"
      */
     public void setStatusToAvailable(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -366,7 +483,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setStatusToHandOvered method can change the current book's status to "handovered"
      */
     public void setStatusToHandOvered(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -389,7 +506,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void setStatusToBorrowedAndSetBorrower(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -416,7 +533,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromBorrowedList method remove the ISBN from the current user's borrowed book list
      */
     public void deleteBookFromBorrowedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+       DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -441,7 +558,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * addBookToBorrowedList method adds the ISBN to the current user's borrowed book list
      */
     public void addBookToBorrowedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -452,6 +569,39 @@ public class ShowBookDetail extends AppCompatActivity {
                         ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
                         borrowedList.add(ISBN);
                         userRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void addBookToRequestededList(){
+       DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> ownedList = (ArrayList<String>) data.get("owned");
+                        if (ownedList.contains(ISBN)) {
+                            Toast.makeText(getApplicationContext(),
+                                    "You cannot request your own book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
+                            requestedList.add(ISBN);
+                            userRef.set(data);
+                            // add username into book's requests list & set status as "requested"
+                            addUserInBookRequestAndSetStatusAsRequested();
+                        }
+                        Intent intent = new Intent(ShowBookDetail.this, RequestMenu.class);
+                        startActivity(intent);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }

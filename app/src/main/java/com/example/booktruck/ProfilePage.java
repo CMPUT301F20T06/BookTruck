@@ -27,7 +27,6 @@ public class ProfilePage extends AppCompatActivity {
 
     private TextView UserNameInProfile;
     private TextView EmailInProfile;
-    private TextView additionInProfile;
     private Button EditProfileButton;
     private DocumentReference userRef;
     
@@ -78,10 +77,9 @@ public class ProfilePage extends AppCompatActivity {
         if(requestCode == 1) {
             if(resultCode == 34){
                 String edit_email = data.getStringExtra("result_email");
-                EmailInProfile.setText(edit_email);
+                EmailInProfile.setText("Contact Info: " + edit_email);
                 Toast.makeText(ProfilePage.this, "Change Saved! ", Toast.LENGTH_SHORT).show();
             }
         }
     }
-
 }

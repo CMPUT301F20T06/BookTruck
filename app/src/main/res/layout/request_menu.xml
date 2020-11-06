@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorLight"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -17,12 +18,13 @@
             android:id="@+id/find_book"
             android:layout_width="380dp"
             android:layout_height="75dp"
+            android:layout_gravity="center"
             android:text="Find Book" />
 
         <ListView
             android:id="@+id/bookList_name"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:layout_weight="1" />
 
