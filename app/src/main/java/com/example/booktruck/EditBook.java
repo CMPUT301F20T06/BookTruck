@@ -32,15 +32,15 @@ import java.util.Map;
  */
 public class EditBook extends AppCompatActivity {
 
-    FirebaseFirestore db;
-    EditText title;
-    EditText author;
-    EditText isbn;
-    String ISBN;
+    private FirebaseFirestore db;
+    private EditText title;
+    private EditText author;
+    private EditText isbn;
+    private String ISBN;
 
-    DocumentReference bookDoc;
-    CollectionReference bookRef;
-    CollectionReference userRef;
+    private DocumentReference bookDoc;
+    private CollectionReference bookRef;
+    private CollectionReference userRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

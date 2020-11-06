@@ -37,7 +37,7 @@ import java.util.Map;
 public class MyBookList extends AppCompatActivity {
 
     private ListView bookListView;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private ArrayList<String> bookISBN = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
     private ArrayList<String> bookStatus = new ArrayList<>();
