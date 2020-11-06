@@ -121,6 +121,7 @@ public class ShowBookDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     returnUpdate(v);
+                    startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
                 }
             });
         } else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
@@ -130,6 +131,7 @@ public class ShowBookDetail extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     confirmReturnUpdate(v);
+                    startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
                 }
             });
         } else if (parentClass.equalsIgnoreCase("HandOver")) {
@@ -248,7 +250,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     /**
-     * deleteBookFromOwnedList method remove the book ISBN from the current user's owened book list
+     * deleteBookFromOwnedList method remove the book ISBN from the current user's owned book list
      */
     public void deleteBookFromOwnedList() {
         final DocumentReference userRef = this.userRef.document(getCurrentUsername());
@@ -321,19 +323,92 @@ public class ShowBookDetail extends AppCompatActivity {
         startActivity(gotoDestination);
     }
 
+    /**
+     * returnUpdate method can update the database when a borrower returns the current book
+     */
     public void returnUpdate(View view){
         String username = getCurrentUsername();
         DocumentReference userRef = this.userRef.document(username);
+
+        validateReturnAction(username);
 
         bookRef.update("status", "returned");
         userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
         bookRef.update("borrower", "");
     }
 
+    /**
+     * confirmReturnUpdate method can update the database when an owner receives the current book
+     */
     public void confirmReturnUpdate(View view){
 
+        validateConfirmReturnAction();
         bookRef.update("status", "available");
     }
+
+    /**
+     * validateReturnAction method can validate a return action by checking the book status and borrower
+     */
+    public void validateReturnAction(final String borrowerName) {
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Map<String, Object> data = document.getData();
+                    String status = (String) data.get("status");
+                    String borrower = (String) data.get("borrower");
+                    Boolean valid = (status.equals("borrowed") && borrower.equals(borrowerName));
+                    if (!valid) {
+                        Toast.makeText(getApplicationContext(),
+                                "You do not have the permission to receive this book!",
+                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ShowBookDetail.this, ReturnMenu.class);
+                        startActivity(intent);
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+                }
+            } else {
+                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+            }
+        }
+        });
+    }
+
+    /**
+     * validateConfirmReturnAction method can validate a confirm return action by checking the book status and owner
+     */
+    public void validateConfirmReturnAction() {
+        final String ownerName = getCurrentUsername();
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        String status = (String) data.get("status");
+                        String owner = (String) data.get("owner");
+                        Boolean valid = (status.equals("returned") && owner.equals(ownerName));
+                        if (!valid) {
+                            Toast.makeText(getApplicationContext(),
+                                    "You do not have the permission to receive this book!",
+                                    Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ShowBookDetail.this, ReturnMenu.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
 
 
     /**
