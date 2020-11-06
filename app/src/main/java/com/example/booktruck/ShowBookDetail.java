@@ -85,6 +85,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         ISBNView.setText(data.get("ISBN").toString());
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -234,6 +235,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         }
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -310,6 +312,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         userRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -413,6 +416,7 @@ public class ShowBookDetail extends AppCompatActivity {
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -443,6 +447,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         }
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -471,6 +476,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -497,6 +503,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -521,6 +528,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -546,6 +554,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         userRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
@@ -604,6 +613,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         startActivity(intent);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
