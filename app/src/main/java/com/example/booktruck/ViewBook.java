@@ -37,10 +37,10 @@ import java.util.Map;
 public class ViewBook extends AppCompatActivity {
 
     private ListView bookListView;
-    FirebaseFirestore db;
+    private FirebaseFirestore db;
     private ArrayList<String> bookISBN = new ArrayList<>();
     private ArrayList<String> bookArray = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
 
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
