@@ -9,21 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".showRequestInDetail"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> 
-        <!-- Auth Block -->
+        </activity> <!-- Auth Block -->
         <activity
             android:name=".SignUpActivity"
             android:label="BookTruck Sign In/Up"
-            android:parentActivityName=".MainActivity"
-            />
-        <!--Request Block-->
+            android:parentActivityName=".MainActivity" /> <!-- Request Block -->
         <activity
             android:name=".RequestMenu"
             android:label="Request Menu"
@@ -53,9 +50,7 @@
         <activity
             android:name=".ScanISBN"
             android:label="Receive Book"
-            android:theme="@style/AppTheme"
-            />
-        <!--Profile Block-->
+            android:theme="@style/AppTheme" /> <!-- Profile Block -->
         <activity
             android:name=".ProfilePage"
             android:label="User Profile"
@@ -63,8 +58,7 @@
         <activity
             android:name=".EditProfile"
             android:label="Edit Contact Info"
-            android:parentActivityName=".ProfilePage" />
-        <!--Notification Page -->
+            android:parentActivityName=".ProfilePage" /> <!-- Notification Page -->
         <activity
             android:name=".NotificationPage"
             android:label="Notification"
@@ -72,9 +66,8 @@
         <activity
             android:name=".ShowBookDetail"
             android:label="Show Book Detail"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".ScanISBN"/>
-        <!--My Book Block-->
+            android:parentActivityName=".ScanISBN"
+            android:theme="@style/AppTheme" /> <!-- My Book Block -->
         <activity
             android:name=".MyBookList"
             android:label="My Book"
