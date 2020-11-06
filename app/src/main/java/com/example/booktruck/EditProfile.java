@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: EditProfile
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen
  */
 package com.example.booktruck;
 

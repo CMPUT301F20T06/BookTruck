@@ -37,8 +37,18 @@ public class RequestMenu extends AppCompatActivity {
     private ArrayList<String> bookArray = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
 
+    // for junit test
+    public static String email = "";
+    public static void setEmail(String email) {
+        RequestMenu.email = email;
+    }
+
     public String getCurrentUsername() {
-        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        // for junit test
+        if (email == "") {
+            email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        }
+//        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
         String[] array = email.split("@");
         for (int i=0; i<array.length-1; i++) {
@@ -80,8 +90,10 @@ public class RequestMenu extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
 
                     if (document.exists() && document.getData().containsKey("requested")) {
-                        for (final String ISBN : (ArrayList<String>) document.getData().get("requested")){
-                            bookISBN.add(ISBN);
+                        ArrayList<String> list = (ArrayList<String>) document.getData().get("requested");
+                        for (int i=0; i<list.size(); i++) {
+                            String ISBN = list.get(i);
+                            int finalI = i;
                             DocumentReference bookRef = db.collection("Books").document(ISBN);
                             bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -89,13 +101,17 @@ public class RequestMenu extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         DocumentSnapshot document = task.getResult();
                                         if (document.exists()) {
-                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
+                                            Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                                    document.getData().get("title").toString());
                                             Map<String, Object> data = document.getData();
 //                                            bookArray.add(data.get("title").toString());
-                                            String title_status = data.get("title").toString() + " ---- " + data.get("status").toString();
+                                            String title_status = data.get("title").toString() +
+                                                    " ---- " + data.get("status").toString();
                                             bookArray.add(title_status);
                                             bookISBN.add(ISBN);
-                                            showBooks();
+                                            if (finalI == list.size()-1) {
+                                                showBooks();
+                                            }
                                         } else {
                                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                                         }
@@ -111,7 +127,12 @@ public class RequestMenu extends AppCompatActivity {
         });
     }
 
+    public void setBookArray(ArrayList<String> bookArray) {
+        this.bookArray = bookArray;
+    }
+
     protected void showBooks() {
+
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         bookListView.setAdapter(arrayAdapter);
         bookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,7 +144,11 @@ public class RequestMenu extends AppCompatActivity {
                 startActivity(bookDetail);
             }
         });
+        Log.i("LOGG",bookISBN.toString());
+    }
+
+    public ArrayList<String> getBookArray() {
+        return bookArray;
     }
 }
-
 

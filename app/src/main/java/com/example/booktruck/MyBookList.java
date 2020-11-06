@@ -44,6 +44,30 @@ public class MyBookList extends AppCompatActivity {
     private ArrayAdapter<String> arrayAdapter;
     private FloatingActionButton add_btn;
 
+    public ArrayList<String> getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(ArrayList<String> bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public ArrayList<String> getBookArray() {
+        return bookArray;
+    }
+
+    public void setBookArray(ArrayList<String> bookArray) {
+        this.bookArray = bookArray;
+    }
+
+    public ArrayList<String> getBookStatus() {
+        return bookStatus;
+    }
+
+    public void setBookStatus(ArrayList<String> bookStatus) {
+        this.bookStatus = bookStatus;
+    }
+
     /**
      *
      * @return current user's username

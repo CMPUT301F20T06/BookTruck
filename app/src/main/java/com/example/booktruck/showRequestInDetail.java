@@ -1,9 +1,15 @@
+/*
+ *  Classname: showRequestInDetail
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen, Qi Song
+ */
 package com.example.booktruck;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,26 +17,34 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
-public class showRequestInDetail extends AppCompatActivity {
+public class ShowRequestInDetail extends AppCompatActivity {
 
-    ListView requestListView;
-    Button accept_Request, reject_Request;
-    ArrayAdapter<String> arrayAdapter;
-    FirebaseFirestore db;
-    ArrayList<String> whoSentRequestList = new ArrayList<>();
+    private ListView requestListView;
+    private Button accept_Request, reject_Request;
+    private ArrayAdapter<String> arrayAdapter;
+    private FirebaseFirestore db;
+    private ArrayList<String> whoSentRequestList;
+    private String ISBN;
+    private DocumentReference bookRef;
 
-
+    public String getCurrentUsername() {
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        String username = "";
+        String[] array = email.split("@");
+        for (int i=0; i<array.length-1; i++) {
+            username += array[i];
+        }
+        return username;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +55,11 @@ public class showRequestInDetail extends AppCompatActivity {
         reject_Request = findViewById(R.id.reject_botton);
 
         Intent bookIntent = getIntent();
-        String ISBN = bookIntent.getStringExtra("ISBN");
-
+        ISBN = bookIntent.getStringExtra("ISBN");
+        whoSentRequestList =  new ArrayList<>();
 
         db = FirebaseFirestore.getInstance();
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef = db.collection("Books").document(ISBN);
         //show all borrowers who sent request on this book
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -67,19 +81,71 @@ public class showRequestInDetail extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, whoSentRequestList);
         requestListView.setAdapter(arrayAdapter);
 
-        Intent bookIntent = getIntent();
-        String ISBN = bookIntent.getStringExtra("ISBN");
-
         requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            private View lastView;
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (lastView != null) {
+                    lastView.setBackgroundColor(Color.WHITE);
+                }
+                lastView = view;
+                view.setBackgroundColor(Color.GRAY);
+
+                //if owner accepts on of the requests
+                accept_Request.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for(String username : whoSentRequestList){
+                            DocumentReference whoRequestRef = db.collection("Users").document(username);
+                            whoRequestRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            Map<String, Object> individualData = document.getData();
+                                            ArrayList<String> requestedList = (ArrayList<String>) individualData.get("requested");
+                                            requestedList.remove(ISBN);
+                                            if (username.equals(whoSentRequestList.get(position))) {
+                                                ArrayList<String> acceptedList = (ArrayList<String>) individualData.get("accepted");
+                                                acceptedList.add(ISBN);
+                                            }
+                                            whoRequestRef.set(individualData);
+                                            if (username.equals(whoSentRequestList.get(whoSentRequestList.size()-1))) {
+                                                bookRef = db.collection("Books").document(ISBN);
+                                                bookRef.update("status","accepted");
+                                                bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists()){
+                                                                Map<String, Object> data = document.getData();
+                                                                ArrayList<String> requests = (ArrayList<String>) data.get("requests");
+                                                                requests.clear();
+                                                                bookRef.set(data);
+                                                                Intent intent = new Intent(ShowRequestInDetail.this, NotificationPage.class);
+                                                                startActivity(intent);
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+
                 //if owner rejects the request
                 reject_Request.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         //navigate to the rejected borrower, and update this borrower in database after rejection
                         DocumentReference rejectedPersonRef = db.collection("Users").document(whoSentRequestList.get(position));
-
                         rejectedPersonRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -87,24 +153,20 @@ public class showRequestInDetail extends AppCompatActivity {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
                                         Map<String, Object> data = document.getData();
-
-                                        Log.i("CHECK",whoSentRequestList.get(position));
-                                        ArrayList<String> requests = (ArrayList<String>) document.getData().get("requested");
-                                        requests.remove(ISBN);
+                                        ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
+                                        requestedList.remove(ISBN);
                                         rejectedPersonRef.set(data);
+                                        deleteRequests(whoSentRequestList.get(position));
+                                        //remove this borrower in listView
+                                        whoSentRequestList.remove(position);
+                                        showRequestInDetail();
                                     }
                                 }
                             }
                         });
-                        //update book in database after reject
-
-
-                        //remove this borrower in listView
-                        whoSentRequestList.remove(position);
-                        arrayAdapter.notifyDataSetChanged();
-
                     }
                 });
+
 
                 /*
                 accept_Request.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +184,23 @@ public class showRequestInDetail extends AppCompatActivity {
                 requestDetail.putExtra("ISBN", bookISBN.get(position));
                 startActivity(requestDetail);
 */
+            }
+        });
+    }
+
+    public void deleteRequests(String username){
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> requests = (ArrayList<String>) data.get("requests");
+                        requests.remove(username);
+                        bookRef.set(data);
+                    }
+                }
             }
         });
     }

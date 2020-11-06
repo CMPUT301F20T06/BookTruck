@@ -46,6 +46,21 @@ public class CreateBook extends AppCompatActivity {
     private CollectionReference bookRef;
     private CollectionReference userRef;
 
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
