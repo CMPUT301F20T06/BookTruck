@@ -78,11 +78,11 @@ public class ShowBookDetail extends AppCompatActivity {
                                 document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         getSupportActionBar().setTitle(titleContent);
-                        titleText.setText("Title: " + data.get("title").toString());
-                        authorText.setText("Author: " + data.get("author").toString());
-                        statusText.setText("Status: " + data.get("status").toString());
-                        ownerText.setText("Owner: " + data.get("owner").toString());
-                        ISBNView.setText("ISBN: " + data.get("ISBN").toString());
+                        titleText.setText(data.get("title").toString());
+                        authorText.setText(data.get("author").toString());
+                        statusText.setText(data.get("status").toString());
+                        ownerText.setText(data.get("owner").toString());
+                        ISBNView.setText(data.get("ISBN").toString());
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                     }
@@ -173,7 +173,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addUserInBookRequestAndSetStatusAsRequested() {
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        final DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -404,12 +404,12 @@ public class ShowBookDetail extends AppCompatActivity {
                     String status = (String) data.get("status");
                     String borrower = (String) data.get("borrower");
                     Boolean valid = (status.equals("borrowed") && borrower.equals(borrowerName));
+                    //Log.d("status", status);
+                    //Log.d("borrower", borrower);
                     if (!valid) {
                         Toast.makeText(getApplicationContext(),
                                 "You do not have the permission to receive this book!",
                                 Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(ShowBookDetail.this, ReturnMenu.class);
-                        startActivity(intent);
                     }
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "No such document");
@@ -440,8 +440,6 @@ public class ShowBookDetail extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),
                                     "You do not have the permission to receive this book!",
                                     Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ShowBookDetail.this, ReturnMenu.class);
-                            startActivity(intent);
                         }
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
@@ -582,7 +580,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addBookToRequestededList(){
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

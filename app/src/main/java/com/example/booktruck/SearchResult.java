@@ -23,6 +23,22 @@ public class SearchResult extends AppCompatActivity {
     ArrayList<String> bookISBN;
     ArrayList<String> bookTitle;
 
+    public ArrayList<String> getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(ArrayList<String> bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
+    public ArrayList<String> getBookTitle() {
+        return bookTitle;
+    }
+
+    public void setBookTitle(ArrayList<String> bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +54,7 @@ public class SearchResult extends AppCompatActivity {
             bookISBN.add(intent.getStringExtra(String.valueOf(i)+"ISBN"));
             bookTitle.add(intent.getStringExtra(String.valueOf(i)+"Title"));
         }
-        matchAdapter = new ArrayAdapter<>(this, R.layout.fake_list_content, bookTitle);
+        matchAdapter = new ArrayAdapter<>(this, R.layout.content, bookTitle);
         matchList.setAdapter(matchAdapter);
         matchList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +25,13 @@ import java.util.Map;
 
 public class showRequestInDetail extends AppCompatActivity {
 
-    ListView requestListView;
-    Button accept_Request, reject_Request;
-    ArrayAdapter<String> arrayAdapter;
-    FirebaseFirestore db;
-    ArrayList<String> whoSentRequestList = new ArrayList<>();
+    private ListView requestListView;
+    private Button accept_Request, reject_Request;
+    private ArrayAdapter<String> arrayAdapter;
+    private FirebaseFirestore db;
+    private ArrayList<String> whoSentRequestList;
+    private String ISBN;
+    private DocumentReference bookRef;
 
 
 
@@ -41,11 +44,11 @@ public class showRequestInDetail extends AppCompatActivity {
         reject_Request = findViewById(R.id.reject_botton);
 
         Intent bookIntent = getIntent();
-        String ISBN = bookIntent.getStringExtra("ISBN");
-
+        ISBN = bookIntent.getStringExtra("ISBN");
+        whoSentRequestList =  new ArrayList<>();
 
         db = FirebaseFirestore.getInstance();
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef = db.collection("Books").document(ISBN);
         //show all borrowers who sent request on this book
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -67,16 +70,20 @@ public class showRequestInDetail extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, whoSentRequestList);
         requestListView.setAdapter(arrayAdapter);
 
-        Intent bookIntent = getIntent();
-        String ISBN = bookIntent.getStringExtra("ISBN");
-
         requestListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            private View lastView;
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (lastView != null) {
+                    lastView.setBackgroundColor(Color.WHITE);
+                }
+                lastView = view;
+                view.setBackgroundColor(Color.GRAY);
                 //if owner rejects the request
                 reject_Request.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick(View view) {
                         //navigate to the rejected borrower, and update this borrower in database after rejection
                         DocumentReference rejectedPersonRef = db.collection("Users").document(whoSentRequestList.get(position));
                         rejectedPersonRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -86,22 +93,24 @@ public class showRequestInDetail extends AppCompatActivity {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
                                         Map<String, Object> data = document.getData();
-
-                                        Log.i("CHECK",whoSentRequestList.get(position));
-                                        ArrayList<String> requests = (ArrayList<String>) document.getData().get("requested");
-                                        requests.remove(ISBN);
+                                        ArrayList<String> requestedList = (ArrayList<String>) data.get("requested");
+                                        Log.i("CHECK", whoSentRequestList.get(position));
+                                        for (String isbn: requestedList) {
+                                            Log.i("CHECK_REQUESTS_ISBN_1", isbn);
+                                        }
+                                        requestedList.remove(ISBN);
+                                        for (String isbn: requestedList) {
+                                            Log.i("CHECK_REQUESTS_ISBN_2", isbn);
+                                        }
                                         rejectedPersonRef.set(data);
+                                        deleteRequests(whoSentRequestList.get(position));
+                                        //remove this borrower in listView
+                                        whoSentRequestList.remove(position);
+                                        showRequestInDetail();
                                     }
                                 }
                             }
                         });
-                        //update book in database after reject
-
-
-                        //remove this borrower in listView
-                        whoSentRequestList.remove(position);
-                        arrayAdapter.notifyDataSetChanged();
-
                     }
                 });
 
@@ -121,6 +130,23 @@ public class showRequestInDetail extends AppCompatActivity {
                 requestDetail.putExtra("ISBN", bookISBN.get(position));
                 startActivity(requestDetail);
 */
+            }
+        });
+    }
+
+    public void deleteRequests(String username){
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<String> requests = (ArrayList<String>) data.get("requests");
+                        requests.remove(username);
+                        bookRef.set(data);
+                    }
+                }
             }
         });
     }
