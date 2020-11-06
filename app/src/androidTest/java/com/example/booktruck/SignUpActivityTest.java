@@ -1,21 +1,28 @@
 package com.example.booktruck;
 
-import android.app.Activity;
 import android.widget.EditText;
-
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
-import com.robotium.solo.By;
 import com.robotium.solo.Solo;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-public class TestSignUpActivity {
+import java.util.Random;
+
+public class SignUpActivityTest {
 
     private Solo solo;
+
+    public String generateString(){
+        String str = "";
+        Random rnd = new Random();
+        for (int i=0; i<10; i++){
+            char randomChar = (char) ('a' + rnd.nextInt(26));
+            str += randomChar;
+        }
+        return str;
+    }
 
     @Rule
     public ActivityTestRule<SignUpActivity> rule = new ActivityTestRule<>(SignUpActivity.class, true, true);
@@ -43,9 +50,9 @@ public class TestSignUpActivity {
 
     @Test
     public void testSignupWithRightPassword(){
-        solo.enterText((EditText) solo.getView(R.id.signup_email),"testaccount3");
-        solo.enterText((EditText) solo.getView(R.id.signup_contact),"testcontact3");
-        solo.enterText((EditText) solo.getView(R.id.signup_password),"testpassword3");
+        solo.enterText((EditText) solo.getView(R.id.signup_email), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_contact), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_password), generateString());
         solo.clickOnButton("Sign Up");
         solo.waitForView(R.id.myBook);
     }

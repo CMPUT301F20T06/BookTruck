@@ -1,3 +1,9 @@
+/*
+ *  Classname: showRequestInDetail
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen, Qi Song
+ */
 package com.example.booktruck;
 
 import androidx.annotation.NonNull;
@@ -99,6 +105,7 @@ public class showRequestInDetail extends AppCompatActivity {
                     public void onClick(View v) {
 
                         //这本书被加到owner的accepted里
+                        /*
                         DocumentReference ownerRef = db.collection("Users").document(getCurrentUsername());
                         ownerRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -114,7 +121,7 @@ public class showRequestInDetail extends AppCompatActivity {
                                 }
                             }
                         });
-
+*/
 
                         //被accept的人，acceptance_received中会出现这本书
                         DocumentReference acceptedPersonRef = db.collection("Users").document(whoSentRequestList.get(position));
@@ -125,7 +132,8 @@ public class showRequestInDetail extends AppCompatActivity {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
                                         Map<String, Object> data = document.getData();
-                                        data.put("acceptance_received",ISBN);
+
+                                        data.put("accepted",ISBN);
                                         //ArrayList<String> requestedList = (ArrayList<String>) data.get("acceptance");
                                         //requestedList.add(ISBN);
                                         acceptedPersonRef.set(data);

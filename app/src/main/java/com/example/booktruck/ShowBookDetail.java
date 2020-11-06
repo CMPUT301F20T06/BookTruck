@@ -174,7 +174,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addUserInBookRequestAndSetStatusAsRequested() {
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -207,7 +207,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void checkValidReceiveAndDeleteISBNInAccepted(){
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -248,7 +248,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrower method updated the book's borrower to the current username
      */
     public void setBorrower() {
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -274,7 +274,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setBorrowerToEmpty method delete the book's borrower
      */
     public void setBorrowerToEmpty(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -299,7 +299,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromOwnedList method remove the book ISBN from the current user's owned book list
      */
     public void deleteBookFromOwnedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -324,7 +324,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromOwnedList method remove the book ISBN from the current user's accepted book list
      */
     public void deleteBookFromAcceptedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -427,7 +427,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * validateConfirmReturnAction method can validate a confirm return action by checking the book status and owner
      */
     public void validateConfirmReturnAction() {
-        final String ownerName = getCurrentUsername();
+        String ownerName = getCurrentUsername();
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -459,7 +459,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setStatusToAvailable method can change the current book's status to "available"
      */
     public void setStatusToAvailable(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -485,7 +485,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * setStatusToHandOvered method can change the current book's status to "handovered"
      */
     public void setStatusToHandOvered(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -509,7 +509,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void setStatusToBorrowedAndSetBorrower(){
-        final DocumentReference bookRef = db.collection("Books").document(ISBN);
+       DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -536,7 +536,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * deleteBookFromBorrowedList method remove the ISBN from the current user's borrowed book list
      */
     public void deleteBookFromBorrowedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+       DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -561,7 +561,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * addBookToBorrowedList method adds the ISBN to the current user's borrowed book list
      */
     public void addBookToBorrowedList() {
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+        DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -583,7 +583,7 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
     public void addBookToRequestededList(){
-        final DocumentReference userRef = this.userRef.document(getCurrentUsername());
+       DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
