@@ -1,3 +1,9 @@
+/*
+ *  Classname: showRequestInDetail
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen, Qi Song
+ */
 package com.example.booktruck;
 
 import androidx.annotation.NonNull;

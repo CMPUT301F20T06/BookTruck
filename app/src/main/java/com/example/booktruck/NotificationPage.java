@@ -1,7 +1,8 @@
 /*
- *
- *
- *
+ *  Classname: NotificationPage
+ *  Version: V3
+ *  Date: 2020.11.05
+ *  Copyright: Yanlin Chen, Qi Song
  */
 package com.example.booktruck;
 
@@ -162,6 +163,7 @@ public class NotificationPage extends AppCompatActivity {
                                                 Map<String, Object> data = document.getData();
                                                 bookArray.add("Requested:   "+data.get("title").toString());
                                                 bookISBN.add(ISBN);
+
                                                 showRequestInDetail();
                                             }
                                         } else {
@@ -194,15 +196,4 @@ public class NotificationPage extends AppCompatActivity {
             }
         });
     }
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-        //this.onCreate(savedInstanceState);
-        //showRequestInDetail();
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
-    }
-    */
 }
