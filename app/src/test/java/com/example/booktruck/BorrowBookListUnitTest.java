@@ -26,13 +26,13 @@ public class BorrowBookListUnitTest {
 //    @Test
 //    void testGetCurrentUserName() {
 //        BorrowBookList borrowBookList = mockBorrwoBookList();
-////        assertEquals("test@gmail.com", mAuth.getCurrentUser().getEmail());
+//        assertEquals("test@gmail.com", mAuth.getCurrentUser().getEmail());
 //
 //        borrowBookList.setEmail("test@gamil.com");
-////        assertEquals("test", borrowBookList.getCurrentUsername());
+//        assertEquals("test", borrowBookList.getCurrentUsername());
 //
 //        borrowBookList.setEmail("test222@gamil.com");
-////        assertEquals("test222", borrowBookList.getCurrentUsername());
+//        assertEquals("test222", borrowBookList.getCurrentUsername());
 //
 //    }
 

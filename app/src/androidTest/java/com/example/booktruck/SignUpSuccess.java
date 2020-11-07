@@ -14,31 +14,20 @@ import org.junit.Test;
 
 import java.util.Random;
 
-/**
- * Here is the test for testing all function in my profile page
- */
-
 @LargeTest
-public class ProfilePageTest {
+public class SignUpSuccess {
 
     private Solo solo;
 
-    @Rule
-    public ActivityTestRule<ProfilePage> rule = new ActivityTestRule<>(ProfilePage.class, true, true);
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         solo = new Solo(InstrumentationRegistry.getInstrumentation(), rule.getActivity());
     }
 
-    @Test
-    public void testEditProfile(){
-        solo.clickOnView(solo.getView(R.id.EditProfile));
-        solo.enterText((EditText) solo.getView(R.id.email_addresss), generateString());
-        solo.clickOnButton("Confirm");
-    }
+    @Rule
+    public ActivityTestRule<SignUpActivity> rule = new ActivityTestRule<>(SignUpActivity.class, true, true);
 
-    private String generateString() {
+    public String generateString(){
         String str = "";
         Random rnd = new Random();
         for (int i=0; i<10; i++){
@@ -48,4 +37,12 @@ public class ProfilePageTest {
         return str;
     }
 
+    @Test
+    public void testSignupWithRightPassword(){
+        solo.enterText((EditText) solo.getView(R.id.signup_email), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_contact), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_password), generateString());
+        solo.clickOnButton("Sign Up");
+        solo.waitForActivity(MainActivity.class);
+    }
 }

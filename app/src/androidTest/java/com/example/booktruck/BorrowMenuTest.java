@@ -2,23 +2,26 @@ package com.example.booktruck;
 
 import android.widget.EditText;
 
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.SmallTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.robotium.solo.Solo;
-
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-import static org.junit.Assert.*;
 /**
  * Here is the test for testing all function in borrow menu
  */
+@LargeTest
 public class BorrowMenuTest {
     private Solo solo;
-
 
     @Rule
     public ActivityTestRule<BorrowMenu> rule = new ActivityTestRule<>(BorrowMenu.class, true, true);
