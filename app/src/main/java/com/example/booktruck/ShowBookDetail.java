@@ -377,59 +377,42 @@ public class ShowBookDetail extends AppCompatActivity {
     public void returnUpdate(View view){
         String username = getCurrentUsername();
         DocumentReference userRef = this.userRef.document(username);
-
-        validateReturnAction(username);
-
-        bookRef.update("status", "returned");
-        userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
-        bookRef.update("borrower", "");
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        String status = (String) data.get("status");
+                        String borrower = (String) data.get("borrower");
+                        Log.d("status", status);
+                        Log.d("borrower", borrower);
+                        if (status.equals("borrowed") && borrower.equals(username)) {
+                            bookRef.update("status", "returned");
+                            bookRef.update("borrower", "");
+                            userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
+                        } else {
+                            Toast.makeText(getApplicationContext(),
+                                    "You do not have access to return this book!",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
     }
+
 
     /**
      * confirmReturnUpdate method can update the database when an owner receives the current book
      */
     public void confirmReturnUpdate(View view){
-
-        validateConfirmReturnAction();
-        bookRef.update("status", "available");
-    }
-
-    /**
-     * validateReturnAction method can validate a return action by checking the book status and borrower
-     */
-    public void validateReturnAction(String borrowerName) {
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-        @Override
-        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Map<String, Object> data = document.getData();
-                    String status = (String) data.get("status");
-                    String borrower = (String) data.get("borrower");
-                    Boolean valid = (status.equals("borrowed") && borrower.equals(borrowerName));
-                    //Log.d("status", status);
-                    //Log.d("borrower", borrower);
-                    if (!valid) {
-                        Toast.makeText(getApplicationContext(),
-                                "You do not have access to return this book!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-            }
-        }
-        });
-    }
-
-    /**
-     * validateConfirmReturnAction method can validate a confirm return action by checking the book status and owner
-     */
-    public void validateConfirmReturnAction() {
         String ownerName = getCurrentUsername();
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -441,7 +424,9 @@ public class ShowBookDetail extends AppCompatActivity {
                         String status = (String) data.get("status");
                         String owner = (String) data.get("owner");
                         Boolean valid = (status.equals("returned") && owner.equals(ownerName));
-                        if (!valid) {
+                        if (valid) {
+                            bookRef.update("status", "available");
+                        } else {
                             Toast.makeText(getApplicationContext(),
                                     "You do not have access to receive this book!",
                                     Toast.LENGTH_SHORT).show();
@@ -456,7 +441,6 @@ public class ShowBookDetail extends AppCompatActivity {
             }
         });
     }
-
 
 
     /**
