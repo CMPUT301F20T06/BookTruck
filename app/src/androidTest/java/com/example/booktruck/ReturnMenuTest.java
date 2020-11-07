@@ -2,6 +2,7 @@ package com.example.booktruck;
 
 import android.widget.EditText;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -16,6 +17,7 @@ import static org.junit.Assert.*;
 /**
  * Here is the test for testing all function in return menu
  */
+@LargeTest
 public class ReturnMenuTest {
     private Solo solo;
 

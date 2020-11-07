@@ -13,6 +13,9 @@ import org.junit.Test;
 
 import java.util.Random;
 
+/**
+ * Here is the test for testing all function in Sign In page
+ */
 public class SignInActivityTest {
 
     private Solo solo;

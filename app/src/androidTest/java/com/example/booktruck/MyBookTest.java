@@ -1,17 +1,15 @@
 package com.example.booktruck;
 
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
 import com.robotium.solo.Solo;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+
 
 import java.util.Random;
 
@@ -19,7 +17,9 @@ import static org.junit.Assert.*;
 /**
  * Here is the test for testing all function in my book list
  */
-public class MyBookListTest {
+
+@LargeTest
+public class MyBookTest {
     private Solo solo;
 
     public String generateString(){
@@ -59,16 +59,16 @@ public class MyBookListTest {
         solo.clickOnButton("Create the Book");
     }
 
-    @Test
-    public void testEditBook() {
-        solo.clickInList(0,0);
-        solo.waitForActivity(ShowBookDetail.class);
-        solo.clickOnButton("Edit");
-        solo.enterText((EditText) solo.getView(R.id.editTitleView), generateString());
-        solo.enterText((EditText) solo.getView(R.id.editAuthorView), generateString());
-        solo.enterText((EditText) solo.getView(R.id.editISBNView), generateISBN());
-        solo.clickOnButton("Confirm");
-    }
+//    @Test
+//    public void testEditBook() {
+//        solo.clickInList(0,0);
+//        solo.waitForActivity(ShowBookDetail.class);
+//        solo.clickOnButton("Edit");
+//        solo.enterText((EditText) solo.getView(R.id.editTitleView), generateString());
+//        solo.enterText((EditText) solo.getView(R.id.editAuthorView), generateString());
+//        solo.enterText((EditText) solo.getView(R.id.editISBNView), generateISBN());
+//        solo.clickOnButton("Confirm");
+//    }
 
     @Test
     public void testDeleteBook() {
