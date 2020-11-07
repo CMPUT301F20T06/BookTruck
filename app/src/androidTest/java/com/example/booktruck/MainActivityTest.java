@@ -2,6 +2,7 @@ package com.example.booktruck;
 
 import android.widget.EditText;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
@@ -14,6 +15,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+@LargeTest
 public class MainActivityTest {
     private Solo solo;
 

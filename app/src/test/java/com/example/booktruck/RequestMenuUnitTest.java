@@ -31,18 +31,17 @@ public class RequestMenuUnitTest {
         mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword("test@gmail.com", "test");
     }
-//
+
 //    @Test
 //    void testGetCurrentUserName() {
 //        RequestMenu requestMenu = mockRequestMenu();
-////        assertEquals("test@gmail.com", mAuth.getCurrentUser().getEmail());
+//        assertEquals("test@gmail.com", mAuth.getCurrentUser().getEmail());
 //
 //        requestMenu.setEmail("test@gamil.com");
-////        assertEquals("test", requestMenu.getCurrentUsername());
+//        assertEquals("test", requestMenu.getCurrentUsername());
 //
 //        requestMenu.setEmail("test222@gamil.com");
-////        assertEquals("test222", requestMenu.getCurrentUsername());
-//
+//        assertEquals("test222", requestMenu.getCurrentUsername());
 //    }
 
     @Test
