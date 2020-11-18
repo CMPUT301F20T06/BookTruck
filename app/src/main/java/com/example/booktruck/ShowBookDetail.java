@@ -375,7 +375,7 @@ public class ShowBookDetail extends AppCompatActivity {
      * returnUpdate method can update the database when a borrower returns the current book
      */
     public void returnUpdate(View view){
-        final String username = getCurrentUsername();
+        String username = getCurrentUsername();
         DocumentReference userRef = this.userRef.document(username);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
