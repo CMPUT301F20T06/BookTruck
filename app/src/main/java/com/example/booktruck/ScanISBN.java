@@ -45,7 +45,7 @@ import java.util.List;
  * ScanISBN class provides an EditText that user can input or Scan the ISBN barcode.
  */
 
-public class ScanISBN extends AppCompatActivity implements View.OnClickListener {
+public class ScanISBN extends AppCompatActivity {
 
     private EditText editISBN;
     private Button CodeSender;
@@ -65,23 +65,24 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
         editISBN = (EditText) findViewById(R.id.ISBNcode);
 
         CodeSender = (Button) findViewById(R.id.Code_Sender);
-        CodeSender.setOnClickListener(this);
+        CodeSender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CodeSenderClicked();
+            }
+        });
 
         CodeScanner = (Button) findViewById(R.id.Code_Scanner);
-        CodeScanner.setOnClickListener(this);
+        CodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImg();
+            }
+        });
     }
 
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.Code_Sender:
-                ISBN = editISBN.getText().toString();
-                break;
-            case R.id.Code_Scanner:
-                selectImg();
-                break;
-        }
+    public void CodeSenderClicked(){
+        ISBN = editISBN.getText().toString();
         if (ISBN.equals("")) {
             Toast.makeText(getApplicationContext(), "Please Enter ISBN", Toast.LENGTH_SHORT).show();
         } else {
@@ -110,7 +111,7 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
         Log.i("img", "selecting");
         startActivityForResult(intent, 1);
         Log.d("img", "start scanning?");
-        scanBarcode();
+        //scanBarcode();
     }
 
     @Override
@@ -120,6 +121,8 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
         if(requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null){
             Log.d("img", "passed");
             imgUri = data.getData();
+            Log.i("imgURI",imgUri.toString());
+            scanBarcode();
         }
     }
 
@@ -149,6 +152,9 @@ public class ScanISBN extends AppCompatActivity implements View.OnClickListener 
                         for (Barcode barcode: barcodes) {
                             ISBN = barcode.getRawValue();
                         }
+                        Toast.makeText(getApplicationContext(), "Scan Successful", Toast.LENGTH_SHORT).show();
+                        Log.i("ISBN",ISBN.toString());
+                        editISBN.setText(ISBN);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
