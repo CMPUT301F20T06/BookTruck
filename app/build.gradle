@@ -52,3 +52,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.1'
 }
+
+dependencies {
+    // ...
+    // Use this dependency to bundle the model with your app
+    implementation 'com.google.mlkit:barcode-scanning:16.0.3'
+}
