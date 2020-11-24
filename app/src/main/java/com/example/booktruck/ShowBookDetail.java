@@ -44,7 +44,7 @@ public class ShowBookDetail extends AppCompatActivity {
     private TextView authorText, statusText, ownerText, titleText, ISBNView;
     private String titleContent, authorContent, statusContent, ownerContent;
     private FirebaseFirestore db;
-    private Button editBtn, deleteBtn, returnBtn;
+    private Button editImgBtn, editDescBtn, deleteBtn, returnBtn;
     private String ISBN;
     private DocumentReference bookRef;
     private CollectionReference userRef;
@@ -133,9 +133,11 @@ public class ShowBookDetail extends AppCompatActivity {
 
 
         } else if (parentClass.equalsIgnoreCase("MyBookList")) {
-            editBtn = findViewById(R.id.editButton);
+            editDescBtn = findViewById(R.id.editDescButton);
+            editImgBtn = findViewById(R.id.editImgButton);
             deleteBtn = findViewById(R.id.deleteButton);
-            editBtn.setVisibility(View.VISIBLE);
+            editDescBtn.setVisibility(View.VISIBLE);
+            editImgBtn.setVisibility(View.VISIBLE);
             deleteBtn.setVisibility(View.VISIBLE);
 
         } else if (parentClass.equalsIgnoreCase("Return")) {
@@ -446,6 +448,17 @@ public class ShowBookDetail extends AppCompatActivity {
      */
     public void onBookDetailEdit(View view){
         Intent gotoDestination = new Intent(this, EditBook.class);
+        gotoDestination.putExtra("ISBN", ISBN);
+        startActivity(gotoDestination);
+    }
+
+    /**
+     *
+     * @param view
+     * onBookImageEdit method is triggered when user want to add or delete book images.
+     */
+    public void onBookImageEdit(View view){
+        Intent gotoDestination = new Intent(this, EditImage.class);
         gotoDestination.putExtra("ISBN", ISBN);
         startActivity(gotoDestination);
     }

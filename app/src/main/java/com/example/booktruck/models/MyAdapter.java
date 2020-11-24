@@ -20,7 +20,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     private ArrayList<UrlModel> mList;
     private Context context;
 
-    public MyAdapter(Context context, ArrayList<UrlModel> mList){
+    public MyAdapter(Context context, ArrayList<String> mList){
 
         this.context = context;
         this.mList = mList;
