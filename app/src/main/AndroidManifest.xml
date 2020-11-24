@@ -84,6 +84,10 @@
             android:name=".EditBook"
             android:label="Edit Book"
             android:parentActivityName=".MyBookList" />
+        <activity
+            android:name=".ShowImage"
+            android:label="Show Image"
+            android:parentActivityName=".CreateBook"/>
 
     </application>
 
