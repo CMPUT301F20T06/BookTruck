@@ -11,12 +11,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +30,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -110,6 +117,22 @@ public class ShowBookDetail extends AppCompatActivity {
                     checkValidReceiveAndDeleteISBNInAccepted();
                 }
             });
+
+            Button getLocationBtn = (Button) findViewById(R.id.locationButton);
+            getLocationBtn.setText("Check Location");
+            getLocationBtn.setVisibility(View.VISIBLE);
+            getLocationBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Click check Location", "Check Location from hand over books");
+                    Intent intent2 = new Intent(ShowBookDetail.this, MapsActivity.class);
+                    intent2.putExtra("ParentClass", "ReceiveBook");
+                    intent2.putExtra("ISBN", ISBN);
+                    startActivity(intent2);
+                }
+            });
+
+
         } else if (parentClass.equalsIgnoreCase("MyBookList")) {
             editBtn = findViewById(R.id.editButton);
             deleteBtn = findViewById(R.id.deleteButton);
@@ -149,6 +172,61 @@ public class ShowBookDetail extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            Button setLocationBtn = (Button) findViewById(R.id.locationButton);
+            setLocationBtn.setText("Check Location");
+            setLocationBtn.setVisibility(View.VISIBLE);
+            setLocationBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Click Specify Location", "Specify Location from hand over books");
+                    Intent intent2 = new Intent(ShowBookDetail.this, MapsActivity.class);
+                    intent2.putExtra("ParentClass", "HandOver");
+                    intent2.putExtra("ISBN", ISBN);
+                    startActivity(intent2);
+                }
+            });
+
+            EditText latitudeText = (EditText) findViewById(R.id.latitudeText);
+            EditText longitudeText = (EditText) findViewById(R.id.longitudeText);
+            Button setXYBtn = (Button) findViewById(R.id.setXYButton);
+            latitudeText.setVisibility(View.VISIBLE);
+            longitudeText.setVisibility(View.VISIBLE);
+            setXYBtn.setVisibility(View.VISIBLE);
+
+            setXYBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<Double> locatioin = null;
+                    String locationX = latitudeText.getText().toString();
+                    Double valueX = Double.valueOf(locationX);
+                    String locationY = longitudeText.getText().toString();
+                    Double valueY = Double.valueOf(locationY);
+                    locatioin.add(valueX);
+                    locatioin.add(valueY);
+                    Log.d("X,Y", valueX.toString() + valueY.toString());
+//                    DocumentReference docRef = db.collection("Books").document(ISBN);
+//                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                            if (task.isSuccessful()) {
+//                                DocumentSnapshot document = task.getResult();
+//                                if (document.exists()) {
+////                                    Log.d("location", locatioin.toString());
+//
+//                                } else {
+//                                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+//                                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
+//                                }
+//                            } else {
+//                                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+//                            }
+//                        }
+//                    });
+
+                }
+            });
+
+
         } else if (parentClass.equalsIgnoreCase("SearchResult")){
             Button button = findViewById(R.id.requestButton);
             button.setVisibility(View.VISIBLE);
