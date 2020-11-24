@@ -105,14 +105,11 @@
             android:name=".EditBook"
             android:label="Edit Book"
             android:parentActivityName=".MyBookList" />
-<<<<<<< HEAD
         <activity
             android:name=".ShowImage"
             android:label="Show Image"
             android:parentActivityName=".CreateBook"/>
 
-=======
->>>>>>> master
     </application>
 
 </manifest>
