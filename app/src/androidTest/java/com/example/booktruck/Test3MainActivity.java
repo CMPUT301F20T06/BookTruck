@@ -1,22 +1,14 @@
 package com.example.booktruck;
 
-import android.widget.EditText;
-
-import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
 import com.robotium.solo.Solo;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 
-@LargeTest
-public class MainActivityTest {
+public class Test3MainActivity {
     private Solo solo;
 
     @Rule

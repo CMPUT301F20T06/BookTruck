@@ -1,22 +1,19 @@
 package com.example.booktruck;
 
 import android.widget.EditText;
-
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
 import com.robotium.solo.Solo;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import java.util.Random;
 
 /**
- * Here is the test for testing all function in Sign In page
+ * Here is the test for testing all function in Sign Up page
  */
-public class SignInActivityTest {
+
+public class Test1SignUpActivity {
 
     private Solo solo;
 
@@ -40,25 +37,28 @@ public class SignInActivityTest {
 
     @Test
     public void testSignupWithInfoEmpty(){
-        solo.enterText((EditText) solo.getView(R.id.signin_email),"fake_email");
-        solo.clickOnButton("Sign In");
-        solo.waitForText("Username or Password must not be empty!");
+        solo.enterText((EditText) solo.getView(R.id.signup_email),"fake_email");
+        solo.clickOnButton("Sign Up");
+        solo.waitForText("Username, Email or Password must not be empty!");
     }
 
     @Test
-    public void testSignupWithWrongPassword(){
-        solo.enterText((EditText) solo.getView(R.id.signin_email), generateString());
-        solo.enterText((EditText) solo.getView(R.id.signin_password), generateString());
-        solo.clickOnButton("Sign In");
+    public void testSignupWithTheExistingAccount(){
+        solo.enterText((EditText) solo.getView(R.id.signup_email),"fake_email");
+        solo.enterText((EditText) solo.getView(R.id.signup_contact),"fake_contact");
+        solo.enterText((EditText) solo.getView(R.id.signup_password),"fake_password");
+        solo.clickOnButton("Sign Up");
         solo.waitForText("Try again");
     }
 
     @Test
     public void testSignupWithRightPassword(){
-        solo.enterText((EditText) solo.getView(R.id.signin_email),"testaccount");
-        solo.enterText((EditText) solo.getView(R.id.signin_password),"testpassword");
-        solo.clickOnButton("Sign In");
+        solo.enterText((EditText) solo.getView(R.id.signup_email), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_contact), generateString());
+        solo.enterText((EditText) solo.getView(R.id.signup_password), generateString());
+        solo.clickOnButton("Sign Up");
         solo.waitForView(R.id.myBook);
     }
 
 }
+

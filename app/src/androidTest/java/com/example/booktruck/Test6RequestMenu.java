@@ -1,24 +1,18 @@
 package com.example.booktruck;
 
 import android.widget.EditText;
-
-import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
 import com.robotium.solo.Solo;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Here is the test for testing all function in Request page
  */
-@LargeTest
-public class RequestMenuTest {
+
+public class Test6RequestMenu {
     private Solo solo;
 
     @Rule
