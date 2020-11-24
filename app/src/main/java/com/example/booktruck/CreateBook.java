@@ -27,8 +27,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,7 +40,6 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /*
  * CreateBook Class provides the EditText for user to input new book information
@@ -56,14 +53,6 @@ public class CreateBook extends AppCompatActivity {
     private EditText titleText;
     private EditText authorText;
     private EditText ISBNText;
-    private Button uploadBtn, showBtn;
-    private ImageView imageView;
-    private ProgressBar progressBar;
-
-
-    private DatabaseReference root = FirebaseDatabase.getInstance().getReference("Image");
-    private StorageReference reference = FirebaseStorage.getInstance().getReference();
-    private Uri imageUri;
 
 
     private FirebaseFirestore db;
@@ -96,104 +85,7 @@ public class CreateBook extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         bookRef = db.collection("Books");
         userRef = db.collection("Users");
-
-        this.uploadBtn = findViewById(R.id.uploadImageBtn);
-        this.showBtn = findViewById(R.id.viewImagesBtn);
-        this.imageView = findViewById(R.id.imageView);
-        this.progressBar = findViewById(R.id.progressBar);
-
-        progressBar.setVisibility(View.INVISIBLE);
-
-        imageView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                chooseImage();
-            }
-        });
-        uploadBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                uploadImage();
-            }
-        });
-        showBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                startActivity(new Intent(CreateBook.this, ShowImage.class));
-            }
-        });
     }
-
-    private void chooseImage(){
-        Intent Intent = new Intent();
-        Intent.setType("image/*");
-        Intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent, 2);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 2 && resultCode == RESULT_OK && data != null){
-
-            imageUri = data.getData();
-            imageView.setImageURI(imageUri);
-
-        }
-    }
-
-    private void uploadImage(){
-        if (imageUri != null){
-            uploadUriToFirebase(imageUri);
-        }else{
-            Toast.makeText(CreateBook.this, "Please Select Image !", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void uploadUriToFirebase(Uri uri){
-
-        StorageReference fileRef = reference.child(System.currentTimeMillis() + "." + getFileExtension(uri));
-        fileRef.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>(){
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot){
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        UrlModel urlModel = new UrlModel(uri.toString());
-                        String modelId = root.push().getKey();
-                        root.child(modelId).setValue(urlModel);
-                        progressBar.setVisibility((View.INVISIBLE));
-                        Toast.makeText(CreateBook.this, "Uploaded Successful !", Toast.LENGTH_SHORT).show();
-                        imageView.setImageResource(R.drawable.ic_baseline_add_photo_alternate_24);
-                    }
-                });
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(CreateBook.this, "Uploading Filed !", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private String getFileExtension(Uri mUri){
-
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(mUri));
-
-    }
-
-
-
-
 
     /**
      *
@@ -225,6 +117,7 @@ public class CreateBook extends AppCompatActivity {
         data.put("borrower", book.getBorrower());
         data.put("requests", book.getRequests());
         data.put("owner", getCurrentUsername());
+        data.put("images", new ArrayList<String>());
 
         // save a new book into Firebase collection "Books"
         bookRef.document(book.getISBN()).set(data);

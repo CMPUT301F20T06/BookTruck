@@ -218,12 +218,20 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/editButton"
+                android:id="@+id/editDescButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="Edit Description"
                 android:visibility="invisible"
                 android:onClick="onBookDetailEdit"/>
+
+            <Button
+                android:id="@+id/editImgButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Images"
+                android:visibility="invisible"
+                android:onClick="onBookImageEdit"/>
 
             <Button
                 android:id="@+id/deleteButton"
