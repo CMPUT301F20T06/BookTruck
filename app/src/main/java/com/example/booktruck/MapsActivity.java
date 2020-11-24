@@ -104,8 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             LatLng Location = new LatLng(latitude, longitude);;
                             mMap.addMarker(new MarkerOptions().position(Location).title(title));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location, 15));
-
-
                         } else {
                             Log.d("GET_BOOK_BY_ISBN", "No such document");
                             Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();

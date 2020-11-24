@@ -209,12 +209,6 @@
                 android:layout_height="wrap_content"
                 android:text="Confirm"
                 android:visibility="invisible"/>
-            <Button
-                android:id="@+id/locationButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location"
-                android:visibility="invisible"/>
         </LinearLayout>
 
 
@@ -258,7 +252,7 @@
                 android:layout_margin="20dp"
                 android:maxLength="13"
                 android:visibility="invisible"
-                android:hint="Enter location: x " />
+                android:hint="Update Latitude" />
             <EditText
                 android:id="@+id/longitudeText"
                 android:layout_width="150dp"
@@ -266,16 +260,26 @@
                 android:layout_margin="20dp"
                 android:maxLength="13"
                 android:visibility="invisible"
-                android:hint="Enter location: y " />
+                android:hint="Update Longitude" />
         </LinearLayout>
-        <Button
-            android:id="@+id/setXYButton"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:text="Update Location"
-            android:visibility="invisible"/>
+            android:layout_height="60dp">
+            <Button
+                android:id="@+id/locationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/setXYButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="120dp"
+                android:visibility="invisible"/>
 
+        </LinearLayout>
 
     </LinearLayout>
 

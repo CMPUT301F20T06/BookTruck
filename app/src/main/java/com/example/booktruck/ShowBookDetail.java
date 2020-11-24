@@ -104,7 +104,6 @@ public class ShowBookDetail extends AppCompatActivity {
         String parentClass = String.valueOf(getIntent().getStringExtra("ParentClass"));
 
         if (parentClass.equalsIgnoreCase("Receive")) {
-
             // when borrower receive a book
             Button button = (Button) findViewById(R.id.confirmButton);
             button.setText(R.string.confirm_receiving);
@@ -160,18 +159,6 @@ public class ShowBookDetail extends AppCompatActivity {
                 }
             });
         } else if (parentClass.equalsIgnoreCase("HandOver")) {
-            Button button = (Button) findViewById(R.id.confirmButton);
-            button.setText(R.string.confirm_handover);
-            button.setVisibility(View.VISIBLE);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("SHOW_BOOK_DETAIL", "HAND_OVER_BOOK");
-                    setStatusToHandOvered();
-                    Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
-                    startActivity(intent);
-                }
-            });
             Button setLocationBtn = (Button) findViewById(R.id.locationButton);
             setLocationBtn.setText("Check Location");
             setLocationBtn.setVisibility(View.VISIBLE);
@@ -192,41 +179,25 @@ public class ShowBookDetail extends AppCompatActivity {
             latitudeText.setVisibility(View.VISIBLE);
             longitudeText.setVisibility(View.VISIBLE);
             setXYBtn.setVisibility(View.VISIBLE);
-
+            setXYBtn.setText(R.string.confirm_handover);
             setXYBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArrayList<Double> locatioin = null;
                     String locationX = latitudeText.getText().toString();
                     Double valueX = Double.valueOf(locationX);
                     String locationY = longitudeText.getText().toString();
                     Double valueY = Double.valueOf(locationY);
-                    locatioin.add(valueX);
-                    locatioin.add(valueY);
                     Log.d("X,Y", valueX.toString() + valueY.toString());
-//                    DocumentReference docRef = db.collection("Books").document(ISBN);
-//                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                DocumentSnapshot document = task.getResult();
-//                                if (document.exists()) {
-////                                    Log.d("location", locatioin.toString());
-//
-//                                } else {
-//                                    Log.d("GET_BOOK_BY_ISBN", "No such document");
-//                                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-//                                }
-//                            } else {
-//                                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-//                            }
-//                        }
-//                    });
-
+                    if (valueY < -180 || valueY > 180 || valueX < -90 || valueX > 90) {
+                        Toast.makeText(getApplicationContext(), "Please enter a valid location!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        GeoPoint location = new GeoPoint(valueX, valueY);
+                        setStatusToHandOverAndUpdateLocation(location);
+                        Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                        startActivity(intent);
+                    }
                 }
             });
-
-
         } else if (parentClass.equalsIgnoreCase("SearchResult")){
             Button button = findViewById(R.id.requestButton);
             button.setVisibility(View.VISIBLE);
@@ -238,6 +209,36 @@ public class ShowBookDetail extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    /**
+     * setStatusToHandOvered method can change the current book's status to "handovered"
+     */
+    public void setStatusToHandOverAndUpdateLocation(GeoPoint location){
+        DocumentReference bookRef = db.collection("Books").document(ISBN);
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                                document.getData().get("title").toString());
+                        Map<String, Object> data = document.getData();
+                        // set status to handovered
+                        data.put("status", "handovered");
+                        // update the location
+                        data.put("location", location);
+                        bookRef.set(data);
+                    } else {
+                        Log.d("GET_BOOK_BY_ISBN", "No such document");
+                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
 
@@ -536,33 +537,6 @@ public class ShowBookDetail extends AppCompatActivity {
                                 document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
                         data.put("status","available");
-                        bookRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    /**
-     * setStatusToHandOvered method can change the current book's status to "handovered"
-     */
-    public void setStatusToHandOvered(){
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        data.put("status", "handovered");
                         bookRef.set(data);
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
