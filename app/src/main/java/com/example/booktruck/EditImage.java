@@ -191,24 +191,6 @@ public class EditImage extends AppCompatActivity {
         if (imageUri != null) {
             uploadUriToFirebase(imageUri);
         }
-//        bookDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Map<String, Object> data = document.getData();
-//                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
-//                        Log.d("LIST_BEFORE_ADD", String.valueOf(images));
-//                        int size = images.size();
-//                        Log.d("IMAGES NEED TO SHOW", String.valueOf(size));
-//                        UrlModel imagestoadd = images.get(images.size()-1);
-//                        Log.d("IMAGES NEED TO SHOW", String.valueOf(imagestoadd));
-//                        mAdapter.addItem(imagestoadd, 0);
-//                    }
-//                }
-//            }
-//        });
     }
 
 
