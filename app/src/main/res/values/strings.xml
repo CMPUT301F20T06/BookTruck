@@ -27,5 +27,9 @@
     <string name="borrowed_books">Borrowed Books</string>
     <string name="receive_book">Receive Book</string>
     <string name="title_activity_maps">Map</string>
+    <string name="mybook">mybook</string>
+    <string name="request">request</string>
+    <string name="borrowIcon">borrow</string>
+    <string name="re_turn">return</string>
 
 </resources>

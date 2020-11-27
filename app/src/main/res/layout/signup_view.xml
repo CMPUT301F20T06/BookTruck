@@ -19,8 +19,8 @@
             android:id="@+id/signup_text"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:text="Sign Up"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
@@ -30,7 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/input_background"
             android:ems="8"
+            android:gravity="center"
             android:hint="User Name" />
 
         <EditText
@@ -38,7 +40,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/input_background"
             android:ems="8"
+            android:gravity="center"
             android:hint="Email" />
 
         <EditText
@@ -46,20 +51,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/input_background"
             android:ems="8"
+            android:gravity="center"
             android:hint="Password"
             android:inputType="textPassword" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/first_visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="@color/colorPrimary"
                 android:text="Show" />
 
@@ -67,10 +76,11 @@
                 android:id="@+id/signup_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:textColor="@color/colorLight"
                 android:onClick="signUp"
-                android:text="Sign Up" />
+                android:text="Sign Up"
+                android:textColor="@color/colorLight" />
         </LinearLayout>
 
     </LinearLayout>
@@ -95,16 +105,21 @@
             android:id="@+id/signin_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="8"
             android:layout_gravity="center"
+            android:background="@drawable/input_background"
+            android:ems="8"
+            android:gravity="center"
             android:hint="User Name" />
 
         <EditText
             android:id="@+id/signin_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="8"
             android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/input_background"
+            android:ems="8"
+            android:gravity="center"
             android:hint="Password" />
 
         <LinearLayout
@@ -117,6 +132,7 @@
                 android:id="@+id/second_visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="@color/colorPrimary"
                 android:text="Show" />
 
@@ -124,10 +140,11 @@
                 android:id="@+id/signin_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:background="@color/colorPrimaryDark"
-                android:textColor="@color/colorLight"
                 android:onClick="signIn"
-                android:text="Sign In" />
+                android:text="Sign In"
+                android:textColor="@color/colorLight" />
 
         </LinearLayout>
     </LinearLayout>
