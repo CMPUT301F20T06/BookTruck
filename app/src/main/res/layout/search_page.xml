@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorLight"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/colorLight"
     tools:context=".MainActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_gravity="top"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginRight="47dp"
+        android:width="300dp"
+        android:height="70dp"
+        android:gravity="center"
+        android:hint="Enter book name/keywords"
+        android:textColorHint="#95A1AA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/searchEditText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:height="70dp"
-            android:width="300dp"
-            android:hint="Enter book name/keywords"
-            android:textColorHint="#95A1AA"/>
+    <Button
+        android:id="@+id/searchPageButton"
+        android:layout_width="231dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/design_default_color_on_secondary"
+        android:onClick="onSearchButtonClick"
+        android:text="Search"
+        android:textColor="@color/design_default_color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchEditText"
+        app:layout_constraintVertical_bias="0.066" />
 
 
-        <Button
-            android:id="@+id/searchPageButton"
-            android:layout_width="380dp"
-            android:layout_height="75dp"
-            android:text="Search"
-            android:onClick="onSearchButtonClick"/>
-
-    </LinearLayout>
-
-
-
-
-
-
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
