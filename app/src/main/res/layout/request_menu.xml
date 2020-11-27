@@ -19,7 +19,10 @@
             android:layout_width="380dp"
             android:layout_height="75dp"
             android:layout_gravity="center"
-            android:text="Find Book" />
+            android:layout_margin="10dp"
+            android:background="@drawable/dark_button"
+            android:text="Find Book"
+            android:textColor="@color/design_default_color_background" />
 
         <ListView
             android:id="@+id/bookList_name"
