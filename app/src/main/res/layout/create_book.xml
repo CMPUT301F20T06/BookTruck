@@ -50,13 +50,14 @@
     <Button
         android:id="@+id/createBook"
         android:layout_width="330dp"
-        android:layout_height="58dp"
+        android:layout_height="60dp"
         android:layout_marginTop="50dp"
         android:background="@drawable/dark_button"
         android:onClick="onCreateBook"
         android:text="Create Book"
         android:textColor="@color/design_default_color_background"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ISBN_number" />
 </androidx.constraintlayout.widget.ConstraintLayout>

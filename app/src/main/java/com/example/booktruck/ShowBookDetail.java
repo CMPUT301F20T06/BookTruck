@@ -12,13 +12,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.booktruck.models.MyAdapter;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -44,10 +48,15 @@ public class ShowBookDetail extends AppCompatActivity {
     private TextView authorText, statusText, ownerText, titleText, ISBNView;
     private String titleContent, authorContent, statusContent, ownerContent;
     private FirebaseFirestore db;
-    private Button editBtn, deleteBtn, returnBtn;
+    private Button editImgBtn, editDescBtn, deleteBtn, returnBtn;
     private String ISBN;
     private DocumentReference bookRef;
     private CollectionReference userRef;
+
+    private RecyclerView recyclerView;
+    private ArrayList<UrlModel> list = new ArrayList<>();
+
+    private MyAdapter mAdapter;
 
     /**
      *
@@ -74,6 +83,32 @@ public class ShowBookDetail extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         userRef = db.collection("Users");
         bookRef = db.collection("Books").document(ISBN);
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+
+        bookRef = db.collection("Books").document(ISBN);
+        Log.d("ISBN", String.valueOf(ISBN));
+
+        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
+                        Log.d("LIST_OF_IMAGES", String.valueOf(images));
+                        list = images;
+                        showImages();
+                    }
+                }
+            }
+        });
+
 
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -133,9 +168,11 @@ public class ShowBookDetail extends AppCompatActivity {
 
 
         } else if (parentClass.equalsIgnoreCase("MyBookList")) {
-            editBtn = findViewById(R.id.editButton);
+            editDescBtn = findViewById(R.id.editDescButton);
+            editImgBtn = findViewById(R.id.editImgButton);
             deleteBtn = findViewById(R.id.deleteButton);
-            editBtn.setVisibility(View.VISIBLE);
+            editDescBtn.setVisibility(View.VISIBLE);
+            editImgBtn.setVisibility(View.VISIBLE);
             deleteBtn.setVisibility(View.VISIBLE);
 
         } else if (parentClass.equalsIgnoreCase("Return")) {
@@ -209,6 +246,11 @@ public class ShowBookDetail extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    protected void showImages(){
+        mAdapter = new MyAdapter(this, list);
+        recyclerView.setAdapter(mAdapter);
     }
 
     /**
@@ -446,6 +488,17 @@ public class ShowBookDetail extends AppCompatActivity {
      */
     public void onBookDetailEdit(View view){
         Intent gotoDestination = new Intent(this, EditBook.class);
+        gotoDestination.putExtra("ISBN", ISBN);
+        startActivity(gotoDestination);
+    }
+
+    /**
+     *
+     * @param view
+     * onBookImageEdit method is triggered when user want to add or delete book images.
+     */
+    public void onBookImageEdit(View view){
+        Intent gotoDestination = new Intent(this, EditImage.class);
         gotoDestination.putExtra("ISBN", ISBN);
         startActivity(gotoDestination);
     }

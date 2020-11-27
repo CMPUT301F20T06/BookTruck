@@ -31,9 +31,6 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity
-            android:name=".models.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".ShowRequestInDetail" />
         <activity android:name=".MainActivity">
@@ -105,6 +102,12 @@
             android:name=".EditBook"
             android:label="Edit Book"
             android:parentActivityName=".MyBookList" />
+        <activity
+
+            android:name=".EditImage"
+            android:label="Edit Images"
+            android:parentActivityName=".EditBook" />
+
     </application>
 
 </manifest>
