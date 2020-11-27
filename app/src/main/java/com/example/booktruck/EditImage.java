@@ -53,8 +53,9 @@ public class EditImage extends AppCompatActivity {
     private ArrayList<UrlModel> list = new ArrayList<>();
 
     private MyAdapter mAdapter;
-    private Button uploadBtn;
     private ImageView imageView;
+    private Button uploadBtn;
+
     private ProgressBar progressBar;
     private Button refreshBtn;
 
