@@ -60,8 +60,10 @@
             android:id="@+id/editConfirmButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/design_default_color_on_secondary"
+            android:onClick="confirmEditData"
             android:text="Confirm"
-            android:onClick="confirmEditData"/>
+            android:textColor="@color/design_default_color_background" />
 
 
     </LinearLayout>
