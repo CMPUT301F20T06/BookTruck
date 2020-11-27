@@ -1,6 +1,8 @@
 package com.example.booktruck;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booktruck.models.MyAdapter;
+import com.google.android.gms.common.internal.DialogRedirect;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,13 +50,13 @@ import java.util.Map;
 public class EditImage extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<String> list;
+    private ArrayList<UrlModel> list = new ArrayList<>();
 
-    private MyAdapter adapter;
+    private MyAdapter mAdapter;
     private Button uploadBtn;
     private ImageView imageView;
     private ProgressBar progressBar;
-    private ArrayList<String> images;
+    private Button refreshBtn;
 
     private FirebaseFirestore db;
     private String ISBN;
@@ -69,9 +72,17 @@ public class EditImage extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-        list = new ArrayList<>();
+
+        Intent gotoBook = getIntent();
+        ISBN = gotoBook.getStringExtra("ISBN");
+
+        db = FirebaseFirestore.getInstance();
+        bookDoc = db.collection("Books").document(ISBN);
+        Log.d("ISBN", String.valueOf(ISBN));
+
         bookDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -79,30 +90,21 @@ public class EditImage extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Map<String, Object> data = document.getData();
-                        ArrayList<String> images = (ArrayList<String>) data.get("images");
+                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
+                        Log.d("LIST_OF_IMAGES", String.valueOf(images));
                         list = images;
+                        showImages();
                     }
                 }
             }
         });
 
         // using the URL array to generate a list of image. onClick => delete, cancel
-        /*
-        recyclerView.setAdapter(adapter);
 
-        adapter = new Adapter<String>(this, R.layout.content, list);
-        recyclerView.setAdapter(adapter);
-        */
-
-        Intent gotoBook = getIntent();
-        ISBN = gotoBook.getStringExtra("ISBN");
-        db = FirebaseFirestore.getInstance();
-        bookDoc = db.collection("Books").document(ISBN);
-
-        this.images = new ArrayList<>();
         this.uploadBtn = findViewById(R.id.uploadImageBtn);
         this.imageView = findViewById(R.id.imageView);
         this.progressBar = findViewById(R.id.progressBar);
+        this.refreshBtn = findViewById(R.id.refreshBtn);
 
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -117,8 +119,63 @@ public class EditImage extends AppCompatActivity {
             public void onClick(View v) {
                 uploadImage();
             }
+
+        });
+        refreshBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                finish();
+                startActivity(getIntent());
+            }
+        });
+
+    }
+
+    protected void showImages(){
+        mAdapter = new MyAdapter(this, list);
+        recyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                new AlertDialog.Builder(EditImage.this)
+                            .setTitle("Delete")
+                            .setMessage("Are you sure you want to delete this image?" )
+                            .setPositiveButton("Yes",new DialogInterface.OnClickListener(){
+                                public void onClick(DialogInterface dialog, int which ){
+                                    deleteFromBookImages(position);
+                                    mAdapter.deleteItem(position);
+                                    Toast.makeText(EditImage.this,"Delete successfully!", Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //do nothing
+                        }
+                    }).show();
+                }
         });
     }
+
+    public void deleteFromBookImages(int position){
+        Log.d("ISBN FOR DELETE", String.valueOf(ISBN));
+        bookDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
+                        Log.d("LIST_BEFORE_DELETE", String.valueOf(images));
+                        images.remove(position);
+                        bookDoc.set(data);
+                        Log.d("LIST_AFTER_DELETE", String.valueOf(images));
+                    }
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
@@ -131,11 +188,27 @@ public class EditImage extends AppCompatActivity {
     }
 
     private void uploadImage(){
-        if (imageUri != null){
+        if (imageUri != null) {
             uploadUriToFirebase(imageUri);
-        }else{
-            Toast.makeText(EditImage.this, "Please Select Image !", Toast.LENGTH_SHORT).show();
         }
+//        bookDoc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Map<String, Object> data = document.getData();
+//                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
+//                        Log.d("LIST_BEFORE_ADD", String.valueOf(images));
+//                        int size = images.size();
+//                        Log.d("IMAGES NEED TO SHOW", String.valueOf(size));
+//                        UrlModel imagestoadd = images.get(images.size()-1);
+//                        Log.d("IMAGES NEED TO SHOW", String.valueOf(imagestoadd));
+//                        mAdapter.addItem(imagestoadd, 0);
+//                    }
+//                }
+//            }
+//        });
     }
 
 
