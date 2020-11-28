@@ -300,40 +300,6 @@ public class ShowBookDetail extends AppCompatActivity {
         return username;
     }
 
-    public void addUserInBookRequestAndSetStatusAsRequested() {
-
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        String status = data.get("status").toString();
-                        if (status.equals("available") || status.equals("requested")) {
-                            data.put("status", "requested");
-                            ArrayList<String> requests = ( ArrayList<String>) data.get("requests");
-                            requests.add(getCurrentUsername());
-                            bookRef.set(data);
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "You cannot request an unavailable book!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
     public void checkValidReceiveAndDeleteISBNInAccepted(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -372,56 +338,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-    /**
-     * setBorrower method updated the book's borrower to the current username
-     */
-    public void setBorrower() {
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        data.put("borrower", getCurrentUsername());
-                        bookRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    /**
-     * setBorrowerToEmpty method delete the book's borrower
-     */
-    public void setBorrowerToEmpty(){
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " + document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        data.put("borrower","");
-                        bookRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
     /**
      * deleteBookFromOwnedList method remove the book ISBN from the current user's owned book list
@@ -449,30 +365,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-    /**
-     * deleteBookFromOwnedList method remove the book ISBN from the current user's accepted book list
-     */
-    public void deleteBookFromAcceptedList() {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
-                        acceptedList.remove(ISBN);
-                        userRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
     /**
      *
@@ -581,32 +473,6 @@ public class ShowBookDetail extends AppCompatActivity {
     }
 
 
-    /**
-     * setStatusToAvailable method can change the current book's status to "available"
-     */
-    public void setStatusToAvailable(){
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        data.put("status","available");
-                        bookRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
     public void setStatusToBorrowedAndSetBorrower(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
@@ -633,56 +499,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-    /**
-     * deleteBookFromBorrowedList method remove the ISBN from the current user's borrowed book list
-     */
-    public void deleteBookFromBorrowedList() {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
-                        borrowedList.remove(ISBN);
-                        userRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    /**
-     * addBookToBorrowedList method adds the ISBN to the current user's borrowed book list
-     */
-    public void addBookToBorrowedList() {
-        DocumentReference userRef = this.userRef.document(getCurrentUsername());
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
-                        borrowedList.add(ISBN);
-                        userRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
     public void addBookToRequestededList(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
