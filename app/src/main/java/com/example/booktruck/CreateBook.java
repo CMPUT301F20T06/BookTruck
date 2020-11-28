@@ -6,28 +6,40 @@
  */
 package com.example.booktruck;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.booktruck.models.Book;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 /*
  * CreateBook Class provides the EditText for user to input new book information
@@ -42,6 +54,7 @@ public class CreateBook extends AppCompatActivity {
     private EditText authorText;
     private EditText ISBNText;
 
+
     private FirebaseFirestore db;
     private CollectionReference bookRef;
     private CollectionReference userRef;
@@ -49,7 +62,6 @@ public class CreateBook extends AppCompatActivity {
     public String getISBN() {
         return ISBN;
     }
-
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
@@ -57,7 +69,6 @@ public class CreateBook extends AppCompatActivity {
     public String getAuthor() {
         return author;
     }
-
     public void setAuthor(String author) {
         this.author = author;
     }
@@ -106,6 +117,7 @@ public class CreateBook extends AppCompatActivity {
         data.put("borrower", book.getBorrower());
         data.put("requests", book.getRequests());
         data.put("owner", getCurrentUsername());
+        data.put("images", new ArrayList<String>());
 
         // save a new book into Firebase collection "Books"
         bookRef.document(book.getISBN()).set(data);

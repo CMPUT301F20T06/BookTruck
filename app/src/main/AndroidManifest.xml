@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.booktruck">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -16,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".SearchLocation"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -31,9 +30,6 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity
-            android:name=".models.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".ShowRequestInDetail" />
         <activity android:name=".MainActivity">
@@ -105,6 +101,10 @@
             android:name=".EditBook"
             android:label="Edit Book"
             android:parentActivityName=".MyBookList" />
+        <activity
+            android:name=".EditImage"
+            android:label="Edit Images"
+            android:parentActivityName=".EditBook" />
     </application>
 
 </manifest>
