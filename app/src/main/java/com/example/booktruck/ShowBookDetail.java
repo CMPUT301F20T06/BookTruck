@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,49 +84,41 @@ public class ShowBookDetail extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-
-        bookRef = db.collection("Books").document(ISBN);
         Log.d("ISBN", String.valueOf(ISBN));
 
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
-                        Log.d("LIST_OF_IMAGES", String.valueOf(images));
-                        list = images;
-                        showImages();
-                    }
+        bookRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Map<String, Object> data = document.getData();
+                    ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
+                    Log.d("LIST_OF_IMAGES", String.valueOf(images));
+                    list = images;
+                    showImages();
                 }
             }
         });
 
 
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        getSupportActionBar().setTitle(titleContent);
-                        titleText.setText(data.get("title").toString());
-                        authorText.setText(data.get("author").toString());
-                        statusText.setText(data.get("status").toString());
-                        ownerText.setText(data.get("owner").toString());
-                        ISBNView.setText(data.get("ISBN").toString());
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                    }
+        bookRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                            document.getData().get("title").toString());
+                    Map<String, Object> data = document.getData();
+                    getSupportActionBar().setTitle(titleContent);
+                    titleText.setText(data.get("title").toString());
+                    authorText.setText(data.get("author").toString());
+                    statusText.setText(data.get("status").toString());
+                    ownerText.setText(data.get("owner").toString());
+                    ISBNView.setText(data.get("ISBN").toString());
                 } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
             }
         });
 
@@ -174,12 +165,9 @@ public class ShowBookDetail extends AppCompatActivity {
         } else if (parentClass.equalsIgnoreCase("Return")) {
             returnBtn = findViewById(R.id.returnButton);
             returnBtn.setVisibility(View.VISIBLE);
-            returnBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    returnUpdate(v);
-                    startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
-                }
+            returnBtn.setOnClickListener(v -> {
+                returnUpdate(v);
+                startActivity(new Intent(ShowBookDetail.this, ReturnMenu.class));
             });
         } else if (parentClass.equalsIgnoreCase("ConfirmReturn")) {
             returnBtn = findViewById(R.id.confirmReturnButton);
@@ -195,51 +183,20 @@ public class ShowBookDetail extends AppCompatActivity {
             Button setLocationBtn = (Button) findViewById(R.id.locationButton);
             setLocationBtn.setText("Check Location");
             setLocationBtn.setVisibility(View.VISIBLE);
-            setLocationBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("Click Specify Location", "Specify Location from hand over books");
-                    Intent intent2 = new Intent(ShowBookDetail.this, MapsActivity.class);
-                    intent2.putExtra("ParentClass", "HandOver");
-                    intent2.putExtra("ISBN", ISBN);
-                    startActivity(intent2);
-                }
+            setLocationBtn.setOnClickListener(view -> {
+                Log.i("Click Specify Location", "Specify Location from hand over books");
+                Intent intent2 = new Intent(ShowBookDetail.this, MapsActivity.class);
+                intent2.putExtra("ParentClass", "HandOver");
+                intent2.putExtra("ISBN", ISBN);
+                startActivity(intent2);
             });
 
-            EditText latitudeText = (EditText) findViewById(R.id.latitudeText);
-            EditText longitudeText = (EditText) findViewById(R.id.longitudeText);
-            Button setXYBtn = (Button) findViewById(R.id.setXYButton);
             Button searchLocation = (Button) findViewById(R.id.searchLocation);
-            latitudeText.setVisibility(View.VISIBLE);
-            longitudeText.setVisibility(View.VISIBLE);
-            setXYBtn.setVisibility(View.VISIBLE);
-            setXYBtn.setText(R.string.confirm_handover);
             searchLocation.setVisibility(View.VISIBLE);
-            searchLocation.setText("Search Location");
-            searchLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent2 = new Intent(ShowBookDetail.this, SearchLocation.class);
-                    startActivity(intent2);
-                }
-            });
-            setXYBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String locationX = latitudeText.getText().toString();
-                    Double valueX = Double.valueOf(locationX);
-                    String locationY = longitudeText.getText().toString();
-                    Double valueY = Double.valueOf(locationY);
-                    Log.d("X,Y", valueX.toString() + valueY.toString());
-                    if (valueY < -180 || valueY > 180 || valueX < -90 || valueX > 90) {
-                        Toast.makeText(getApplicationContext(), "Please enter a valid location!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        GeoPoint location = new GeoPoint(valueX, valueY);
-                        setStatusToHandOverAndUpdateLocation(location);
-                        Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
-                        startActivity(intent);
-                    }
-                }
+            searchLocation.setOnClickListener(view -> {
+                Intent intent2 = new Intent(ShowBookDetail.this, SearchLocation.class);
+                intent2.putExtra("ISBN", ISBN);
+                startActivity(intent2);
             });
         } else if (parentClass.equalsIgnoreCase("SearchResult")){
             Button button = findViewById(R.id.requestButton);
@@ -259,35 +216,6 @@ public class ShowBookDetail extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-    /**
-     * setStatusToHandOvered method can change the current book's status to "handovered"
-     */
-    public void setStatusToHandOverAndUpdateLocation(GeoPoint location){
-        DocumentReference bookRef = db.collection("Books").document(ISBN);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                                document.getData().get("title").toString());
-                        Map<String, Object> data = document.getData();
-                        // set status to handovered
-                        data.put("status", "handovered");
-                        // update the location
-                        data.put("location", location);
-                        bookRef.set(data);
-                    } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
 
 
     public String getCurrentUsername() {
