@@ -25,20 +25,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_view1"
-        android:textColor="@color/colorPrimary"
+        android:textSize="24dp"
+        android:textColor="@color/colorPrimaryDark"
         android:fontFamily="monospace"
         android:padding="12dp"
         android:layout_marginTop="32dp"/>
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_view2"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="12dp"
-        android:layout_marginTop="16dp"/>
+        android:id="@+id/confirm_update"
+        android:text="Confirm"
+        android:visibility="invisible"
+        android:layout_marginTop="24dp"/>
 
 
 
