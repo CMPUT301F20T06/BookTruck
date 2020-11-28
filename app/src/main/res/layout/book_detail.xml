@@ -304,14 +304,23 @@
             <Button
                 android:id="@+id/locationButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:text="Location"
+                android:textSize="6pt"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/searchLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:textSize="6pt"
                 android:visibility="invisible"/>
             <Button
                 android:id="@+id/setXYButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="120dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="2dp"
+                android:textSize="6pt"
                 android:visibility="invisible"/>
 
         </LinearLayout>

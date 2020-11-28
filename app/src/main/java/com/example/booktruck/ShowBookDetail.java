@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,9 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.booktruck.models.MyAdapter;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -213,10 +209,20 @@ public class ShowBookDetail extends AppCompatActivity {
             EditText latitudeText = (EditText) findViewById(R.id.latitudeText);
             EditText longitudeText = (EditText) findViewById(R.id.longitudeText);
             Button setXYBtn = (Button) findViewById(R.id.setXYButton);
+            Button searchLocation = (Button) findViewById(R.id.searchLocation);
             latitudeText.setVisibility(View.VISIBLE);
             longitudeText.setVisibility(View.VISIBLE);
             setXYBtn.setVisibility(View.VISIBLE);
             setXYBtn.setText(R.string.confirm_handover);
+            searchLocation.setVisibility(View.VISIBLE);
+            searchLocation.setText("Search Location");
+            searchLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent2 = new Intent(ShowBookDetail.this, SearchLocation.class);
+                    startActivity(intent2);
+                }
+            });
             setXYBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
