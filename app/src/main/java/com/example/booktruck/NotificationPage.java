@@ -112,14 +112,14 @@ public class NotificationPage extends AppCompatActivity {
                                             if (the_array.size() != 0) {
                                                 Map<String, Object> data = document.getData();
                                                 Log.d("REQUESTED_BOOK", data.get("title").toString());
-                                                bookArray.add("Requested:   " + data.get("title").toString());
+                                                bookArray.add("Requested: \n" + data.get("title").toString());
                                                 bookStatus.add(data.get("status").toString());
                                                 bookISBN.add(ISBN);
                                             }
                                         } else if (document.getData().get("status").toString().equals("accepted")) {
                                             Map<String, Object> data = document.getData();
                                             Log.d("ACCEPTED_BOOK", data.get("title").toString());
-                                            bookArray.add("Accepted:  " + data.get("title").toString());
+                                            bookArray.add("Accepted: \n" + data.get("title").toString());
                                             bookStatus.add(data.get("status").toString());
                                             bookISBN.add(ISBN);
                                         }
