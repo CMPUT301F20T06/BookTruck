@@ -228,6 +228,10 @@ public class ShowBookDetail extends AppCompatActivity {
         return username;
     }
 
+    /**
+     * remove bookISBN in "accepted" list and add it to "borrowed" list for borrower in database
+     * and go back to BorrowMenu page
+     */
     public void checkValidReceiveAndDeleteISBNInAccepted(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -403,8 +407,10 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
-
+    /**
+     * Update book's status to "borrowed"
+     * and add the username of borrower as its borrower in database
+     */
     public void setStatusToBorrowedAndSetBorrower(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -431,7 +437,14 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * After the borrower hit the request button, database needs to be updated.
+     * A user cannot send request for his own book.
+     * Update the book's status from available to requested if it is available
+     * otherwise the request will be rejected
+     *
+     * go back to RequestMenu at the end
+     */
     public void addBookToRequestededList(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

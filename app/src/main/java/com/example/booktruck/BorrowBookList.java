@@ -109,6 +109,11 @@ public class BorrowBookList extends AppCompatActivity {
         });
     }
 
+    /**
+     * showBooks methods will adapt the book information ArrayList to ViewList in the layout
+     * and when user clicks on the specific book, it will redirect to the book details page by
+     * the book ISBN indexing
+     */
     protected void showBooks() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         bookListView.setAdapter(arrayAdapter);
