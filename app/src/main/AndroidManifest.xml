@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SearchLocation"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -27,11 +26,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-        <activity android:name=".ShowRequestInDetail" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +35,8 @@
         </activity> <!-- Auth Block -->
         <activity
             android:name=".SignUpActivity"
-            android:label="BookTruck Sign In/Up"
-            android:parentActivityName=".MainActivity" /> <!-- Request Block -->
+            android:parentActivityName=".SignUpActivity"/>
+        <!-- Request Block -->
         <activity
             android:name=".RequestMenu"
             android:label="Request Menu"
@@ -58,7 +52,12 @@
         <activity
             android:name=".ReturnMenu"
             android:label="Return Menu"
-            android:parentActivityName=".MainActivity" /> <!-- Borrow Block -->
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ShowBookDetail"
+            android:label="Book Detail"
+            android:parentActivityName=".MainActivity"/>
+        <!-- Borrow Block -->
         <activity
             android:name=".BorrowMenu"
             android:label="Borrow Menu"
@@ -68,11 +67,20 @@
             android:name=".BorrowBookList"
             android:label="View Book"
             android:parentActivityName=".BorrowMenu"
-            android:theme="@style/AppTheme" /> <!-- Receive Block -->
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SearchLocation"
+            android:label="Search Location"
+            android:parentActivityName=".ShowBookDetail"/>
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:parentActivityName=".ShowBookDetail"/>
+        <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
             android:label="Scan ISBN"
-            android:theme="@style/AppTheme" /> <!-- Profile Block -->
+            android:parentActivityName=".MainActivity"/> <!-- Profile Block -->
         <activity
             android:name=".ProfilePage"
             android:label="User Profile"
@@ -86,9 +94,10 @@
             android:label="Notification"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".ShowBookDetail"
-            android:label="Show Book Detail"
-            android:theme="@style/AppTheme" /> <!-- My Book Block -->
+            android:name=".ShowRequestInDetail"
+            android:label="Request Detail"
+            android:parentActivityName=".NotificationPage"/>
+         <!-- My Book Block -->
         <activity
             android:name=".MyBookList"
             android:label="My Book"
@@ -100,7 +109,7 @@
         <activity
             android:name=".EditBook"
             android:label="Edit Book"
-            android:parentActivityName=".MyBookList" />
+            android:parentActivityName=".EditBook" />
         <activity
             android:name=".EditImage"
             android:label="Edit Images"
