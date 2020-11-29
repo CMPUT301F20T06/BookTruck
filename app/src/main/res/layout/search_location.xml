@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     tools:context=".SearchLocation"
@@ -26,7 +25,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/text_view1"
         android:textSize="18dp"
-        android:textColor="@color/colorPrimaryDark"
+
+        android:textColor="@color/colorPrimary"
         android:fontFamily="monospace"
         android:padding="12dp"
         android:layout_marginTop="32dp"/>
@@ -36,6 +36,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/confirm_update"
         android:text="Confirm"
+        android:textColor="@color/colorLight"
+        android:background="@drawable/dark_button"
         android:visibility="invisible"
         android:layout_marginTop="24dp"/>
 
