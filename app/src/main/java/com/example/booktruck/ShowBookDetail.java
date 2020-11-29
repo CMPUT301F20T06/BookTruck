@@ -253,6 +253,7 @@ public class ShowBookDetail extends AppCompatActivity {
                             // mark book Borrowed & set borrower to current user
                             setStatusToBorrowedAndSetBorrower();
                             Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                            Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
                     } else {
@@ -350,6 +351,7 @@ public class ShowBookDetail extends AppCompatActivity {
                             bookRef.update("status", "returned");
                             bookRef.update("borrower", "");
                             userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
+                            Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "You do not have access to return this book!",
@@ -384,6 +386,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         Boolean valid = (status.equals("returned") && owner.equals(ownerName));
                         if (valid) {
                             bookRef.update("status", "available");
+                            Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(),
                                     "You do not have access to receive this book!",
@@ -416,6 +419,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         data.put("status", "Borrowed");
                         data.put("borrower", getCurrentUsername());
                         bookRef.set(data);
+                        Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                     } else {
                         Log.d("GET_BOOK_BY_ISBN", "No such document");
                         Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
@@ -463,6 +467,7 @@ public class ShowBookDetail extends AppCompatActivity {
                                                 ArrayList<String> requests = ( ArrayList<String>) bookData.get("requests");
                                                 requests.add(getCurrentUsername());
                                                 bookRef.set(bookData);
+                                                Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                                             } else {
                                                 Toast.makeText(getApplicationContext(),
                                                         "You cannot request an unavailable book!",
