@@ -27,7 +27,7 @@
         android:layout_height="450dp"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingTop="72dp"
+        android:paddingTop="108dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

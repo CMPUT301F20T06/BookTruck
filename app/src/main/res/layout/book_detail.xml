@@ -186,15 +186,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <Button
-                android:id="@+id/confirmButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/dark_button"
-                android:text="Confirm"
-                android:textColor="@color/design_default_color_background"
-                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/returnButton"
@@ -231,6 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_marginTop="24dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -268,32 +260,47 @@
                     android:textColor="@color/design_default_color_background"
                     android:visibility="invisible" />
             </LinearLayout>
-        </FrameLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <Button
-                android:id="@+id/locationButton"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/dark_button"
-                android:text="Location"
-                android:textSize="6pt"
-                android:visibility="invisible"/>
-            <Button
-                android:id="@+id/searchLocation"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/dark_button"
-                android:layout_marginLeft="2dp"
-                android:text="Update Location"
-                android:textSize="6pt"
-                android:visibility="invisible"/>
+                android:layout_weight="1">
+                <Button
+                    android:id="@+id/confirmButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/dark_button"
+                    android:text="Confirm"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/colorLight"
+                    android:visibility="invisible" />
+                <Button
+                    android:id="@+id/locationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/dark_button"
+                    android:text="Location"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/colorLight"
+                    android:textSize="6pt"
+                    android:visibility="invisible"/>
+                <Button
+                    android:id="@+id/searchLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/dark_button"
+                    android:text="Update Location"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/colorLight"
+                    android:textSize="6pt"
+                    android:visibility="invisible"/>
 
-        </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

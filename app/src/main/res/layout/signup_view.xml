@@ -67,6 +67,7 @@
             android:ems="8"
             android:gravity="center"
             android:hint="Password"
+
             android:inputType="textPassword" />
 
         <LinearLayout
