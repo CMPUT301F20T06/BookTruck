@@ -109,25 +109,11 @@ public class EditImage extends AppCompatActivity {
 
         progressBar.setVisibility(View.INVISIBLE);
 
-        imageView.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                chooseImage();
-            }
-        });
-        uploadBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                uploadImage();
-            }
-
-        });
-        refreshBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-                startActivity(getIntent());
-            }
+        imageView.setOnClickListener(v -> chooseImage());
+        uploadBtn.setOnClickListener(v -> uploadImage());
+        refreshBtn.setOnClickListener(v -> {
+            finish();
+            startActivity(getIntent());
         });
 
     }

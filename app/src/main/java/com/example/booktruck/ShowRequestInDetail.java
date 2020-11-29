@@ -26,6 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * show request in detail
+ * The current user has the option to either accept the request on his book
+ * or decline it
+ */
 public class ShowRequestInDetail extends AppCompatActivity {
 
     private ListView requestListView;
@@ -77,6 +82,11 @@ public class ShowRequestInDetail extends AppCompatActivity {
         });
     }
 
+    /**
+     * manipulate database according to current user's different option on the requests he received
+     * both books and users collections are manipulation
+     * based on how the current user decide.
+     */
     protected void showRequestInDetail() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, whoSentRequestList);
         requestListView.setAdapter(arrayAdapter);
@@ -166,28 +176,14 @@ public class ShowRequestInDetail extends AppCompatActivity {
                         });
                     }
                 });
-
-
-                /*
-                accept_Request.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-
-                 */
-/*
-                Intent requestDetail = new Intent(NotificationPage.this, showRequestInDetail.class);
-                //requestDetail.putExtra("ListOfPeopleWhoRequest",requestArray);
-                //requestDetail.putExtra("ParentClass", "ViewBook");
-                requestDetail.putExtra("ISBN", bookISBN.get(position));
-                startActivity(requestDetail);
-*/
             }
         });
     }
 
+    /**
+     * For the requested book, remove the rejected username from the "requests" list
+     * @param username
+     */
     public void deleteRequests(String username){
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
