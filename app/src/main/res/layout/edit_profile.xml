@@ -8,27 +8,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/Edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:padding="40dp"
-        android:text="Edit your Contact Info"
-        android:textColor="@color/design_default_color_on_secondary"
-        android:textSize="30sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
 
         <EditText
             android:id="@+id/email_addresss"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="24dp"
             android:layout_weight="5"
             android:hint="Enter email address" />
 
@@ -36,11 +27,11 @@
             android:id="@+id/confirm_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/design_default_color_on_secondary"
+            android:layout_margin="24dp"
             android:onClick="onEditProfile"
+            android:background="@drawable/dark_button"
             android:text="Confirm"
-            android:textColor="@color/design_default_color_background" />
+            android:textColor="@color/colorLight" />
 
     </LinearLayout>
 <!--

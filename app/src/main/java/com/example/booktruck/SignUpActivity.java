@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -34,18 +35,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 /*
- *  SignUpActivity provides Sign Up and Sign In methods.
+ *  SignUpActivity provides Sign Up methods.
  */
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText signUpEmailText;
     private EditText signUpContactText;
-    private EditText signInEmailText;
     private EditText signUpPasswordText;
-    private EditText signInPasswordText;
     private Button signUpVisible;
-    private Button signInVisible;
     private FirebaseFirestore db;
     private User newUser;
 
@@ -140,49 +138,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     /**
      *
-     * @param view
-     * signIn method uses Friebase Authentication to verify the user's username and password
-     */
-    public void signIn(View view){
-        String email = signInEmailText.getText().toString().toLowerCase() + "@gmail.com";
-        String password = signInPasswordText.getText().toString();
-        if (password.equals("") || email.equals("@gmail.com")){
-            Toast.makeText(getApplicationContext(),"Username or Password must not be empty!",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                Log.d("SIGNIN", "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                if (user != null) {
-                                    // check the current user, if not null, then navigate back to main page
-                                    NavUtils.navigateUpFromSameTask(SignUpActivity.this);
-                                }
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w("SIGNIN", "signInWithEmail:failure", task.getException());
-                                // If password and email address don't match, alert user by AlertDialog
-                                new AlertDialog.Builder(SignUpActivity.this)
-                                        //.setIcon(android.R.drawable.notify)
-                                        .setTitle("Username does not exist or Username and password do not match")
-                                        .setPositiveButton("Try again", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                signInPasswordText.setText("");
-                                            }
-                                        }).show();
-                            }
-                        }
-                    });
-        }
-    }
-
-    /**
-     *
      * @param savedInstanceState
      * onCreate method sets password EditText as invisible when the activity creates.
      */
@@ -191,19 +146,15 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_view);
 
-        signInPasswordText = findViewById(R.id.signin_password);
         signUpPasswordText = findViewById(R.id.signup_password);
         signUpEmailText = findViewById(R.id.signup_email);
-        signInEmailText = findViewById(R.id.signin_email);
         signUpContactText = findViewById(R.id.signup_contact);
 
         mAuth = FirebaseAuth.getInstance();
         signUpVisible = findViewById(R.id.first_visible);
-        signInVisible = findViewById(R.id.second_visible);
 
         //set both password invisible first
         signUpPasswordText.setInputType(129);
-        signInPasswordText.setInputType(129);
 
         // give user option to either hide or show password
         signUpVisible.setOnClickListener(new View.OnClickListener() {
@@ -218,19 +169,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-        signInVisible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(signInPasswordText.getInputType() == 128){
-                    signInPasswordText.setInputType(129);
-                    signInVisible.setText("show");
-                }else {
-                    signInPasswordText.setInputType(128);
-                    signInVisible.setText("hide");
-                }
-            }
-        });
-
     }
 
 }
