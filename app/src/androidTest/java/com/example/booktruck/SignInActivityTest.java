@@ -31,7 +31,7 @@ public class SignInActivityTest {
     }
 
     @Rule
-    public ActivityTestRule<SignUpActivity> rule = new ActivityTestRule<>(SignUpActivity.class, true, true);
+    public ActivityTestRule<SignInActivity> rule = new ActivityTestRule<>(SignInActivity.class, true, true);
 
     @Before
     public void setUp() {

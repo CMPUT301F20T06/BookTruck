@@ -34,8 +34,10 @@
             </intent-filter>
         </activity> <!-- Auth Block -->
         <activity
-            android:name=".SignUpActivity"
-            android:parentActivityName=".SignUpActivity"/>
+            android:name=".SignInActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".SignUpActivity"
+            android:parentActivityName=".MainActivity"/>
         <!-- Request Block -->
         <activity
             android:name=".RequestMenu"

@@ -23,7 +23,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24"
             tools:ignore="VectorDrawableCompat" />
@@ -32,8 +32,7 @@
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
-            android:layout_weight="1.5"
-            android:layout_height="wrap_content" />
+            android:layout_height="64dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/dark_button"
             android:text="Upload Images"
             android:textColor="#fff" />
 
@@ -58,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/dark_button"
             android:text="Refresh"
             android:textColor="#fff" />
 
