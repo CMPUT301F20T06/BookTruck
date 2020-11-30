@@ -230,39 +230,36 @@ public class ShowBookDetail extends AppCompatActivity {
 
     public void checkValidReceiveAndDeleteISBNInAccepted(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
-                        Boolean valid = acceptedList.contains(ISBN);
-                        if (!valid) {
-                            Toast.makeText(getApplicationContext(),
-                                    "You do not have the permission to receive this book!",
-                                    Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
-                            startActivity(intent);
-                        } else {
-                            acceptedList.remove(ISBN);
-                            ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
-                            borrowedList.add(ISBN);
-                            userRef.set(data);
-                            // mark book Borrowed & set borrower to current user
-                            setStatusToBorrowedAndSetBorrower();
-                            Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
-                            Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
-                        }
+        userRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Map<String, Object> data = document.getData();
+                    ArrayList<String> acceptedList = (ArrayList<String>) data.get("accepted");
+                    Boolean valid = acceptedList.contains(ISBN);
+                    if (!valid) {
+                        Toast.makeText(getApplicationContext(),
+                                "You do not have the permission to receive this book!",
+                                Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                        startActivity(intent);
                     } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
+                        acceptedList.remove(ISBN);
+                        ArrayList<String> borrowedList = (ArrayList<String>) data.get("borrowed");
+                        borrowedList.add(ISBN);
+                        userRef.set(data);
+                        // mark book Borrowed & set borrower to current user
+                        setStatusToBorrowedAndSetBorrower();
+                        Intent intent = new Intent(ShowBookDetail.this, BorrowMenu.class);
+                        Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
                     }
                 } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
             }
         });
     }
@@ -336,34 +333,31 @@ public class ShowBookDetail extends AppCompatActivity {
     public void returnUpdate(View view){
         String username = getCurrentUsername();
         DocumentReference userRef = this.userRef.document(username);
-        bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        String status = (String) data.get("status");
-                        String borrower = (String) data.get("borrower");
-                        Log.d("status", status);
-                        Log.d("borrower", borrower);
-                        if (status.equals("borrowed") && borrower.equals(username)) {
-                            bookRef.update("status", "returned");
-                            bookRef.update("borrower", "");
-                            userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
-                            Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getApplicationContext(),
-                                    "You do not have access to return this book!",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+        bookRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Map<String, Object> data = document.getData();
+                    String status = (String) data.get("status");
+                    String borrower = (String) data.get("borrower");
+                    Log.d("status", status);
+                    Log.d("borrower", borrower);
+                    if (status.equals("borrowed") && borrower.equals(username)) {
+                        bookRef.update("status", "returned");
+                        bookRef.update("borrower", "");
+                        userRef.update("borrowed", FieldValue.arrayRemove(ISBN));
+                        Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.d("GET_BOOK_BY_ISBN", "No such document");
-                        Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),
+                                "You do not have access to return this book!",
+                                Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
+                    Log.d("GET_BOOK_BY_ISBN", "No such document");
+                    Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Log.d("GET_BOOK_BY_ISBN", "get failed with ", task.getException());
             }
         });
     }
