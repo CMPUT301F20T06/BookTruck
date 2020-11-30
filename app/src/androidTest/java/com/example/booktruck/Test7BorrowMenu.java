@@ -5,13 +5,15 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * Here is the test for testing all function in borrow menu
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Test7BorrowMenu {
     private Solo solo;
 
@@ -25,34 +27,34 @@ public class Test7BorrowMenu {
     }
 
     @Test
-    public void testViewBorrowedBook () {
-        solo.clickOnButton("Borrowed Books");
+    public void testAViewBorrowedBook () {
+        solo.clickOnButton(0);
     }
 
     @Test
-    public void testHandOverBooks() {
+    public void testBHandOverBooks() {
         solo.clickOnButton("Hand Over Books");
         solo.enterText((EditText) solo.getView(R.id.ISBNcode),"");
-        solo.clickOnButton("Enter");
-        solo.waitForText("Please Enter ISBN");
+        solo.clickOnButton(1);
+        solo.waitForText("Please Enter ISBN",1,3000);
 
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode),"123");
-        solo.clickOnButton("Enter");
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode),"1111111111111");
+        solo.clickOnButton(1);
         solo.waitForActivity(ShowBookDetail.class);
-        solo.waitForText("Book Not Found");
+        solo.waitForText("Book Not Found",1,3000);
     }
 
     @Test
-    public void testReceiveBooks() {
+    public void testCReceiveBooks() {
         solo.clickOnButton("Receive Book");
         solo.enterText((EditText) solo.getView(R.id.ISBNcode),"");
-        solo.clickOnButton("Enter");
-        solo.waitForText("Please Enter ISBN");
+        solo.clickOnButton(1);
+        solo.waitForText("Please Enter ISBN",1 ,3000);
 
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode),"123");
-        solo.clickOnButton("Enter");
-        solo.waitForActivity(ShowBookDetail.class);
-        solo.waitForText("Book Not Found");
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode),"11111111111111");
+        solo.clickOnButton(1);
+        solo.waitForActivity(ShowBookDetail.class, 3000);
+        solo.waitForText("Book Not Found", 1, 3000);
     }
 
 

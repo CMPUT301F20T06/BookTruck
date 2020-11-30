@@ -5,14 +5,17 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
 import java.util.Random;
 
 /**
  * Here is the test for testing all function in Sign In page
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Test2SignInActivity {
 
     private Solo solo;
@@ -36,26 +39,26 @@ public class Test2SignInActivity {
     }
 
     @Test
-    public void testSignupWithInfoEmpty(){
+    public void testASigninWithInfoEmpty(){
         solo.enterText((EditText) solo.getView(R.id.signin_email),"fake_email");
-        solo.clickOnButton("Sign In");
-        solo.waitForText("Username or Password must not be empty!");
+        solo.clickOnButton(1);
+        solo.waitForText("Username or Password must not be empty!",1,3000);
     }
 
     @Test
-    public void testSignupWithWrongPassword(){
+    public void testBSigninWithWrongPassword(){
         solo.enterText((EditText) solo.getView(R.id.signin_email), generateString());
         solo.enterText((EditText) solo.getView(R.id.signin_password), generateString());
-        solo.clickOnButton("Sign In");
-        solo.waitForText("Try again");
+        solo.clickOnButton(1);
+        solo.waitForText("Try again",1,3000);
     }
 
     @Test
-    public void testSignupWithRightPassword(){
-        solo.enterText((EditText) solo.getView(R.id.signin_email),"testaccount");
-        solo.enterText((EditText) solo.getView(R.id.signin_password),"testpassword");
-        solo.clickOnButton("Sign In");
-        solo.waitForView(R.id.myBook);
+    public void testCSigninWithRightPassword(){
+        solo.enterText((EditText) solo.getView(R.id.signin_email),"account_for_test");
+        solo.enterText((EditText) solo.getView(R.id.signin_password),"password");
+        solo.clickOnButton(1);
+        solo.waitForView(R.id.myBook, 1, 3000);
     }
 
 }

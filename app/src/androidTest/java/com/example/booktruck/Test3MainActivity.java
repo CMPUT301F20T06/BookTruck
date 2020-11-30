@@ -25,18 +25,17 @@ public class Test3MainActivity {
      **/
     @Test
     public void testClickMyBook() {
-        solo.clickOnButton("My Books");
-        solo.waitForActivity(MyBookList.class);
+        solo.clickOnButton(0);
+        solo.waitForActivity(MyBookList.class, 3000);
     }
-
 
     /**
      * Test all activity and function in My Book Button
      **/
     @Test
     public  void testRequest() {
-        solo.clickOnButton("Request");
-        solo.waitForActivity(RequestMenu.class);
+        solo.clickOnButton(1);
+        solo.waitForActivity(RequestMenu.class, 3000);
     }
 
     /**
@@ -44,16 +43,16 @@ public class Test3MainActivity {
      **/
     @Test
     public  void testBorrow() {
-        solo.clickOnButton("Borrow");
-        solo.waitForActivity(BorrowMenu.class);
+        solo.clickOnButton(2);
+        solo.waitForActivity(BorrowMenu.class, 3000);
     }
     /**
      * Test all activity and function in My Book Button
      **/
     @Test
     public  void testReturn() {
-        solo.clickOnButton("Return");
-        solo.waitForActivity(ReturnMenu.class);
+        solo.clickOnButton(3);
+        solo.waitForActivity(ReturnMenu.class, 3000);
     }
 
 
@@ -61,20 +60,15 @@ public class Test3MainActivity {
      * test click-able items in action bar
      */
     @Test
-    public void testLogOutClickAble() {
-        solo.clickOnActionBarItem(R.id.action_logout);
-        solo.waitForActivity(SignUpActivity.class);
-    }
-    @Test
     public void testProfileClickAble() {
         solo.clickOnActionBarItem(R.id.action_profile);
-        solo.waitForActivity(ProfilePage.class);
+        solo.waitForActivity(ProfilePage.class, 3000);
     }
 
     @Test
     public void testNotificationClickAble() {
         solo.clickOnActionBarItem(R.id.action_notify);
-        solo.waitForActivity(NotificationPage.class);
+        solo.waitForActivity(NotificationPage.class, 3000);
     }
 
 }

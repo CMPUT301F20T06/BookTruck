@@ -5,14 +5,17 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
 import java.util.Random;
 
 /**
  * Here is the test for testing all function in my book list
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Test5MyBook {
     private Solo solo;
 
@@ -30,7 +33,7 @@ public class Test5MyBook {
         String ISBN = "";
         Random rnd = new Random();
         for (int i=0; i<13; i++){
-            int randomInt = rnd.nextInt();
+            int randomInt = Math.abs(rnd.nextInt());
             ISBN += String.valueOf(randomInt);
         }
         return ISBN;
@@ -45,30 +48,39 @@ public class Test5MyBook {
     }
 
     @Test
-    public void testCreateBook(){
+    public void testACreateBook(){
         solo.clickOnView(solo.getView(R.id.add_btn));
-        solo.enterText((EditText) solo.getView(R.id.bookName), generateString());
+        solo.enterText((EditText) solo.getView(R.id.bookName), "Book For Delete");
         solo.enterText((EditText) solo.getView(R.id.authorName), generateString());
         solo.enterText((EditText) solo.getView(R.id.ISBN_number), generateISBN());
-        solo.clickOnButton("Create the Book");
+        solo.clickOnButton(0);
     }
 
-//    @Test
-//    public void testEditBook() {
-//        solo.clickInList(0,0);
-//        solo.waitForActivity(ShowBookDetail.class);
-//        solo.clickOnButton("Edit");
-//        solo.enterText((EditText) solo.getView(R.id.editTitleView), generateString());
-//        solo.enterText((EditText) solo.getView(R.id.editAuthorView), generateString());
-//        solo.enterText((EditText) solo.getView(R.id.editISBNView), generateISBN());
-//        solo.clickOnButton("Confirm");
-//    }
+    @Test
+    public void testBEditBook() {
+        solo.clickInList(0,0);
+        solo.waitForActivity(ShowBookDetail.class, 3000);
+        solo.clickOnButton(0);
+        solo.waitForActivity(EditBook.class, 3000);
+        solo.enterText((EditText) solo.getView(R.id.editAuthorView), generateString());
+        solo.enterText((EditText) solo.getView(R.id.editISBNView), generateISBN());
+        solo.clickOnButton(0);
+    }
 
     @Test
-    public void testDeleteBook() {
+    public void testCDeleteBook() {
         solo.clickInList(0,0);
         solo.waitForActivity(ShowBookDetail.class);
-        solo.clickOnButton("Delete");
+        solo.clickOnButton(2);
+    }
+
+    @Test
+    public void testDCreateBook(){
+        solo.clickOnView(solo.getView(R.id.add_btn));
+        solo.enterText((EditText) solo.getView(R.id.bookName), "Book For Test");
+        solo.enterText((EditText) solo.getView(R.id.authorName), generateString());
+        solo.enterText((EditText) solo.getView(R.id.ISBN_number), generateISBN());
+        solo.clickOnButton(0);
     }
 
 }

@@ -5,13 +5,15 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 /**
  * Here is the test for testing all function in return menu
  */
-
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Test8ReturnMenu {
     private Solo solo;
 
@@ -24,51 +26,40 @@ public class Test8ReturnMenu {
     }
 
     @Test
-    public void testReturnBook() {
-
-        solo.clickOnButton("Return");
+    public void testAReturnBook() {
+        solo.clickOnButton(0);
 
         // Test Empty Input
-        solo.clickOnButton("Enter");
-        solo.waitForText("Please Enter ISBN");
-
-        // Test Wrong Input
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1");
-        solo.clickOnButton("Enter");
-        solo.waitForText("Book Not Found");
-
-        // Test Book with no access
-        solo.goBack();
-        solo.sendKey(Solo.DELETE);
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
-        solo.clickOnButton("Enter");
-        solo.clickOnButton("Confirm");
-        solo.waitForText("You do not have access to return this book!");
-
+        solo.clickOnButton(1);
+        solo.waitForText("Please Enter ISBN", 1, 3000);
     }
 
     @Test
-    public void testConfirmReturnBook() {
+    public void testBReturnBook() {
+        solo.clickOnButton(0);
 
+        // Test Wrong Input
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
+        solo.clickOnButton(1);
+        solo.waitForText("Book Not Found", 1, 3000);
+    }
+
+    @Test
+    public void testCConfirmReturnBook() {
         solo.clickOnButton("Confirm Returning");
 
         // Test Empty Input
-        solo.clickOnButton("Enter");
-        solo.waitForText("Please Enter ISBN");
-
-        // Test Wrong Input
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1");
-        solo.clickOnButton("Enter");
-        solo.waitForText("Book Not Found");
-
-        // Test Book with no access
-        solo.goBack();
-        solo.sendKey(Solo.DELETE);
-        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
-        solo.clickOnButton("Enter");
-        solo.clickOnButton("Confirm");
-        solo.waitForText("You do not have access to receive this book!");
-
+        solo.clickOnButton(1);
+        solo.waitForText("Please Enter ISBN",1 , 3000);
     }
 
+    @Test
+    public void testDConfirmReturnBook() {
+        solo.clickOnButton("Confirm Returning");
+
+        // Test Wrong Input
+        solo.enterText((EditText) solo.getView(R.id.ISBNcode), "1111111111111");
+        solo.clickOnButton(1);
+        solo.waitForText("Book Not Found",1,3000);
+    }
 }

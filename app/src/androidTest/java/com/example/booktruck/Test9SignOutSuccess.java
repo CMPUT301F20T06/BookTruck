@@ -25,6 +25,6 @@ public class Test9SignOutSuccess {
     @Test
     public void testSignOut(){
         solo.clickOnActionBarItem(R.id.action_logout);
-        solo.waitForActivity(SignUpActivity.class);
+        solo.waitForActivity(SignInActivity.class, 3000);
     }
 }
