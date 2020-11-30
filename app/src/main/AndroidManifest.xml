@@ -72,17 +72,16 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".SearchLocation"
-            android:label="Search Location"
-            android:parentActivityName=".ShowBookDetail"/>
+            android:label="Search Location" />
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:parentActivityName=".ShowBookDetail"/>
+            android:label="@string/title_activity_maps" />
         <!-- Receive Block -->
         <activity
             android:name=".ScanISBN"
             android:label="Scan ISBN"
-            android:parentActivityName=".MainActivity"/> <!-- Profile Block -->
+            android:parentActivityName=".MainActivity"/>
+        <!-- Profile Block -->
         <activity
             android:name=".ProfilePage"
             android:label="User Profile"
