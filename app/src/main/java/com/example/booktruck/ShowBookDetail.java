@@ -44,7 +44,7 @@ public class ShowBookDetail extends AppCompatActivity {
     private String titleContent, authorContent, statusContent, ownerContent;
     private FirebaseFirestore db;
     private Button editImgBtn, editDescBtn, deleteBtn, returnBtn;
-    private String ISBN;
+    private String ISBN, owner, status;
     private DocumentReference bookRef;
     private CollectionReference userRef;
 
@@ -90,29 +90,21 @@ public class ShowBookDetail extends AppCompatActivity {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
+                    Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
+                            document.getData().get("title").toString());
                     Map<String, Object> data = document.getData();
                     ArrayList<UrlModel> images = (ArrayList<UrlModel>) data.get("images");
                     Log.d("LIST_OF_IMAGES", String.valueOf(images));
                     list = images;
                     showImages();
-                }
-            }
-        });
-
-
-        bookRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
-                            document.getData().get("title").toString());
-                    Map<String, Object> data = document.getData();
                     getSupportActionBar().setTitle(titleContent);
                     titleText.setText(data.get("title").toString());
                     authorText.setText(data.get("author").toString());
                     statusText.setText(data.get("status").toString());
                     ownerText.setText(data.get("owner").toString());
                     ISBNView.setText(data.get("ISBN").toString());
+                    this.owner = data.get("owner").toString();
+                    this.status = data.get("status").toString();
                 } else {
                     Log.d("GET_BOOK_BY_ISBN", "No such document");
                     Toast.makeText(getApplicationContext(), "Book Not Found", Toast.LENGTH_SHORT).show();
@@ -194,9 +186,19 @@ public class ShowBookDetail extends AppCompatActivity {
             Button searchLocation = (Button) findViewById(R.id.searchLocation);
             searchLocation.setVisibility(View.VISIBLE);
             searchLocation.setOnClickListener(view -> {
-                Intent intent2 = new Intent(ShowBookDetail.this, SearchLocation.class);
-                intent2.putExtra("ISBN", ISBN);
-                startActivity(intent2);
+                if (this.owner.equals(getCurrentUsername())){
+                    if (this.status.equals("accepted")) {
+                        Intent intent2 = new Intent(ShowBookDetail.this, SearchLocation.class);
+                        intent2.putExtra("ISBN", ISBN);
+                        startActivity(intent2);
+                    } else {
+                        Toast.makeText(getApplicationContext(),
+                                "This book is not ready to hand over!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "You are not the owner of this book!", Toast.LENGTH_SHORT).show();
+                }
             });
         } else if (parentClass.equalsIgnoreCase("SearchResult")){
             Button button = findViewById(R.id.requestButton);
@@ -216,8 +218,6 @@ public class ShowBookDetail extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
-
-
     public String getCurrentUsername() {
         String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String username = "";
@@ -228,6 +228,10 @@ public class ShowBookDetail extends AppCompatActivity {
         return username;
     }
 
+    /**
+     * remove bookISBN in "accepted" list and add it to "borrowed" list for borrower in database
+     * and go back to BorrowMenu page
+     */
     public void checkValidReceiveAndDeleteISBNInAccepted(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(task -> {
@@ -264,7 +268,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
     /**
      * deleteBookFromOwnedList method remove the book ISBN from the current user's owned book list
      */
@@ -291,7 +294,6 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
     /**
      *
      * @param view
@@ -302,7 +304,6 @@ public class ShowBookDetail extends AppCompatActivity {
         deleteBookFromOwnedList();
         Intent gotoDestination = new Intent(this, MyBookList.class);
         startActivity(gotoDestination);
-
     }
 
     /**
@@ -397,8 +398,10 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
-
+    /**
+     * Update book's status to "borrowed"
+     * and add the username of borrower as its borrower in database
+     */
     public void setStatusToBorrowedAndSetBorrower(){
         DocumentReference bookRef = db.collection("Books").document(ISBN);
         bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -425,7 +428,14 @@ public class ShowBookDetail extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * After the borrower hit the request button, database needs to be updated.
+     * A user cannot send request for his own book.
+     * Update the book's status from available to requested if it is available
+     * otherwise the request will be rejected
+     *
+     * go back to RequestMenu at the end
+     */
     public void addBookToRequestededList(){
         DocumentReference userRef = this.userRef.document(getCurrentUsername());
         userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -27,6 +27,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ *notification page show current user two types of notification he received:
+ * 1, acceptance of his request on other books
+ * 2, request from other users on his own books
+ */
 public class NotificationPage extends AppCompatActivity {
 
     FirebaseFirestore db;
@@ -98,6 +103,12 @@ public class NotificationPage extends AppCompatActivity {
                         acceptedSize = 0;
                     }
 
+
+                    /**
+                     * combine all the books current user owned and books whose requests are accepted by owner to "combined" list
+                     * books user owned and requested and books which are agreed to be borrowed
+                     * they all need to put on notification page
+                     */
                     for (String ISBN : combined){
                         DocumentReference bookRef = db.collection("Books").document(ISBN);
                         Task<DocumentSnapshot> documentSnapshotTask = bookRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -136,6 +147,12 @@ public class NotificationPage extends AppCompatActivity {
         });
     }
 
+    /**
+     * put different notification information(either acceptance or request from other users) in ListView
+     * if current user tap on acceptance he received, it will turn to the page showing book detail(ShowBookDetail)
+     * if current user tap on request, it will redirect to page ShowRequestInDetail, where he has the option to
+     * either accept the request or decline it.
+     */
     protected void showRequestInDetail() {
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.content, bookArray);
         notifyListView.setAdapter(arrayAdapter);

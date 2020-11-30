@@ -23,7 +23,6 @@ public class SearchPageUnitTest {
         mAuth = FirebaseAuth.getInstance();
     }
 
-
     @Test
     void TestgetBookTitle() {
         SearchPage searchPage = new SearchPage();
@@ -35,7 +34,6 @@ public class SearchPageUnitTest {
         searchPage.setBookTitle(bookTitleList);
         assertEquals(bookTitleList, searchPage.getBookTitle());
     }
-
 
     @Test
     void TestgetBookISBN() {

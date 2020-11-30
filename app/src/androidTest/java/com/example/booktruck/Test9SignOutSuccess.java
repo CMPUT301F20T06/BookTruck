@@ -1,25 +1,16 @@
 package com.example.booktruck;
 
-import android.widget.EditText;
-
-import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-
 import com.robotium.solo.Solo;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.Random;
-
 /**
  * Here is the test for testing all function in Sign Up page
  */
 
-@LargeTest
-public class SignOutSuccess {
+public class Test9SignOutSuccess {
 
     private Solo solo;
 
@@ -34,6 +25,6 @@ public class SignOutSuccess {
     @Test
     public void testSignOut(){
         solo.clickOnActionBarItem(R.id.action_logout);
-        solo.waitForActivity(SignUpActivity.class);
+        solo.waitForActivity(SignInActivity.class, 3000);
     }
 }

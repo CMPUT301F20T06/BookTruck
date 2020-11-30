@@ -1,3 +1,7 @@
+/**
+ * initiate model for manipulation of image in database
+ */
+
 package com.example.booktruck;
 
 public class UrlModel {

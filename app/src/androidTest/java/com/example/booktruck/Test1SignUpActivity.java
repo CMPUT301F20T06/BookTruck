@@ -1,21 +1,25 @@
 package com.example.booktruck;
 
 import android.widget.EditText;
-
-import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import com.robotium.solo.Solo;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Here is the test for testing all function in Sign Up page
  */
-public class SignUpActivityTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class Test1SignUpActivity {
 
     private Solo solo;
 
@@ -38,29 +42,28 @@ public class SignUpActivityTest {
     }
 
     @Test
-    public void testSignupWithInfoEmpty(){
+    public void testASignupWithInfoEmpty(){
         solo.enterText((EditText) solo.getView(R.id.signup_email),"fake_email");
-        solo.clickOnButton("Sign Up");
-        solo.waitForText("Username, Email or Password must not be empty!");
+        solo.clickOnButton(1);
+        solo.waitForText("Username, Email or Password must not be empty!",1,3000);
     }
 
     @Test
-    public void testSignupWithTheExistingAccount(){
-        solo.enterText((EditText) solo.getView(R.id.signup_email),"fake_email");
-        solo.enterText((EditText) solo.getView(R.id.signup_contact),"fake_contact");
-        solo.enterText((EditText) solo.getView(R.id.signup_password),"fake_password");
-        solo.clickOnButton("Sign Up");
-        solo.waitForText("Try again");
+    public void testBSignupWithTheExistingAccount(){
+        solo.enterText((EditText) solo.getView(R.id.signup_email),"qsong");
+        solo.enterText((EditText) solo.getView(R.id.signup_contact),"kaysong@gmail.com");
+        solo.enterText((EditText) solo.getView(R.id.signup_password),"qsong1");
+        solo.clickOnButton(1);
+        solo.waitForText("Try again",1,3000);
     }
 
     @Test
-    public void testSignupWithRightPassword(){
+    public void testCSignupWithRightPassword(){
         solo.enterText((EditText) solo.getView(R.id.signup_email), generateString());
         solo.enterText((EditText) solo.getView(R.id.signup_contact), generateString());
         solo.enterText((EditText) solo.getView(R.id.signup_password), generateString());
-        solo.clickOnButton("Sign Up");
-        solo.waitForView(R.id.myBook);
+        solo.clickOnButton(1);
+        solo.waitForView(R.id.myBook, 1, 3000);
     }
-
 }
 
