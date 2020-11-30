@@ -31,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -110,6 +111,8 @@ public class CreateBook extends AppCompatActivity {
     public void createBook(String title, String author, String ISBN){
         Book book = new Book(title, author, ISBN);
         HashMap<String, Object> data = new HashMap<>();
+        GeoPoint point = new GeoPoint(53.526530, -113.523932);
+        data.put("location", point);
         data.put("ISBN", book.getISBN());
         data.put("title", book.getTitle());
         data.put("author", book.getAuthor());
