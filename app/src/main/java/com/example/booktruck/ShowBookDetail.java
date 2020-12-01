@@ -419,7 +419,7 @@ public class ShowBookDetail extends AppCompatActivity {
                         Log.d("GET_BOOK_BY_ISBN", "DocumentSnapshot data: " +
                                 document.getData().get("title").toString());
                         Map<String, Object> data = document.getData();
-                        data.put("status", "Borrowed");
+                        data.put("status", "borrowed");
                         data.put("borrower", getCurrentUsername());
                         bookRef.set(data);
                         Toast.makeText(getApplicationContext(),"Succeed!", Toast.LENGTH_SHORT).show();
